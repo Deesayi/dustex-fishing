@@ -80,6 +80,10 @@
   #anaHead { left:268px; top:8px; } #anaWhy { left:268px; top:36px; }
   #g-best { left:848px; top:436px; width:300px; height:152px; }
   #sizer { width:1px; height:0; }
+  #gWtr { left:300px; top:0; } .phone #gWtr { left:40px; top:178px; }
+  #gLake { left:80px; top:22px; } .phone #gLake { left:146px; top:30px; }
+  #gWtr, #gLake { display:none; }
+  .lake #gWtr, .lake #gLake { display:block; } .lake #gSea, .lake #gIn, .lake #gOff { display:none; }
 
   /* ---------- layout: iPhone (420-wide column, scrolls) ---------- */
   html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
@@ -133,7 +137,7 @@
   </div>
 
   <div class="grp" id="g-g">
-    <div class="abs" id="gBaro"></div><div class="abs" id="gWind"></div><div class="abs" id="gSea"></div><div class="abs" id="gDir"></div>
+    <div class="abs" id="gBaro"></div><div class="abs" id="gWind"></div><div class="abs" id="gSea"></div><div class="abs" id="gWtr"></div><div class="abs" id="gDir"></div>
   </div>
 
   <div class="grp" id="g-icw"><div class="panel full"></div>
@@ -160,7 +164,7 @@
 
   <div class="grp" id="g-fc"><div class="panel full"></div>
     <div class="lbl" style="left:12px;top:8px">FISHING FORECAST</div>
-    <div class="abs" id="gIn"></div><div class="abs" id="gOff"></div>
+    <div class="abs" id="gIn"></div><div class="abs" id="gOff"></div><div class="abs" id="gLake"></div>
     <div class="t" id="anaHead" style="font-size:15px"></div>
     <div class="t mono" id="anaWhy" style="font-size:11px;color:var(--list);line-height:1.4"></div>
   </div>
@@ -191,6 +195,7 @@
   <label>Inshore (river, bay, intracoastal)</label><select id="sIcw"></select>
   <label>Offshore (beach, pier, inlet)</label><select id="sOce"></select>
   <div class="sub" id="sStaMsg"></div>
+  <label>Water type</label><select id="sWater"><option value="auto">Automatic (lake mode when far from the coast)</option><option value="salt">Saltwater: tides and seas</option><option value="lake">Freshwater lake: lake level and water temp</option></select>
   <h3 class="sec">A L E R T S</h3>
   <label class="chk"><input type="checkbox" id="aOn"> Alert me before good fishing windows</label>
   <div class="row"><div><label>How early</label><select id="aLead"><option value="15">15 minutes before</option><option value="30">30 minutes before</option><option value="60">1 hour before</option></select></div>
@@ -205,7 +210,7 @@
 // ------------------------------------------------------------------ settings (saved on the iPad)
 const DEFAULTS = { name: 'DAYTONA BEACH', lat: 29.2108, lon: -81.0228, mlat: 29.2, mlon: -80.85,
   icw: '8720954', icwName: 'INTRACOASTAL  |  Halifax River, Ormond Bch', oce: '8721120', oceName: 'OFFSHORE  |  Sunglow Pier, Daytona Bch Shores',
-  alertOn: false, alertLead: 30, alertStars: 2 };
+  alertOn: false, alertLead: 30, alertStars: 2, water: 'auto' };
 let cfg = Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem('dxfish') || '{}'));
 const $ = id => document.getElementById(id);
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -292,6 +297,8 @@ const dDir = compass($('gDir'), 140);
 const bz = [[0, 3, '#c8202a'], [3, 5, '#e08a00'], [5, 10, '#1f9d57']];
 const dIn = dial($('gIn'), { label: 'INSHORE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
 const dOff = dial($('gOff'), { label: 'OFFSHORE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
+const dLake = dial($('gLake'), { label: 'LAKE BITE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
+const dWtr = dial($('gWtr'), { label: 'WATER °F', min: 30, max: 90, majors: 6, size: 140, zones: [[30, 45, '#c8202a'], [45, 55, '#e08a00'], [55, 80, '#1f9d57'], [80, 90, '#e08a00']] });
 
 // ------------------------------------------------------------------ small helpers
 const C16 = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
@@ -428,7 +435,7 @@ async function J(u) { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok
 async function loadWeather() {
   try { S.wx = await J(`https://api.open-meteo.com/v1/forecast?latitude=${cfg.lat}&longitude=${cfg.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl&hourly=pressure_msl&past_hours=3&forecast_hours=1&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=2`); }
   catch (e) { S.err.push('weather: ' + e.message); }
-  try { S.mar = await J(`https://marine-api.open-meteo.com/v1/marine?latitude=${cfg.mlat}&longitude=${cfg.mlon}&current=wave_height,wave_period,wave_direction,sea_surface_temperature&daily=wave_height_max&length_unit=imperial&timezone=auto&forecast_days=2`); }
+  if (!isLake()) try { S.mar = await J(`https://marine-api.open-meteo.com/v1/marine?latitude=${cfg.mlat}&longitude=${cfg.mlon}&current=wave_height,wave_period,wave_direction,sea_surface_temperature&daily=wave_height_max&length_unit=imperial&timezone=auto&forecast_days=2`); }
   catch (e) { S.err.push('seas: ' + e.message); }
 }
 async function loadTides() {
@@ -438,6 +445,86 @@ async function loadTides() {
       if (r.predictions) { S[key] = r.predictions; localStorage.setItem('dxtide2_' + key, JSON.stringify(r.predictions)); } else S.err.push(`tides ${st}: no data`); }
     catch (e) { S.err.push(`tides ${st}: ${e.message}`); }
   }
+}
+
+// ------------------------------------------------------------------ lake mode (inland): USGS lake level + water temperature
+const milesTo = (a, b, c, d) => { const x = sind((c - a) / 2) ** 2 + cosd(a) * cosd(c) * sind((d - b) / 2) ** 2; return 2 * 3958.8 * Math.asin(Math.sqrt(x)); };
+const isLake = () => cfg.water === 'lake' || (cfg.water !== 'salt' && milesTo(+cfg.lat, +cfg.lon, +cfg.mlat, +cfg.mlon) > 50);
+const USGS = 'https://api.waterdata.usgs.gov/ogcapi/v1/collections/';
+const LAKE = { lvl: null, tmp: null, err: '' };
+async function findLakeSites() {
+  const key = `${cfg.lat},${cfg.lon}`, c = JSON.parse(localStorage.getItem('dxlake') || 'null');
+  if (c && c.key === key && Date.now() - c.t < 86400000) return c;
+  const lat = +cfg.lat, lon = +cfg.lon, bbox = [lon - 0.45, lat - 0.35, lon + 0.45, lat + 0.35].map(v => v.toFixed(3)).join(',');
+  const pick = async codes => {
+    for (const code of codes) {
+      let r; try { r = await J(`${USGS}latest-continuous/items?f=json&limit=300&bbox=${bbox}&parameter_code=${code}`); } catch (e) { LAKE.err = e.message; continue; }
+      let best = null;
+      for (const f of r.features || []) {
+        const p = f.properties || {}, g = f.geometry && f.geometry.coordinates;
+        if (!g || p.value == null || p.value === '' || Date.now() - new Date(p.time) > 7 * 86400000) continue;
+        const d = milesTo(lat, lon, g[1], g[0]); if (!best || d < best.d) best = { id: p.monitoring_location_id, code, unit: p.unit_of_measure || '', d };
+      }
+      if (best) {
+        try { const m = await J(`${USGS}monitoring-locations/items/${best.id}?f=json`); best.name = (m.properties && m.properties.monitoring_location_name) || best.id; } catch (e) { best.name = best.id; }
+        return best;
+      }
+    }
+    return null;
+  };
+  const out = { key, t: Date.now(), lvl: await pick(['62614', '62615', '00062', '00065']), tmp: await pick(['00010']) };
+  if (out.lvl || out.tmp) localStorage.setItem('dxlake', JSON.stringify(out));
+  return out;
+}
+async function series(site) {
+  const r = await J(`${USGS}continuous/items?f=json&skipGeometry=true&limit=3000&monitoring_location_id=${site.id}&parameter_code=${site.code}&time=P3D`);
+  const isC = /deg ?c/i.test(site.unit) || site.code === '00010';
+  return (r.features || []).map(f => [new Date(f.properties.time), +f.properties.value]).filter(x => isFinite(x[1]))
+    .map(x => isC ? [x[0], x[1] * 9 / 5 + 32] : x).sort((a, b) => a[0] - b[0]);
+}
+async function loadLake() {
+  LAKE.err = '';
+  try {
+    const s = await findLakeSites();
+    LAKE.lvl = s.lvl ? Object.assign({}, s.lvl) : null; LAKE.tmp = s.tmp ? Object.assign({}, s.tmp) : null;
+    for (const k of ['lvl', 'tmp']) if (LAKE[k]) { try { LAKE[k].pts = await series(LAKE[k]); } catch (e) { LAKE[k].pts = []; LAKE.err = e.message; } }
+  } catch (e) { LAKE.err = e.message; }
+}
+const lastV = s => s && s.pts && s.pts.length ? s.pts[s.pts.length - 1] : null;
+const change24 = s => { const L = lastV(s); if (!L) return null; const t = L[0] - 86400000; let b = null; for (const p of s.pts) { if (p[0] <= t) b = p; } return b ? L[1] - b[1] : null; };
+const sgn = (v, d) => (v >= 0 ? '+' : '') + v.toFixed(d);
+function drawSeries(svgId, pts, dec, unit) {
+  const svg = $(svgId); svg.innerHTML = ''; if (!pts || pts.length < 2) return;
+  const pw = 276, ph = 128, t0 = pts[0][0], t1 = pts[pts.length - 1][0];
+  let lo = Math.min(...pts.map(p => p[1])), hi = Math.max(...pts.map(p => p[1])); const pd = (hi - lo) * 0.2 || Math.max(0.05, Math.abs(hi) * 0.002); lo -= pd; hi += pd;
+  const X = t => (t - t0) / (t1 - t0 || 1) * pw, Y = v => ph - 16 - (v - lo) / (hi - lo) * (ph - 30);
+  for (let d = new Date(t0.getFullYear(), t0.getMonth(), t0.getDate() + 1); d < t1; d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 1)) {
+    el('line', { x1: X(d), x2: X(d), y1: 0, y2: ph, stroke: '#1a1d21' }, svg);
+    const tx = el('text', { x: X(d) + 3, y: ph - 3, 'font-size': 9, fill: '#6b6f78', 'font-family': 'Menlo, monospace' }, svg); tx.textContent = d.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase();
+  }
+  const defs = el('defs', {}, svg), g = el('linearGradient', { id: 'sg' + svgId, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  el('stop', { offset: 0, 'stop-color': 'rgba(60,200,255,.35)' }, g); el('stop', { offset: 1, 'stop-color': 'rgba(60,200,255,.04)' }, g);
+  const P = pts.map(p => `${X(p[0]).toFixed(1)},${Y(p[1]).toFixed(1)}`).join(' ');
+  el('polygon', { points: `0,${ph} ${P} ${pw},${ph}`, fill: `url(#sg${svgId})` }, svg);
+  el('polyline', { points: P, fill: 'none', stroke: '#4dc3ff', 'stroke-width': 2 }, svg);
+  const L = pts[pts.length - 1]; el('circle', { cx: X(L[0]), cy: Y(L[1]), r: 4, fill: '#ff5c61' }, svg);
+  const mx = Math.max(...pts.map(p => p[1])), mn = Math.min(...pts.map(p => p[1]));
+  const a = el('text', { x: 2, y: 10, 'font-size': 9, fill: '#b9b9b5', 'font-family': 'Menlo, monospace' }, svg); a.textContent = `high ${mx.toFixed(dec)}${unit}`;
+  const b2 = el('text', { x: 2, y: ph - 18, 'font-size': 9, fill: '#b9b9b5', 'font-family': 'Menlo, monospace' }, svg); b2.textContent = `low ${mn.toFixed(dec)}${unit}`;
+}
+function updateLakeView() {
+  const lv = LAKE.lvl, tp = LAKE.tmp, Lv = lastV(lv), Lt = lastV(tp), dl = change24(lv), dt = change24(tp);
+  const short = n => n.length > 30 ? n.slice(0, 29) + '…' : n;
+  $('icwTitle').textContent = 'LAKE LEVEL  |  ' + (lv ? short(lv.name) : 'no gauge nearby');
+  $('oceTitle').textContent = 'WATER TEMP  |  ' + (tp ? short(tp.name) : 'no gauge nearby');
+  drawSeries('plotIcw', lv && lv.pts, 2, ' ft'); drawSeries('plotOce', tp && tp.pts, 1, '°');
+  $('infoIcw').textContent = Lv ? `LEVEL ${Lv[1].toFixed(2)} ft  ${dl == null ? '' : (dl > 0.05 ? 'RISING' : dl < -0.05 ? 'FALLING' : 'STEADY')}` : 'no USGS lake gauge within ~25 mi';
+  $('listIcw').textContent = Lv ? [`24 h change   ${dl == null ? '--' : sgn(dl, 2) + ' ft'}`, `3 day range   ${(Math.max(...lv.pts.map(p => p[1])) - Math.min(...lv.pts.map(p => p[1]))).toFixed(2)} ft`,
+    `gauge         ${lv.d.toFixed(0)} mi away`, `reading       ${hm(Lv[0])}`].join('\n') : (LAKE.err ? 'USGS: ' + LAKE.err : 'Lake level needs a USGS gauge;\nmany small lakes have none.');
+  $('infoOce').textContent = Lt ? `WATER ${Lt[1].toFixed(1)}°F  ${dt == null ? '' : (dt > 0.5 ? 'WARMING' : dt < -0.5 ? 'COOLING' : 'STEADY')}` : 'no USGS water temp within ~25 mi';
+  $('listOce').textContent = Lt ? [`24 h change   ${dt == null ? '--' : sgn(dt, 1) + '°F'}`, `best bite     55-75°F`, `gauge         ${tp.d.toFixed(0)} mi away`, `reading       ${hm(Lt[0])}`].join('\n') : 'Water temperature drives the bite:\nfish slow down below 50°F.';
+  dWtr.set(Lt ? Lt[1] : 30, null, Lt ? `water ${Lt[1].toFixed(0)}°F` : 'no gauge');
+  $('waterNow').textContent = (Lt ? `water ${Lt[1].toFixed(0)}°F` : 'water --') + (Lv ? `  |  lake ${Lv[1].toFixed(1)} ft` : '');
 }
 
 // ------------------------------------------------------------------ analysis (same rules as the desktop widget)
@@ -457,10 +544,21 @@ function scoreBite(offshore) {
     else if (w <= 12) { sc += 1.5; why.push(`Moderate wind ${w.toFixed(0)} mph: some chop`); }
     else if (w <= 18) { sc += 0.7; why.push(`Breezy ${w.toFixed(0)} mph: fish lee shores`); }
     else why.push(`Strong wind ${w.toFixed(0)} mph: rough conditions`); }
-  const ts = tideState(offshore ? S.oce : S.icw, now);
+  const lake = isLake();
+  if (lake) {
+    const Lt = lastV(LAKE.tmp), dl = change24(LAKE.lvl), dt = change24(LAKE.tmp);
+    if (Lt) { const w = Lt[1];
+      if (w >= 55 && w <= 75) { sc += 2.0; why.push(`Water ${w.toFixed(0)}°F: fish active`); }
+      else if ((w >= 48 && w < 55) || (w > 75 && w <= 84)) { sc += 1.0; why.push(`Water ${w.toFixed(0)}°F: fish a little sluggish`); }
+      else { sc += 0.3; why.push(`Water ${w.toFixed(0)}°F: slow bite, fish deep and slow`); }
+      if (dt !== null && dt > 1) { sc += 0.4; why.push('Water warming: bite picking up'); } else if (dt !== null && dt < -2) why.push('Water cooling fast: fish go deep');
+    } else sc += 1.0;
+    if (dl !== null) { if (dl > 0.3) { sc += 0.5; why.push('Lake rising: fish move shallow to fresh water'); } else if (dl < -0.3) why.push('Lake falling: fish pull to deeper water'); }
+  }
+  const ts = lake ? null : tideState(offshore ? S.oce : S.icw, now);
   if (ts) { if (ts.since < 40 || ts.until < 40) { sc += 0.5; why.push('Tide near slack: current is weak'); }
     else { sc += offshore ? 1.0 : 2.0; why.push(`${ts.rising ? 'Incoming' : 'Outgoing'} tide moving: ${ts.rising ? 'high' : 'low'} at ${hm(ts.next.t)}`); } }
-  if (offshore && S.mar && S.mar.current) { const sea = +S.mar.current.wave_height;
+  if (!lake && offshore && S.mar && S.mar.current) { const sea = +S.mar.current.wave_height;
     if (sea <= 2) { sc += 1.5; why.push(`Seas ${sea.toFixed(1)} ft: calm offshore`); }
     else if (sea <= 3) { sc += 1.0; why.push(`Seas ${sea.toFixed(1)} ft: comfortable`); }
     else if (sea <= 4) { sc += 0.4; why.push(`Seas ${sea.toFixed(1)} ft: sporty`); }
@@ -472,15 +570,20 @@ function scoreBite(offshore) {
   if (S.sunR && S.sunS) { if (Math.abs(now - S.sunR) / 60000 <= 75 || Math.abs(now - S.sunS) / 60000 <= 75) { sc += 1.0; why.push('Dawn/dusk low light: prime feeding'); }
     else if (now > S.sunR && now < S.sunS) sc += 0.3; else sc += 0.5; }
   if (cur && +cur.weather_code >= 95) { sc -= 3; why.push('THUNDERSTORMS: get off the water'); }
-  if (offshore && S.mar && S.mar.current && +S.mar.current.wave_height > 5) { sc = Math.min(sc, 2.5); why.push('Seas over 5 ft: small craft caution'); }
+  if (!lake && offshore && S.mar && S.mar.current && +S.mar.current.wave_height > 5) { sc = Math.min(sc, 2.5); why.push('Seas over 5 ft: small craft caution'); }
   return { score: Math.max(0, Math.min(10, Math.round(sc * 10) / 10)), why };
 }
 function updateAnalysis() {
+  if (isLake()) {
+    const k = scoreBite(false); dLake.set(k.score, null, `${rate(k.score)}  ${k.score.toFixed(1)}`);
+    $('anaHead').textContent = `Lake bite ${rate(k.score)}`; $('anaWhy').textContent = k.why.slice(0, 7).map(w => '- ' + w).join('\n');
+  } else {
   const a = scoreBite(false), o = scoreBite(true);
   dIn.set(a.score, null, `${rate(a.score)}  ${a.score.toFixed(1)}`); dOff.set(o.score, null, `${rate(o.score)}  ${o.score.toFixed(1)}`);
   $('anaHead').textContent = `Inshore ${rate(a.score)}   |   Offshore ${rate(o.score)}`;
   const lines = a.why.slice(0, 6).map(w => '- ' + w); const so = o.why.filter(w => w.startsWith('Seas')); if (so.length) lines.push('- Offshore: ' + so[0]);
   $('anaWhy').textContent = lines.slice(0, 7).join('\n');
+  }
   const now = new Date();
   const top = windowsFor(now).filter(c => c.b > now).sort((x, y) => y.q - x.q).slice(0, 4).sort((x, y) => x.a - y.a);
   $('anaBest').textContent = top.length ? top.map(c => `${pad('*'.repeat(c.stars), 4)} ${lpad(hmt(c.a), 6)}-${pad(hmt(c.b), 7)} ${c.l}`).join('\n') : 'no more windows today';
@@ -590,16 +693,16 @@ function updateView() {
     drawWx($('iconTom'), +d.weather_code[1], true, 72);
     $('tempTom').textContent = `${Math.round(d.temperature_2m_max[1])}° / ${Math.round(d.temperature_2m_min[1])}°`;
     $('condTom').textContent = wxText(+d.weather_code[1]);
-    const seasTom = mar && mar.daily ? `${(+mar.daily.wave_height_max[1]).toFixed(1)} ft` : '--';
-    $('tomLines').textContent = `wind  ${pad(compass16(+d.wind_direction_10m_dominant[1]), 3)} ${Math.round(d.wind_speed_10m_max[1])}  gusts ${Math.round(d.wind_gusts_10m_max[1])} mph\nrain  ${Math.round(d.precipitation_probability_max[1])}% chance\nseas  ${seasTom} max offshore`;
+    const seasTom = isLake() ? (lastV(LAKE.tmp) ? `water ${lastV(LAKE.tmp)[1].toFixed(0)}°F now` : '--') : mar && mar.daily ? `${(+mar.daily.wave_height_max[1]).toFixed(1)} ft` : '--';
+    $('tomLines').textContent = `wind  ${pad(compass16(+d.wind_direction_10m_dominant[1]), 3)} ${Math.round(d.wind_speed_10m_max[1])}  gusts ${Math.round(d.wind_gusts_10m_max[1])} mph\nrain  ${Math.round(d.precipitation_probability_max[1])}% chance\n${isLake() ? 'lake' : 'seas'}  ${seasTom}${isLake() ? '' : ' max offshore'}`;
   }
-  if (mar && mar.current) {
+  if (!isLake() && mar && mar.current) {
     const wh = +mar.current.wave_height;
     dSea.set(wh, null, `${wh.toFixed(1)} ft  @ ${Math.round(mar.current.wave_period)} s`);
     if (mar.current.sea_surface_temperature != null) $('waterNow').textContent = `water ${Math.round(mar.current.sea_surface_temperature * 9 / 5 + 32)}°F  |  swell from ${compass16(+mar.current.wave_direction)}`;
   }
-  drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw);
-  drawTide('plotOce', 'infoOce', 'listOce', S.oce);
+  document.documentElement.classList.toggle('lake', isLake());
+  if (isLake()) updateLakeView(); else { drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw); drawTide('plotOce', 'infoOce', 'listOce', S.oce); }
   try { updateAnalysis(); } catch (e) { $('anaHead').textContent = 'analysis error: ' + e.message; }
   $('status').textContent = `updated ${hm(new Date())}` + (S.err.length ? '  |  ' + S.err.join(' | ') : '') + (navigator.onLine ? '' : '  |  offline');
 }
@@ -609,7 +712,8 @@ let lastWx = 0, lastTide = 0, lastMoon = 0;
 async function cycle(force) {
   const now = Date.now(); S.err = [];
   if (force || now - lastWx > 15 * 60000) { await loadWeather(); lastWx = now; }
-  if (force || now - lastTide > 3 * 3600000) { await loadTides(); lastTide = now; }
+  if (isLake()) { if (force || now - lastTide > 3600000) { await loadLake(); lastTide = now; } }
+  else if (force || now - lastTide > 3 * 3600000) { await loadTides(); lastTide = now; }
   if (force || now - lastMoon > 30 * 60000) { updateMoon(); lastMoon = now; }
   updateView();
   try { checkAlerts(); } catch (e) {}
@@ -617,7 +721,7 @@ async function cycle(force) {
 S.icw = JSON.parse(localStorage.getItem('dxtide2_icw') || 'null'); S.oce = JSON.parse(localStorage.getItem('dxtide2_oce') || 'null');
 updateMoon(); updateView(); cycle(true);
 setInterval(() => cycle(false), 60000);
-setInterval(() => { drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw); drawTide('plotOce', 'infoOce', 'listOce', S.oce); }, 60000);
+setInterval(() => { if (!isLake()) drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw); if (!isLake()) drawTide('plotOce', 'infoOce', 'listOce', S.oce); }, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) cycle(Date.now() - lastWx > 5 * 60000); });
 $('status').addEventListener('click', () => cycle(true));
 
@@ -652,7 +756,7 @@ async function findStations(pickDefaults) {
       const off = close.find(s => ocean.test(s[1]) && s[0] !== ins[0]) || close.find(s => s[0] !== ins[0]) || ins;
       dr.icw = ins[0]; dr.oce = off[0];
     }
-    fillStations(); $('sStaMsg').textContent = near[0][5] > 40 ? 'nearest station is far away: tides may not match your spot' : '';
+    fillStations(); $('sStaMsg').textContent = near[0][5] > 50 ? `Nearest tide station is ${near[0][5].toFixed(0)} mi away, so the app will use lake mode (lake level and water temp instead of tides).` : '';
   } catch (e) { $('sStaMsg').textContent = 'could not load tide stations (' + e.message + ')'; }
 }
 function setPlace(lat, lon, name) {
@@ -674,6 +778,7 @@ async function search() {
 function openSettings() {
   dr = Object.assign({}, cfg); $('sName').value = dr.name; $('sQ').value = ''; $('sRes').innerHTML = '';
   $('sCoord').textContent = `${(+dr.lat).toFixed(4)}, ${(+dr.lon).toFixed(4)}`;
+  $('sWater').value = dr.water || 'auto';
   $('aOn').checked = !!dr.alertOn; $('aLead').value = String(dr.alertLead); $('aStars').value = String(dr.alertStars);
   $('settings').style.display = 'flex'; findStations(false);
 }
@@ -694,16 +799,16 @@ $('aTest').addEventListener('click', () => { const w = windowsFor(new Date()).fi
 $('sCancel').addEventListener('click', () => $('settings').style.display = 'none');
 $('sReset').addEventListener('click', () => { dr = Object.assign({}, DEFAULTS); $('sName').value = dr.name; $('sCoord').textContent = `${dr.lat}, ${dr.lon}`; findStations(false); });
 $('sSave').addEventListener('click', () => {
-  readAlerts(); dr.name = ($('sName').value.trim() || 'MY SPOT').toUpperCase();
+  readAlerts(); dr.water = $('sWater').value; dr.name = ($('sName').value.trim() || 'MY SPOT').toUpperCase();
   const st = id => near.find(s => s[0] === id);
   const si = st(dr.icw), so = st(dr.oce);
   if (si && (si[0] !== cfg.icw)) dr.icwName = 'INSHORE  |  ' + shortName(si[1]);
   if (so && (so[0] !== cfg.oce)) { dr.oceName = 'OFFSHORE  |  ' + shortName(so[1]); dr.mlat = so[3]; dr.mlon = so[4]; }
   if (dr.oce === DEFAULTS.oce) { dr.mlat = DEFAULTS.mlat; dr.mlon = DEFAULTS.mlon; dr.oceName = DEFAULTS.oceName; }
   if (dr.icw === DEFAULTS.icw) dr.icwName = DEFAULTS.icwName;
-  const moved = dr.lat !== cfg.lat || dr.lon !== cfg.lon || dr.icw !== cfg.icw || dr.oce !== cfg.oce;
+  const moved = dr.lat !== cfg.lat || dr.lon !== cfg.lon || dr.icw !== cfg.icw || dr.oce !== cfg.oce || dr.water !== cfg.water;
   cfg = dr; localStorage.setItem('dxfish', JSON.stringify(cfg)); $('settings').style.display = 'none';
-  if (moved) { localStorage.removeItem('dxtide2_icw'); localStorage.removeItem('dxtide2_oce'); S.icw = S.oce = null; updateMoon(); }
+  if (moved) { localStorage.removeItem('dxlake'); LAKE.lvl = LAKE.tmp = null; localStorage.removeItem('dxtide2_icw'); localStorage.removeItem('dxtide2_oce'); S.icw = S.oce = null; updateMoon(); }
   cycle(moved); loadReports();
 });
 
