@@ -62,6 +62,51 @@
   #settings .btns { display:flex; justify-content:flex-end; gap:10px; margin-top:16px; }
   .pill { font-size:11px; letter-spacing:.25em; padding:7px 16px; border-radius:14px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); color:var(--ink); }
   .needle { transition: transform .9s cubic-bezier(.25,.8,.35,1); }
+
+  /* ---------- layout: iPad (1180 x 600 panel) ---------- */
+  .grp { position:absolute; }
+  .panel.full { left:0; top:0; width:100%; height:100%; }
+  .phoneonly { display:none; }
+  #g-now { left:12px; top:30px; width:286px; height:196px; }
+  #g-tom { left:12px; top:234px; width:286px; height:194px; }
+  #g-g { left:312px; top:32px; width:600px; height:162px; }
+  #gBaro { left:0; top:0; } #gWind { left:150px; top:0; } #gSea { left:300px; top:0; } #gDir { left:450px; top:0; }
+  #g-icw { left:312px; top:194px; width:296px; height:236px; }
+  #g-oce { left:614px; top:194px; width:296px; height:236px; }
+  .tinfo { left:10px; top:162px; } .tlist { left:10px; top:180px; }
+  #g-moon { left:916px; top:30px; width:252px; height:398px; }
+  #g-fc { left:12px; top:436px; width:1156px; height:152px; }
+  #gIn { left:14px; top:22px; } #gOff { left:138px; top:22px; }
+  #anaHead { left:268px; top:8px; } #anaWhy { left:268px; top:36px; }
+  #g-best { left:848px; top:436px; width:300px; height:152px; }
+  #sizer { width:1px; height:0; }
+
+  /* ---------- layout: iPhone (420-wide column, scrolls) ---------- */
+  html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  .phone #stage { width:420px; height:2314px; }
+  .phone #status { left:14px; right:auto; top:26px; text-align:left; max-width:392px; }
+  .phone #repBtn { left:10px; right:auto; top:46px; bottom:auto; }
+  .phone #gear { right:10px; top:46px; bottom:auto; }
+  .phone #banner { white-space:normal; width:390px; text-align:center; top:84px; }
+  .phone .phoneonly { display:block; }
+  .phone #g-now { left:10px; top:84px; width:400px; }
+  .phone #g-fc { left:10px; top:290px; width:400px; height:320px; }
+  .phone #gIn { left:60px; top:30px; } .phone #gOff { left:232px; top:30px; }
+  .phone #anaHead { left:14px; top:172px; font-size:14px !important; }
+  .phone #anaWhy { left:14px; top:198px; width:374px; white-space:pre-wrap; }
+  .phone #g-best { left:10px; top:620px; width:400px; height:110px; }
+  .phone #g-g { left:10px; top:740px; width:400px; height:350px; }
+  .phone #gBaro { left:40px; top:0; } .phone #gWind { left:220px; top:0; } .phone #gSea { left:40px; top:178px; } .phone #gDir { left:220px; top:178px; }
+  .phone #g-icw { left:10px; top:1100px; width:400px; height:300px; }
+  .phone #g-oce { left:10px; top:1410px; width:400px; height:300px; }
+  .phone .plot { width:380px; height:176px; }
+  .phone .tinfo { top:210px; } .phone .tlist { top:228px; }
+  .phone #g-moon { left:10px; top:1720px; width:400px; height:380px; }
+  .phone #g-tom { left:10px; top:2110px; width:400px; }
+  .phone #settings .box, .phone #reports .box { width:94vw; padding:16px; }
+  .phone #settings .row { flex-wrap:wrap; } .phone #settings .row > div { min-width:140px; }
+  .phone #settings .row .pill { padding:7px 10px; letter-spacing:.12em; }
+  .phone #reports .foot { flex-wrap:wrap; justify-content:flex-end; } .phone #reports .foot .sub { flex-basis:100%; }
 </style>
 </head>
 <body>
@@ -69,62 +114,66 @@
   <div class="t" style="left:14px;top:8px;font-size:11px;color:var(--head);font-weight:600" id="hdr">DAYTONA BEACH &nbsp;|&nbsp; FISHING CONDITIONS</div>
   <div class="t" id="status">loading...</div>
 
-  <!-- NOW / TOMORROW -->
-  <div class="panel" style="left:12px;top:30px;width:286px;height:196px"></div>
-  <div class="panel" style="left:12px;top:234px;width:286px;height:194px"></div>
-  <div class="lbl" style="left:24px;top:38px">NOW</div>
-  <svg class="abs" id="iconNow" style="left:22px;top:58px" width="84" height="84" viewBox="0 0 84 84"></svg>
-  <div class="t" id="tempNow" style="left:118px;top:48px;font-size:46px;font-weight:200">--</div>
-  <div class="t" id="condNow" style="left:120px;top:110px;font-size:15px;color:var(--head)"></div>
-  <div class="t" id="feelNow" style="left:120px;top:134px;font-size:11px;color:var(--dim)"></div>
-  <div class="t" id="sunNow" style="left:24px;top:168px;font-size:11px;color:var(--dim)"></div>
-  <div class="t mono" id="waterNow" style="left:24px;top:192px;font-size:11px;color:var(--lcd)"></div>
-  <div class="lbl" style="left:24px;top:242px">TOMORROW</div>
-  <svg class="abs" id="iconTom" style="left:24px;top:264px" width="72" height="72" viewBox="0 0 72 72"></svg>
-  <div class="t" id="tempTom" style="left:110px;top:260px;font-size:28px;font-weight:200">--</div>
-  <div class="t" id="condTom" style="left:112px;top:300px;font-size:13px;color:var(--head)"></div>
-  <div class="t mono" id="tomLines" style="left:24px;top:344px;font-size:11px;color:var(--list);line-height:1.45"></div>
+  <div class="grp" id="g-now"><div class="panel full"></div>
+    <div class="lbl" style="left:12px;top:8px">NOW</div>
+    <svg class="abs" id="iconNow" style="left:10px;top:28px" width="84" height="84" viewBox="0 0 84 84"></svg>
+    <div class="t" id="tempNow" style="left:106px;top:18px;font-size:46px;font-weight:200">--</div>
+    <div class="t" id="condNow" style="left:108px;top:80px;font-size:15px;color:var(--head)"></div>
+    <div class="t" id="feelNow" style="left:108px;top:104px;font-size:11px;color:var(--dim)"></div>
+    <div class="t" id="sunNow" style="left:12px;top:138px;font-size:11px;color:var(--dim)"></div>
+    <div class="t mono" id="waterNow" style="left:12px;top:162px;font-size:11px;color:var(--lcd)"></div>
+  </div>
 
-  <!-- gauges -->
-  <div class="abs" id="gBaro" style="left:312px;top:32px"></div>
-  <div class="abs" id="gWind" style="left:462px;top:32px"></div>
-  <div class="abs" id="gSea"  style="left:612px;top:32px"></div>
-  <div class="abs" id="gDir"  style="left:762px;top:32px"></div>
+  <div class="grp" id="g-tom"><div class="panel full"></div>
+    <div class="lbl" style="left:12px;top:8px">TOMORROW</div>
+    <svg class="abs" id="iconTom" style="left:12px;top:30px" width="72" height="72" viewBox="0 0 72 72"></svg>
+    <div class="t" id="tempTom" style="left:98px;top:26px;font-size:28px;font-weight:200">--</div>
+    <div class="t" id="condTom" style="left:100px;top:66px;font-size:13px;color:var(--head)"></div>
+    <div class="t mono" id="tomLines" style="left:12px;top:110px;font-size:11px;color:var(--list);line-height:1.45"></div>
+  </div>
 
-  <!-- tides -->
-  <div class="panel" style="left:312px;top:194px;width:296px;height:236px"></div>
-  <div class="panel" style="left:614px;top:194px;width:296px;height:236px"></div>
-  <div class="lbl" id="icwTitle" style="left:322px;top:201px;font-size:9.5px"></div>
-  <div class="lbl" id="oceTitle" style="left:624px;top:201px;font-size:9.5px"></div>
-  <svg class="abs" id="plotIcw" style="left:322px;top:222px" width="276" height="128" viewBox="0 0 276 128"></svg>
-  <svg class="abs" id="plotOce" style="left:624px;top:222px" width="276" height="128" viewBox="0 0 276 128"></svg>
-  <div class="t mono" id="infoIcw" style="left:322px;top:356px;font-size:11px;color:var(--lcd)"></div>
-  <div class="t mono" id="infoOce" style="left:624px;top:356px;font-size:11px;color:var(--lcd)"></div>
-  <div class="t mono" id="listIcw" style="left:322px;top:374px;font-size:10px;color:var(--list);line-height:1.35"></div>
-  <div class="t mono" id="listOce" style="left:624px;top:374px;font-size:10px;color:var(--list);line-height:1.35"></div>
+  <div class="grp" id="g-g">
+    <div class="abs" id="gBaro"></div><div class="abs" id="gWind"></div><div class="abs" id="gSea"></div><div class="abs" id="gDir"></div>
+  </div>
 
-  <!-- moon -->
-  <div class="panel" style="left:916px;top:30px;width:252px;height:398px"></div>
-  <div class="lbl" style="left:928px;top:38px">MOON &amp; SOLUNAR</div>
-  <svg class="abs" id="moon" style="left:977px;top:60px;overflow:visible" width="130" height="130" viewBox="0 0 130 130"></svg>
-  <div class="t" id="moonName" style="left:916px;top:196px;width:252px;text-align:center;font-size:14px;color:var(--head)"></div>
-  <div class="t" id="moonInfo" style="left:916px;top:218px;width:252px;text-align:center;font-size:11px;color:var(--dim)"></div>
-  <div class="lbl" style="left:928px;top:250px;font-size:9.5px">FEEDING TIMES TODAY</div>
-  <div class="t mono" id="solList" style="left:928px;top:270px;font-size:11px;color:var(--list);line-height:1.38"></div>
+  <div class="grp" id="g-icw"><div class="panel full"></div>
+    <div class="lbl" id="icwTitle" style="left:10px;top:7px;font-size:9.5px"></div>
+    <svg class="abs plot" id="plotIcw" style="left:10px;top:28px" width="276" height="128" viewBox="0 0 276 128"></svg>
+    <div class="t mono tinfo" id="infoIcw" style="font-size:11px;color:var(--lcd)"></div>
+    <div class="t mono tlist" id="listIcw" style="font-size:10px;color:var(--list);line-height:1.35"></div>
+  </div>
+  <div class="grp" id="g-oce"><div class="panel full"></div>
+    <div class="lbl" id="oceTitle" style="left:10px;top:7px;font-size:9.5px"></div>
+    <svg class="abs plot" id="plotOce" style="left:10px;top:28px" width="276" height="128" viewBox="0 0 276 128"></svg>
+    <div class="t mono tinfo" id="infoOce" style="font-size:11px;color:var(--lcd)"></div>
+    <div class="t mono tlist" id="listOce" style="font-size:10px;color:var(--list);line-height:1.35"></div>
+  </div>
 
-  <!-- forecast -->
-  <div class="panel" style="left:12px;top:436px;width:1156px;height:152px"></div>
-  <div class="lbl" style="left:24px;top:444px">FISHING FORECAST</div>
-  <div class="abs" id="gIn"  style="left:26px;top:458px"></div>
-  <div class="abs" id="gOff" style="left:150px;top:458px"></div>
-  <div class="t" id="anaHead" style="left:280px;top:444px;font-size:15px"></div>
-  <div class="t mono" id="anaWhy" style="left:280px;top:472px;font-size:11px;color:var(--list);line-height:1.4"></div>
-  <div class="lbl" style="left:860px;top:450px;font-size:9.5px">BEST TIMES TODAY</div>
-  <div class="t mono" id="anaBest" style="left:860px;top:470px;font-size:11px;color:var(--list);line-height:1.4"></div>
+  <div class="grp" id="g-moon"><div class="panel full"></div>
+    <div class="lbl" style="left:12px;top:8px">MOON &amp; SOLUNAR</div>
+    <svg class="abs" id="moon" style="left:calc(50% - 65px);top:30px;overflow:visible" width="130" height="130" viewBox="0 0 130 130"></svg>
+    <div class="t" id="moonName" style="left:0;top:166px;width:100%;text-align:center;font-size:14px;color:var(--head)"></div>
+    <div class="t" id="moonInfo" style="left:0;top:188px;width:100%;text-align:center;font-size:11px;color:var(--dim)"></div>
+    <div class="lbl" style="left:12px;top:220px;font-size:9.5px">FEEDING TIMES TODAY</div>
+    <div class="t mono" id="solList" style="left:12px;top:240px;font-size:11px;color:var(--list);line-height:1.38"></div>
+  </div>
+
+  <div class="grp" id="g-fc"><div class="panel full"></div>
+    <div class="lbl" style="left:12px;top:8px">FISHING FORECAST</div>
+    <div class="abs" id="gIn"></div><div class="abs" id="gOff"></div>
+    <div class="t" id="anaHead" style="font-size:15px"></div>
+    <div class="t mono" id="anaWhy" style="font-size:11px;color:var(--list);line-height:1.4"></div>
+  </div>
+  <div class="grp" id="g-best"><div class="panel full phoneonly"></div>
+    <div class="lbl" style="left:12px;top:14px;font-size:9.5px">BEST TIMES TODAY</div>
+    <div class="t mono" id="anaBest" style="left:12px;top:34px;font-size:11px;color:var(--list);line-height:1.4"></div>
+  </div>
+
   <div id="gear">SETTINGS</div>
   <div id="repBtn">REPORTS</div>
   <div id="banner"></div>
 </div>
+<div id="sizer"></div>
 
 <div id="reports"><div class="box">
   <h3 id="repTitle">F I S H I N G &nbsp; R E P O R T S</h3>
@@ -164,9 +213,20 @@ function el(tag, attrs, parent) { const e = document.createElementNS(SVGNS, tag)
 
 // ------------------------------------------------------------------ fit the 1180 x 600 panel to the screen
 function fit() {
-  const s = Math.min((innerWidth - 24) / 1180, (innerHeight - 70) / 600);
+  // phones (shortest screen side under 600 pt) get the tall scrolling layout; iPads and computers get the panel
+  const phone = Math.min(screen.width, screen.height) < 600 || /[?&]phone/.test(location.search);
+  document.documentElement.classList.toggle('phone', phone);
   const st = $('stage'); st.style.left = '0'; st.style.top = '0';
-  st.style.transform = `translate(${(innerWidth - 1180 * s) / 2}px, ${(innerHeight - 634 * s) / 2}px) scale(${s})`;
+  if (phone) {
+    const s = Math.min(innerWidth / 420, 1.5);
+    st.style.transform = `translate(${(innerWidth - 420 * s) / 2}px, env(safe-area-inset-top)) scale(${s})`;
+    st.style.top = 'env(safe-area-inset-top)'; st.style.transform = `translateX(${(innerWidth - 420 * s) / 2}px) scale(${s})`;
+    $('sizer').style.height = (2314 * s + 30) + 'px';
+  } else {
+    const s = Math.min((innerWidth - 24) / 1180, (innerHeight - 70) / 600);
+    st.style.transform = `translate(${(innerWidth - 1180 * s) / 2}px, ${(innerHeight - 634 * s) / 2}px) scale(${s})`;
+    $('sizer').style.height = '0';
+  }
 }
 addEventListener('resize', fit); fit();
 
