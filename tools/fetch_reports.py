@@ -70,8 +70,8 @@ def is_report(item, words):
     text = (item['title'] + ' ' + item['snippet']).lower()
     if re.search(NOISE, text):
         return False
-    column = re.search(r'fishing report|fish report|fishing roundup|fishing forecast', text)   # a named report column: the search already matched this area
-    if words and not column and not any(w.lower() in text for w in words):
+    where = text + ' ' + (item.get('source') or '').lower()     # the headline, summary or the paper's own name must be local
+    if words and not any(w.lower() in where for w in words):
         return False
     species = re.search(SPECIES, text)
     report = re.search(REPORT, text)
