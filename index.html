@@ -85,6 +85,14 @@
   #gWtr, #gLake { display:none; }
   .lake #gWtr, .lake #gLake { display:block; } .lake #gSea, .lake #gIn, .lake #gOff { display:none; }
 
+  /* ---------- desktop widget (?embed): fills the wallpaper port, see-through around the panel ---------- */
+  html.embed, html.embed body { background:transparent !important; }
+  html.embed body::before { display:none; }
+  .embed #stage { box-shadow:none; }
+  .embed #repBtn, .embed #gear { top:4px; bottom:auto; font-size:10px; padding:3px 10px; }
+  .embed #gear { right:12px; } .embed #repBtn { right:118px; }
+  .embed #status { right:250px; max-width:520px; }
+
   /* ---------- layout: iPhone (420-wide column, scrolls) ---------- */
   html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
   .phone #stage { width:420px; height:2314px; }
@@ -219,10 +227,15 @@ function el(tag, attrs, parent) { const e = document.createElementNS(SVGNS, tag)
 // ------------------------------------------------------------------ fit the 1180 x 600 panel to the screen
 function fit() {
   // phones (shortest screen side under 600 pt) get the tall scrolling layout; iPads and computers get the panel
-  const phone = Math.min(screen.width, screen.height) < 600 || /[?&]phone/.test(location.search);
-  document.documentElement.classList.toggle('phone', phone);
+  const embed = /[?&]embed/.test(location.search);
+  const phone = !embed && (Math.min(screen.width, screen.height) < 600 || /[?&]phone/.test(location.search));
+  document.documentElement.classList.toggle('phone', phone); document.documentElement.classList.toggle('embed', embed);
   const st = $('stage'); st.style.left = '0'; st.style.top = '0';
-  if (phone) {
+  if (embed) {
+    const s = Math.min(innerWidth / 1180, innerHeight / 600);
+    st.style.transform = `translate(${(innerWidth - 1180 * s) / 2}px, ${(innerHeight - 600 * s) / 2}px) scale(${s})`;
+    $('sizer').style.height = '0';
+  } else if (phone) {
     const s = Math.min(innerWidth / 420, 1.5);
     st.style.transform = `translate(${(innerWidth - 420 * s) / 2}px, env(safe-area-inset-top)) scale(${s})`;
     st.style.top = 'env(safe-area-inset-top)'; st.style.transform = `translateX(${(innerWidth - 420 * s) / 2}px) scale(${s})`;
