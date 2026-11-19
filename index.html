@@ -48,6 +48,16 @@
   #gear { position:absolute; right:14px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
   #repBtn { position:absolute; right:150px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
   #repBtn b { color:#1a1408; background:var(--gold); border-radius:8px; padding:0 6px; margin-left:6px; letter-spacing:0; font-size:11px; }
+  #helpBtn { position:absolute; right:298px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
+  #help { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:10; }
+  #help .box { width:720px; max-height:90vh; display:flex; flex-direction:column; border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0a0b0d); padding:20px 24px; }
+  #help h3 { margin:0; color:var(--gold); font-size:12px; letter-spacing:.3em; }
+  #helpBody { overflow:auto; -webkit-overflow-scrolling:touch; margin:10px 0 12px; padding-right:6px; flex:1; -webkit-user-select:text; user-select:text; }
+  #helpBody h4 { color:var(--gold); font-size:12px; letter-spacing:.12em; text-transform:uppercase; margin:16px 0 6px; }
+  #helpBody p { color:var(--val); font-size:13.5px; line-height:1.55; margin:0 0 9px; }
+  #helpBody b { color:#f0f1f3; font-weight:600; } #helpBody i { color:var(--dim); }
+  #helpBody a { color:var(--lcd); }
+  #help .foot { display:flex; align-items:center; gap:10px; } #help .foot .sub { flex:1; font-size:11px; color:var(--dim); }
   #reports { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:10; }
   #reports .box { width:680px; max-height:90vh; display:flex; flex-direction:column; border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0a0b0d); padding:20px 24px; }
   #reports h3 { margin:0; color:var(--gold); font-size:12px; letter-spacing:.3em; }
@@ -107,8 +117,9 @@
   html.embed body::before { display:none; }
   .embed #stage { box-shadow:none; }
   .embed #repBtn, .embed #gear { top:4px; bottom:auto; font-size:10px; padding:3px 10px; }
+  .embed #helpBtn { top:4px; bottom:auto; font-size:10px; padding:3px 10px; right:240px; }
   .embed #gear { right:12px; } .embed #repBtn { right:118px; }
-  .embed #status { right:250px; max-width:520px; }
+  .embed #status { right:318px; max-width:460px; }
 
   /* ---------- layout: iPhone (420-wide column, scrolls) ---------- */
   html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
@@ -116,6 +127,8 @@
   .phone #status { left:14px; right:auto; top:26px; text-align:left; max-width:392px; }
   .phone #repBtn { left:10px; right:auto; top:46px; bottom:auto; }
   .phone #gear { right:10px; top:46px; bottom:auto; }
+  .phone #helpBtn { right:auto; left:calc(50% - 36px); top:46px; bottom:auto; }
+  .phone #help .box { width:94vw; padding:16px; } .phone #help h3 { letter-spacing:.12em; } .phone #helpBody p { font-size:14px; }
   .phone #banner { white-space:normal; width:390px; text-align:center; top:84px; }
   .phone .phoneonly { display:block; }
   .phone #g-now { left:10px; top:84px; width:400px; }
@@ -202,9 +215,52 @@
 
   <div id="gear">SETTINGS</div>
   <div id="repBtn">REPORTS</div>
+  <div id="helpBtn">HELP</div>
   <div id="banner"></div>
 </div>
 <div id="sizer"></div>
+
+<div id="help"><div class="box">
+  <h3>H O W &nbsp; T O &nbsp; U S E &nbsp; D U S T E X &nbsp; F I S H I N G</h3>
+  <div id="helpBody">
+  <h4>The screen at a glance</h4>
+  <p><b>NOW</b> shows the current weather, feels-like temperature and humidity, sunrise and sunset, plus water temperature and swell direction on the coast (water temperature and lake level in lake mode).</p>
+  <p><b>TOMORROW</b> shows the high and low, sky, strongest wind and gusts, chance of rain, and the biggest seas offshore (or the latest water temperature in lake mode).</p>
+  <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Wind</b> in mph; the thin red needle marks the gusts. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). The <b>compass</b> points to where the wind is coming from. Green on a dial is good fishing, orange is fair, red is tough.</p>
+  <p><b>Tide charts</b> cover the next 24 hours for your inshore station (river, bay or intracoastal) and your offshore station (beach, pier or inlet). The red dashed line is now, green dots are high tides and gold dots are low tides. Below each chart: whether the tide is rising or falling, the next high or low, and the next four tides with their heights.</p>
+  <p><b>Moon &amp; Solunar</b> shows the moon's phase, how much of it is lit and days to the next full or new moon. <b>Feeding times</b> are the solunar periods: <b>Major</b> periods (2 hours, centered on the moon overhead or underfoot) and <b>Minor</b> periods (1 hour, centered on moonrise and moonset). The period you are in now is shown in green.</p>
+
+  <h4>Fishing forecast</h4>
+  <p>The bite dials score the fishing right now from 0 to 10: <b>Poor</b> below 3, <b>Fair</b> 3 to 5, <b>Good</b> 5 to 7, <b>Very good</b> 7 to 8.5 and <b>Excellent</b> above 8.5. There is one dial for <b>Inshore</b> and one for <b>Offshore</b> (a single <b>Lake bite</b> dial in lake mode). The list beside the dials explains the score.</p>
+  <p>What goes into the score: a slowly falling barometer (fish feed) versus a fast rise after a front (tough bite); wind (light is best); moving tide versus slack water; seas offshore; being inside or near a solunar period; days near the new or full moon (stronger tides); dawn and dusk low light. Thunderstorms pull the score down hard, and seas over 5 ft cap the offshore score. In lake mode, water temperature (55 to 75°F is best), warming or cooling water, and a rising or falling lake level replace the tides and seas.</p>
+  <p><b>Best times today</b> lists the strongest windows left today. Each solunar period, dawn and dusk is a window; it earns an extra star when it overlaps another window and another when the tide is moving. More stars, better odds.</p>
+
+  <h4>Lake mode (freshwater)</h4>
+  <p>When your spot is more than 50 miles from the nearest ocean tide station, the app switches to lake mode by itself. The tide charts become a 3-day <b>lake level</b> chart and a 3-day <b>water temperature</b> chart from the nearest US Geological Survey gauge within about 25 miles. Small lakes may not have a gauge; the panel says so. You can force either mode in Settings (Water type).</p>
+
+  <h4>Fishing reports</h4>
+  <p>Tap <b>REPORTS</b> for recent local fishing reports from newspapers, magazines and state wildlife agencies, collected every 4 hours for 65 areas across the country, from the coasts to the Great Lakes and the big inland lakes. The number on the button is how many arrived in the past week. Tap a report to read it. If your spot has no report area within 75 miles, tap <b>SEARCH THE WEB</b> for this week's reports.</p>
+
+  <h4>Settings</h4>
+  <p><b>Search:</b> type a town, beach, inlet or lake and tap <b>SEARCH</b>, then tap the right place in the list. <b>HERE</b> uses your device's location (allow it when asked).</p>
+  <p><b>Name shown in the header:</b> what appears at the top left. Change it to anything you like.</p>
+  <p><b>Tide stations:</b> the app picks the nearest NOAA stations for you: a river, bay or intracoastal station for <b>Inshore</b> and a beach, pier or inlet station for <b>Offshore</b>. The lists show the 15 closest with their distances, so you can choose others. Offshore seas come from the offshore station's position.</p>
+  <p><b>Water type:</b> <i>Automatic</i> (lake mode when far from the coast), <i>Saltwater</i> or <i>Freshwater lake</i>.</p>
+  <p><b>Alerts:</b> tick <b>Alert me before good fishing windows</b>, choose <b>how early</b> (15, 30 or 60 minutes) and <b>which windows</b> (all, good and up, or best only). A gold banner pops up while the app is open. <b>ADD NEXT 3 DAYS TO CALENDAR</b> adds the windows to your calendar with reminders, which alert you even when the app is closed. <b>TEST ALERT</b> shows a sample.</p>
+  <p><b>DEFAULTS</b> puts everything back to Daytona Beach. <b>CANCEL</b> closes without changes. <b>SAVE</b> applies your changes.</p>
+
+  <h4>Keeping it fresh</h4>
+  <p>Weather and seas update every 15 minutes, tides every 3 hours and lake gauges every hour. Tap the <b>updated</b> time at the top right to refresh right now. The app keeps a saved copy, so it opens without internet and shows the last tides it loaded. Your settings stay on your device; there is no account and nothing to sign up for.</p>
+
+  <h4>Installing and updating</h4>
+  <p><b>iPhone and iPad:</b> open the app's link in Safari, tap <b>Share</b> (on the newest devices it's under the three-dots button), then <b>Add to Home Screen</b> and <b>Add</b>. Open it from the Home Screen icon. On iPad it shows the full panel sideways; on iPhone it is a tall layout you scroll. New versions arrive automatically: close the app and open it twice.</p>
+  <p><b>Desktop widget:</b> docked into the wallpaper. Right-click it for <b>Reload</b>, <b>Open in browser</b> or <b>Close</b>. It reloads itself every hour.</p>
+
+  <h4>Where the data comes from</h4>
+  <p>Weather and seas: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0). Tides and stations: NOAA Tides &amp; Currents. Lake level and water temperature: U.S. Geological Survey. Places: Open-Meteo geocoding. Fishing reports: Google News and Bing News search of local outlets. Moon, solunar times and sunrise are calculated on your device. Fishing scores are a guide, not a guarantee; always check official marine forecasts and local regulations before heading out.</p>
+  </div>
+  <div class="foot"><div class="sub">DUSTEX Fishing</div><button class="pill" id="helpClose">CLOSE</button></div>
+</div></div>
 
 <div id="reports"><div class="box">
   <h3 id="repTitle">F I S H I N G &nbsp; R E P O R T S</h3>
@@ -881,6 +937,9 @@ function openReports() {
   $('reports').style.display = 'flex'; L.scrollTop = 0;
 }
 $('repBtn').addEventListener('click', openReports);
+$('helpBtn').addEventListener('click', () => { $('help').style.display = 'flex'; $('helpBody').scrollTop = 0; });
+$('helpClose').addEventListener('click', () => $('help').style.display = 'none');
+$('help').addEventListener('click', e => { if (e.target.id === 'help') $('help').style.display = 'none'; });
 $('repClose').addEventListener('click', () => $('reports').style.display = 'none');
 $('reports').addEventListener('click', e => { if (e.target.id === 'reports') $('reports').style.display = 'none'; });
 $('repWeb').addEventListener('click', () => window.open('https://www.google.com/search?q=' + encodeURIComponent('fishing report ' + cfg.name.toLowerCase()) + '&tbs=qdr:w', '_blank'));

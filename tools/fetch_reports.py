@@ -12,7 +12,7 @@ from datetime import datetime, timezone, timedelta
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else '.'
 MAX_AGE_DAYS = 21
-MAX_ITEMS = 15
+MAX_ITEMS = 12
 UA = 'Mozilla/5.0 (DUSTEX Fishing report collector)'
 
 
@@ -55,17 +55,37 @@ def parse_rss(xml_bytes, default_source):
     return out
 
 
+SPECIES = (r'redfish|red drum|snook|trout|seatrout|tarpon|black drum|snapper|grouper|crappie|bass|catfish|walleye|bluegill|sunfish|bream|'
+           r'striper|hybrid|salmon|steelhead|perch|pike|musky|muskie|halibut|rockfish|lingcod|tuna|mahi|dolphin|kingfish|king mackerel|'
+           r'spanish mackerel|flounder|fluke|tautog|sheepshead|cobia|wahoo|bonefish|permit|bluefish|weakfish|corvina|yellowtail|sturgeon|'
+           r'kokanee|whiting|pompano|croaker|spot|sailfish|marlin|amberjack|triggerfish|shark|panfish|white bass|calico')
+REPORT = r'fishing report|fish report|report|bite|biting|catching|caught|hooked|limits?|anglers? (are|have|report)|on the hook|outlook|forecast'
+NOISE = (r'accident|drown|died|death|dead body|missing|rescue|arrest|charged|police|deputy|sheriff|crash|lawsuit|court|tickets? on sale|'
+         r'expo|festival|riverfest|fundraiser|obituar|shooting|stabbing|murder|hit-and-run|license plate|recipe|restaurant|real estate|'
+         r'for sale|election|council|commission vote')
+
+
 def is_report(item, words):
+    """keep only real fishing reports: a species or bite/catch language, a place from this area, and none of the usual noise"""
     text = (item['title'] + ' ' + item['snippet']).lower()
-    fishy = re.search(r'fish|angler|redfish|snook|trout|tarpon|drum|snapper|grouper|bite|catch|pier|inshore|offshore|surf|crappie|bass|catfish|walleye|bluegill|sunfish|striper|hybrid|lake level', text)
-    return bool(fishy) and (not words or any(w.lower() in text for w in words))
+    if re.search(NOISE, text):
+        return False
+    if words and not any(w.lower() in text for w in words):
+        return False
+    species = re.search(SPECIES, text)
+    report = re.search(REPORT, text)
+    return bool(species and (report or 'fish' in text)) or bool(re.search(r'fishing report|fish report', text))
 
 
 def collect(place):
     terms = place['search']
-    q = '("fishing report" OR fishing OR anglers) (' + ' OR '.join(f'"{t}"' for t in terms) + ')'
+    places = '(' + ' OR '.join(f'"{t}"' for t in terms) + ')'
+    q1 = '"fishing report" ' + places                                                          # the weekly columns
+    q2 = '(fishing OR anglers) (bite OR biting OR catching OR caught) ' + places                # catch news
+    gn = lambda q: 'https://news.google.com/rss/search?' + urllib.parse.urlencode({'q': q + f' when:{MAX_AGE_DAYS}d', 'hl': 'en-US', 'gl': 'US', 'ceid': 'US:en'})
     feeds = [
-        ('https://news.google.com/rss/search?' + urllib.parse.urlencode({'q': q + f' when:{MAX_AGE_DAYS}d', 'hl': 'en-US', 'gl': 'US', 'ceid': 'US:en'}), 'Google News'),
+        (gn(q1), 'Google News'),
+        (gn(q2), 'Google News'),
         ('https://www.bing.com/news/search?' + urllib.parse.urlencode({'q': f'fishing report {terms[0]}', 'format': 'rss'}), 'Bing News'),
     ]
     items, errors = [], []
