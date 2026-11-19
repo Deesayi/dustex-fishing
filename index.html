@@ -29,8 +29,32 @@
   .t.mono { white-space:pre; }
   #status { right:14px; top:9px; font-size:10px; color:var(--dim); text-align:right; max-width:640px; overflow:hidden; text-overflow:ellipsis; }
   #gear { position:absolute; right:14px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
+  #repBtn { position:absolute; right:150px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
+  #repBtn b { color:#1a1408; background:var(--gold); border-radius:8px; padding:0 6px; margin-left:6px; letter-spacing:0; font-size:11px; }
+  #reports { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:10; }
+  #reports .box { width:680px; max-height:90vh; display:flex; flex-direction:column; border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0a0b0d); padding:20px 24px; }
+  #reports h3 { margin:0; color:var(--gold); font-size:12px; letter-spacing:.3em; }
+  #repList { overflow:auto; -webkit-overflow-scrolling:touch; margin:12px 0; flex:1; }
+  #repList a { display:block; text-decoration:none; color:var(--ink); padding:11px 12px; margin-bottom:8px; border-radius:10px; background:#111317; border:1px solid #26282d; }
+  #repList a:active { background:#1b1e24; }
+  #repList .rt { font-size:15px; line-height:1.3; }
+  #repList .rm { font-size:11px; color:var(--gold); margin-top:4px; letter-spacing:.04em; }
+  #repList .rs { font-size:12px; color:var(--list); margin-top:5px; line-height:1.35; }
+  #repList .new { color:#7cffb2; }
+  #reports .foot { display:flex; align-items:center; gap:10px; }
+  #reports .foot .sub { flex:1; font-size:11px; color:var(--dim); }
   #settings { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:10; }
-  #settings .box { width:520px; border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0a0b0d); padding:20px 24px; color:var(--ink); }
+  #settings .box { max-height:92vh; overflow:auto; -webkit-overflow-scrolling:touch; }
+  #settings h3 + h3, #settings .sec { margin-top:18px; }
+  #settings select { width:100%; background:#0c0d10; color:var(--ink); border:1px solid #34373e; border-radius:8px; padding:8px 10px; font-size:14px; -webkit-appearance:none; appearance:none; }
+  #settings .sub { font-size:11px; color:var(--dim); margin-top:6px; }
+  #settings .chk { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--ink); margin:6px 0; }
+  #settings .chk input { width:22px; height:22px; accent-color:#d8b46a; }
+  #sRes button { display:block; width:100%; text-align:left; margin-top:6px; background:#15171b; color:var(--ink); border:1px solid #2c2f35; border-radius:8px; padding:9px 12px; font-size:14px; }
+  #sRes button span { color:var(--dim); font-size:12px; }
+  #banner { position:absolute; left:50%; top:4px; transform:translateX(-50%); display:none; z-index:5; padding:8px 18px; border-radius:14px;
+    background:linear-gradient(#3a2c12,#1c1408); border:1px solid #d8b46a; color:#ffe6a8; font-size:13px; font-weight:600; box-shadow:0 0 18px rgba(216,180,106,.45); white-space:nowrap; }
+  #settings .box { width:560px; border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0a0b0d); padding:20px 24px; color:var(--ink); }
   #settings h3 { margin:0 0 12px; color:var(--gold); font-size:12px; letter-spacing:.3em; }
   #settings label { display:block; font-size:11px; color:var(--dim); margin:10px 0 4px; }
   #settings input { width:100%; background:#0c0d10; color:var(--ink); border:1px solid #34373e; border-radius:8px; padding:8px 10px; font-size:14px; -webkit-user-select:text; user-select:text; }
@@ -98,15 +122,32 @@
   <div class="lbl" style="left:860px;top:450px;font-size:9.5px">BEST TIMES TODAY</div>
   <div class="t mono" id="anaBest" style="left:860px;top:470px;font-size:11px;color:var(--list);line-height:1.4"></div>
   <div id="gear">SETTINGS</div>
+  <div id="repBtn">REPORTS</div>
+  <div id="banner"></div>
 </div>
 
+<div id="reports"><div class="box">
+  <h3 id="repTitle">F I S H I N G &nbsp; R E P O R T S</h3>
+  <div id="repList"></div>
+  <div class="foot"><div class="sub" id="repInfo"></div><button class="pill" id="repWeb">SEARCH THE WEB</button><button class="pill" id="repClose">CLOSE</button></div>
+</div></div>
+
 <div id="settings"><div class="box">
-  <h3>S E T T I N G S</h3>
-  <label>Place name (header)</label><input id="sName">
-  <div class="row"><div><label>Weather latitude</label><input id="sLat" inputmode="decimal"></div><div><label>Weather longitude</label><input id="sLon" inputmode="decimal"></div></div>
-  <div class="row"><div><label>Seas latitude (offshore)</label><input id="sMLat" inputmode="decimal"></div><div><label>Seas longitude</label><input id="sMLon" inputmode="decimal"></div></div>
-  <div class="row"><div><label>Inshore NOAA station</label><input id="sIcw" inputmode="numeric"></div><div><label>Inshore title</label><input id="sIcwN"></div></div>
-  <div class="row"><div><label>Offshore NOAA station</label><input id="sOce" inputmode="numeric"></div><div><label>Offshore title</label><input id="sOceN"></div></div>
+  <h3>L O C A T I O N</h3>
+  <div class="row" style="align-items:center"><input id="sQ" placeholder="Search a town, beach or inlet" style="flex:3" enterkeyhint="search"><button class="pill" id="sGo" style="flex:0">SEARCH</button><button class="pill" id="sGps" style="flex:0">HERE</button></div>
+  <div id="sRes"></div>
+  <label>Name shown in the header</label><input id="sName">
+  <div class="sub" id="sCoord"></div>
+  <h3 class="sec">T I D E &nbsp; S T A T I O N S</h3>
+  <label>Inshore (river, bay, intracoastal)</label><select id="sIcw"></select>
+  <label>Offshore (beach, pier, inlet)</label><select id="sOce"></select>
+  <div class="sub" id="sStaMsg"></div>
+  <h3 class="sec">A L E R T S</h3>
+  <label class="chk"><input type="checkbox" id="aOn"> Alert me before good fishing windows</label>
+  <div class="row"><div><label>How early</label><select id="aLead"><option value="15">15 minutes before</option><option value="30">30 minutes before</option><option value="60">1 hour before</option></select></div>
+    <div><label>Which windows</label><select id="aStars"><option value="1">All windows (*)</option><option value="2">Good and up (**)</option><option value="3">Best only (***)</option></select></div></div>
+  <div class="row" style="margin-top:12px"><button class="pill" id="aCal">ADD NEXT 3 DAYS TO CALENDAR</button><button class="pill" id="aTest">TEST ALERT</button></div>
+  <div class="sub">Alerts pop up while the app is open. Calendar events alert you even when the app is closed.</div>
   <div class="btns"><button class="pill" id="sReset">DEFAULTS</button><button class="pill" id="sCancel">CANCEL</button><button class="pill" id="sSave">SAVE</button></div>
 </div></div>
 
@@ -114,7 +155,8 @@
 'use strict';
 // ------------------------------------------------------------------ settings (saved on the iPad)
 const DEFAULTS = { name: 'DAYTONA BEACH', lat: 29.2108, lon: -81.0228, mlat: 29.2, mlon: -80.85,
-  icw: '8720954', icwName: 'INTRACOASTAL  |  Halifax River, Ormond Bch', oce: '8721120', oceName: 'OFFSHORE  |  Sunglow Pier, Daytona Bch Shores' };
+  icw: '8720954', icwName: 'INTRACOASTAL  |  Halifax River, Ormond Bch', oce: '8721120', oceName: 'OFFSHORE  |  Sunglow Pier, Daytona Bch Shores',
+  alertOn: false, alertLead: 30, alertStars: 2 };
 let cfg = Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem('dxfish') || '{}'));
 const $ = id => document.getElementById(id);
 const SVGNS = 'http://www.w3.org/2000/svg';
@@ -201,6 +243,7 @@ const pad = (s, n) => (s + ' '.repeat(n)).slice(0, n);
 const lpad = (s, n) => (' '.repeat(n) + s).slice(-n);
 const addMin = (t, m) => new Date(t.getTime() + m * 60000);
 const parseLocal = s => new Date(s.replace(' ', 'T'));
+const parseAt = (s, off) => new Date(new Date(s.replace(' ', 'T') + 'Z').getTime() - (off || 0) * 1000);  // place-local or UTC text -> real instant
 function wxText(c) { if (c === 0) return 'Clear'; if (c === 1) return 'Mostly clear'; if (c === 2) return 'Partly cloudy'; if (c === 3) return 'Overcast';
   if (c === 45 || c === 48) return 'Fog'; if ([51,53,55].includes(c)) return 'Drizzle'; if ([56,57].includes(c)) return 'Freezing drizzle'; if ([61,63,65].includes(c)) return 'Rain';
   if ([66,67].includes(c)) return 'Freezing rain'; if ([71,73,75,77].includes(c)) return 'Snow'; if ([80,81,82].includes(c)) return 'Showers'; if ([85,86].includes(c)) return 'Snow showers';
@@ -282,7 +325,7 @@ function drawMoon(e) {
 }
 
 // ------------------------------------------------------------------ tides
-const tideEvents = preds => (preds || []).map(p => ({ t: parseLocal(p.t), v: +p.v, ty: p.type }));
+const tideEvents = preds => (preds || []).map(p => ({ t: parseAt(p.t, 0), v: +p.v, ty: p.type }));
 function tideState(preds, t) {
   const ev = tideEvents(preds); let prev = null, next = null;
   for (const e of ev) { if (e.t <= t) prev = e; else { next = e; break; } }
@@ -329,10 +372,10 @@ async function loadWeather() {
   catch (e) { S.err.push('seas: ' + e.message); }
 }
 async function loadTides() {
-  const d = new Date(Date.now() - 86400000), b = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  const d = new Date(Date.now() - 86400000), b = `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}${String(d.getUTCDate()).padStart(2, '0')}`;
   for (const [key, st] of [['icw', cfg.icw], ['oce', cfg.oce]]) {
-    try { const r = await J(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=DUSTEX_Fishing&begin_date=${b}&range=72&datum=MLLW&station=${st}&time_zone=lst_ldt&units=english&interval=hilo&format=json`);
-      if (r.predictions) { S[key] = r.predictions; localStorage.setItem('dxtide_' + key, JSON.stringify(r.predictions)); } else S.err.push(`tides ${st}: no data`); }
+    try { const r = await J(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=DUSTEX_Fishing&begin_date=${b}&range=72&datum=MLLW&station=${st}&time_zone=gmt&units=english&interval=hilo&format=json`);
+      if (r.predictions) { S[key] = r.predictions; localStorage.setItem('dxtide2_' + key, JSON.stringify(r.predictions)); } else S.err.push(`tides ${st}: no data`); }
     catch (e) { S.err.push(`tides ${st}: ${e.message}`); }
   }
 }
@@ -378,16 +421,76 @@ function updateAnalysis() {
   $('anaHead').textContent = `Inshore ${rate(a.score)}   |   Offshore ${rate(o.score)}`;
   const lines = a.why.slice(0, 6).map(w => '- ' + w); const so = o.why.filter(w => w.startsWith('Seas')); if (so.length) lines.push('- Offshore: ' + so[0]);
   $('anaWhy').textContent = lines.slice(0, 7).join('\n');
-  const now = new Date(), cand = [];
-  for (const w of S.solWin) cand.push({ a: w.a, b: w.b, q: w.k === 'MAJOR' ? 3 : 2, l: w.k.toLowerCase() + ' solunar' });
-  if (S.sunR) cand.push({ a: addMin(S.sunR, -60), b: addMin(S.sunR, 60), q: 2, l: 'dawn' });
-  if (S.sunS) cand.push({ a: addMin(S.sunS, -60), b: addMin(S.sunS, 60), q: 2, l: 'dusk' });
-  const best = cand.filter(c => c.b > now && c.a.toDateString() === now.toDateString()).map(c => {
+  const now = new Date();
+  const top = windowsFor(now).filter(c => c.b > now).sort((x, y) => y.q - x.q).slice(0, 4).sort((x, y) => x.a - y.a);
+  $('anaBest').textContent = top.length ? top.map(c => `${pad('*'.repeat(c.stars), 4)} ${lpad(hmt(c.a), 6)}-${pad(hmt(c.b), 7)} ${c.l}`).join('\n') : 'no more windows today';
+}
+// sunrise / sunset for any day (standard sunrise equation, ~1 min accuracy)
+function sunTimes(date, lat, lon) {
+  const noon = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12);
+  const n = Math.round(noon.getTime() / 86400000 + 2440587.5 - 2451545.0 + 0.0008);
+  const Js = n - lon / 360, M = rev(357.5291 + 0.98560028 * Js);
+  const C = 1.9148 * sind(M) + 0.02 * sind(2 * M) + 0.0003 * sind(3 * M), L = rev(M + C + 180 + 102.9372);
+  const Jt = 2451545.0 + Js + 0.0053 * sind(M) - 0.0069 * sind(2 * L), dec = Math.asin(sind(L) * sind(23.44)) * DEG;
+  const cw = (sind(-0.833) - sind(lat) * sind(dec)) / (cosd(lat) * cosd(dec)); if (Math.abs(cw) > 1) return null;
+  const w = Math.acos(cw) * DEG, J = j => new Date((j - 2440587.5) * 86400000);
+  return { rise: J(Jt - w / 360), set: J(Jt + w / 360) };
+}
+// the day's fishing windows (solunar + dawn/dusk), rated: overlaps and moving tide add stars
+function windowsFor(day) {
+  const ev = moonDay(day, +cfg.lat, +cfg.lon), st = sunTimes(day, +cfg.lat, +cfg.lon), cand = [];
+  if (ev.transit) cand.push({ a: addMin(ev.transit, -60), b: addMin(ev.transit, 60), q: 3, l: 'major solunar' });
+  if (ev.under) cand.push({ a: addMin(ev.under, -60), b: addMin(ev.under, 60), q: 3, l: 'major solunar' });
+  if (ev.rise) cand.push({ a: addMin(ev.rise, -30), b: addMin(ev.rise, 30), q: 2, l: 'minor solunar' });
+  if (ev.set) cand.push({ a: addMin(ev.set, -30), b: addMin(ev.set, 30), q: 2, l: 'minor solunar' });
+  if (st) { cand.push({ a: addMin(st.rise, -60), b: addMin(st.rise, 60), q: 2, l: 'dawn' }); cand.push({ a: addMin(st.set, -60), b: addMin(st.set, 60), q: 2, l: 'dusk' }); }
+  return cand.filter(c => c.a.toDateString() === day.toDateString()).map(c => {
     let q = c.q; for (const x of cand) if (x !== c && x.a < c.b && x.b > c.a) q += 1;
     const ts = tideState(S.icw, new Date((c.a.getTime() + c.b.getTime()) / 2)); if (ts && ts.since >= 40 && ts.until >= 40) q += 1;
-    return { a: c.a, b: c.b, q, l: c.l }; });
-  const top = best.sort((x, y) => y.q - x.q).slice(0, 4).sort((x, y) => x.a - y.a);
-  $('anaBest').textContent = top.length ? top.map(c => `${pad('*'.repeat(Math.min(4, c.q - 1)), 4)} ${lpad(hmt(c.a), 6)}-${pad(hmt(c.b), 7)} ${c.l}`).join('\n') : 'no more windows today';
+    return { a: c.a, b: c.b, q, stars: Math.max(1, Math.min(4, q - 1)), l: c.l };
+  }).sort((x, y) => x.a - y.a);
+}
+
+// ------------------------------------------------------------------ alerts
+function showBanner(text) {
+  const b = $('banner'); b.textContent = text; b.style.display = 'block';
+  clearTimeout(showBanner.t); showBanner.t = setTimeout(() => b.style.display = 'none', 10 * 60000);
+}
+$('banner').addEventListener('click', () => $('banner').style.display = 'none');
+function fireAlert(w, test) {
+  const a = scoreBite(false), lead = Math.round((w.a - new Date()) / 60000);
+  const when = lead > 0 ? `starts in ${lead} min` : `on now until ${hmt(w.b)}`;
+  const title = `${'*'.repeat(w.stars)} ${w.l.toUpperCase()} ${when}`;
+  const body = `${hmt(w.a)}-${hmt(w.b)}  |  inshore bite ${rate(a.score)} ${a.score.toFixed(1)}  |  ${cfg.name}`;
+  showBanner((test ? 'TEST  ' : '') + title + '   ' + body);
+  if ('Notification' in window && Notification.permission === 'granted' && navigator.serviceWorker)
+    navigator.serviceWorker.ready.then(r => r.showNotification('DUSTEX Fishing', { body: title + '\n' + body, icon: 'icon-192.png', tag: 'dx' + w.a.getTime() })).catch(() => {});
+}
+function checkAlerts() {
+  if (!cfg.alertOn) return;
+  const now = new Date(), fired = JSON.parse(localStorage.getItem('dxfired') || '{}');
+  for (const d of [now, addMin(now, 1440)]) for (const w of windowsFor(d)) {
+    if (w.stars < +cfg.alertStars) continue;
+    const key = String(w.a.getTime());
+    if (now >= addMin(w.a, -cfg.alertLead) && now < w.b && !fired[key]) { fired[key] = 1; fireAlert(w); }
+  }
+  for (const k in fired) if (+k < now - 2 * 86400000) delete fired[k];
+  localStorage.setItem('dxfired', JSON.stringify(fired));
+}
+function exportCalendar() {
+  const z = t => t.toISOString().replace(/[-:]/g, '').replace(/\.\d+/, ''), out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//DUSTEX//Fishing//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+  let n = 0; const now = new Date();
+  for (let k = 0; k < 3; k++) for (const w of windowsFor(addMin(now, k * 1440))) {
+    if (w.stars < +cfg.alertStars || w.b < now) continue; n++;
+    out.push('BEGIN:VEVENT', `UID:${w.a.getTime()}-${cfg.lat}-${cfg.lon}@dustex-fishing`, `DTSTAMP:${z(now)}`, `DTSTART:${z(w.a)}`, `DTEND:${z(w.b)}`,
+      `SUMMARY:Fishing ${'*'.repeat(w.stars)} ${w.l}`, `LOCATION:${cfg.name}`, `DESCRIPTION:DUSTEX Fishing window (${w.l})`,
+      'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Fishing window', `TRIGGER:-PT${+cfg.alertLead}M`, 'END:VALARM', 'END:VEVENT');
+  }
+  out.push('END:VCALENDAR');
+  if (!n) { showBanner('No windows at that rating in the next 3 days'); return; }
+  const url = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(out.join('\r\n'));
+  const a = document.createElement('a'); a.href = url; a.download = 'dustex-fishing.ics'; document.body.appendChild(a); a.click(); a.remove();
+  return n;
 }
 function updateMoon() {
   const now = new Date(), p = moonPos(now), illum = (1 - cosd(p.elong)) / 2 * 100;
@@ -415,7 +518,7 @@ function updateView() {
     $('tempNow').textContent = `${Math.round(cur.temperature_2m)}°`;
     $('condNow').textContent = wxText(+cur.weather_code);
     $('feelNow').textContent = `feels ${Math.round(cur.apparent_temperature)}°  |  humidity ${Math.round(cur.relative_humidity_2m)}%`;
-    S.sunR = parseLocal(wx.daily.sunrise[0]); S.sunS = parseLocal(wx.daily.sunset[0]);
+    S.sunR = parseAt(wx.daily.sunrise[0], wx.utc_offset_seconds); S.sunS = parseAt(wx.daily.sunset[0], wx.utc_offset_seconds);
     $('sunNow').textContent = `sunrise ${hm(S.sunR)}   sunset ${hm(S.sunS)}`;
     const inHg = +cur.pressure_msl * 0.0295300, ph = wx.hourly && wx.hourly.pressure_msl || []; let trend = '', dp = 0;
     if (ph.length >= 2 && ph[0] != null) { dp = (+cur.pressure_msl - +ph[0]) * 0.0295300; trend = dp > 0.02 ? 'RISING' : dp < -0.02 ? 'FALLING' : 'STEADY'; }
@@ -449,8 +552,9 @@ async function cycle(force) {
   if (force || now - lastTide > 3 * 3600000) { await loadTides(); lastTide = now; }
   if (force || now - lastMoon > 30 * 60000) { updateMoon(); lastMoon = now; }
   updateView();
+  try { checkAlerts(); } catch (e) {}
 }
-S.icw = JSON.parse(localStorage.getItem('dxtide_icw') || 'null'); S.oce = JSON.parse(localStorage.getItem('dxtide_oce') || 'null');
+S.icw = JSON.parse(localStorage.getItem('dxtide2_icw') || 'null'); S.oce = JSON.parse(localStorage.getItem('dxtide2_oce') || 'null');
 updateMoon(); updateView(); cycle(true);
 setInterval(() => cycle(false), 60000);
 setInterval(() => { drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw); drawTide('plotOce', 'infoOce', 'listOce', S.oce); }, 60000);
@@ -458,16 +562,125 @@ document.addEventListener('visibilitychange', () => { if (!document.hidden) cycl
 $('status').addEventListener('click', () => cycle(true));
 
 // ------------------------------------------------------------------ settings sheet
-const fields = { sName: 'name', sLat: 'lat', sLon: 'lon', sMLat: 'mlat', sMLon: 'mlon', sIcw: 'icw', sIcwN: 'icwName', sOce: 'oce', sOceN: 'oceName' };
-function openSettings() { for (const id in fields) $(id).value = cfg[fields[id]]; $('settings').style.display = 'flex'; }
+let dr = null, near = [];                                   // draft settings while the sheet is open
+const miles = (a, b, c, d) => { const R = 3958.8, x = sind((c - a) / 2) ** 2 + cosd(a) * cosd(c) * sind((d - b) / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+const shortName = s => s.length > 34 ? s.slice(0, 33) + '…' : s;
+async function stations() {
+  const c = JSON.parse(localStorage.getItem('dxstations') || 'null');
+  if (c && Date.now() - c.t < 30 * 86400000) return c.s;
+  const r = await J('https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=tidepredictions');
+  const s = (r.stations || []).map(x => [x.id, x.name, x.state || '', +x.lat, +x.lng]);
+  try { localStorage.setItem('dxstations', JSON.stringify({ t: Date.now(), s })); } catch (e) {}
+  return s;
+}
+function fillStations() {
+  const opt = (sel, cur) => { sel.innerHTML = ''; for (const s of near) { const o = document.createElement('option'); o.value = s[0];
+    o.textContent = `${s[1]}${s[2] ? ', ' + s[2] : ''}  (${s[5].toFixed(1)} mi)`; if (s[0] === cur) o.selected = true; sel.appendChild(o); } };
+  opt($('sIcw'), dr.icw); opt($('sOce'), dr.oce);
+}
+async function findStations(pickDefaults) {
+  $('sStaMsg').textContent = 'finding nearby tide stations...';
+  try {
+    const all = await stations();
+    near = all.map(s => s.concat([miles(dr.lat, dr.lon, s[3], s[4])])).sort((a, b) => a[5] - b[5]).slice(0, 15);
+    if (!near.length) { $('sStaMsg').textContent = 'no tide stations found'; return; }
+    for (const id of [dr.icw, dr.oce]) if (!near.find(s => s[0] === id)) { const s = all.find(x => x[0] === id); if (s) near.push(s.concat([miles(dr.lat, dr.lon, s[3], s[4])])); }
+    if (pickDefaults) {
+      const ocean = /pier|beach|ocean|inlet|entrance|jetty|shores|island|light|outer|offshore|pass|cape/i;
+      const lim = Math.max(25, near[0][5] * 2.5), close = near.filter(s => s[5] <= lim);
+      const ins = close.find(s => !ocean.test(s[1])) || close[0];
+      const off = close.find(s => ocean.test(s[1]) && s[0] !== ins[0]) || close.find(s => s[0] !== ins[0]) || ins;
+      dr.icw = ins[0]; dr.oce = off[0];
+    }
+    fillStations(); $('sStaMsg').textContent = near[0][5] > 40 ? 'nearest station is far away: tides may not match your spot' : '';
+  } catch (e) { $('sStaMsg').textContent = 'could not load tide stations (' + e.message + ')'; }
+}
+function setPlace(lat, lon, name) {
+  dr.lat = Math.round(lat * 1e4) / 1e4; dr.lon = Math.round(lon * 1e4) / 1e4; if (name) { dr.name = name; $('sName').value = name; }
+  $('sCoord').textContent = `${dr.lat.toFixed(4)}, ${dr.lon.toFixed(4)}`; $('sRes').innerHTML = ''; findStations(true);
+}
+async function search() {
+  const q = $('sQ').value.trim(); if (!q) return; $('sRes').innerHTML = '<div class="sub">searching...</div>';
+  try {
+    const r = await J(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(q.split(',')[0])}&count=10&language=en&format=json`);
+    const res = (r.results || []); $('sRes').innerHTML = '';
+    if (!res.length) { $('sRes').innerHTML = '<div class="sub">no places found: try just the town name</div>'; return; }
+    for (const p of res.sort((a, b) => (b.country_code === 'US') - (a.country_code === 'US'))) {
+      const b = document.createElement('button'); b.innerHTML = `${p.name} <span>${[p.admin1, p.country_code].filter(Boolean).join(', ')}</span>`;
+      b.addEventListener('click', () => setPlace(p.latitude, p.longitude, p.name.toUpperCase())); $('sRes').appendChild(b);
+    }
+  } catch (e) { $('sRes').innerHTML = `<div class="sub">search failed (${e.message})</div>`; }
+}
+function openSettings() {
+  dr = Object.assign({}, cfg); $('sName').value = dr.name; $('sQ').value = ''; $('sRes').innerHTML = '';
+  $('sCoord').textContent = `${(+dr.lat).toFixed(4)}, ${(+dr.lon).toFixed(4)}`;
+  $('aOn').checked = !!dr.alertOn; $('aLead').value = String(dr.alertLead); $('aStars').value = String(dr.alertStars);
+  $('settings').style.display = 'flex'; findStations(false);
+}
 $('gear').addEventListener('click', openSettings);
-$('sCancel').addEventListener('click', () => $('settings').style.display = 'none');
-$('sReset').addEventListener('click', () => { for (const id in fields) $(id).value = DEFAULTS[fields[id]]; });
-$('sSave').addEventListener('click', () => {
-  for (const id in fields) { const k = fields[id], v = $(id).value.trim(); cfg[k] = ['lat', 'lon', 'mlat', 'mlon'].includes(k) ? (parseFloat(v) || DEFAULTS[k]) : (v || DEFAULTS[k]); }
-  localStorage.setItem('dxfish', JSON.stringify(cfg)); $('settings').style.display = 'none';
-  localStorage.removeItem('dxtide_icw'); localStorage.removeItem('dxtide_oce'); S.icw = S.oce = null; cycle(true);
+$('sGo').addEventListener('click', search);
+$('sQ').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('sQ').blur(); search(); } });
+$('sGps').addEventListener('click', () => {
+  if (!navigator.geolocation) return; $('sRes').innerHTML = '<div class="sub">finding you...</div>';
+  navigator.geolocation.getCurrentPosition(p => setPlace(p.coords.latitude, p.coords.longitude, null),
+    e => { $('sRes').innerHTML = `<div class="sub">location not available (${e.message})</div>`; }, { enableHighAccuracy: false, timeout: 15000 });
 });
+$('sIcw').addEventListener('change', e => dr.icw = e.target.value);
+$('sOce').addEventListener('change', e => dr.oce = e.target.value);
+$('aOn').addEventListener('change', e => { if (e.target.checked && 'Notification' in window && Notification.permission === 'default') Notification.requestPermission().catch(() => {}); });
+const readAlerts = () => { dr.alertOn = $('aOn').checked; dr.alertLead = +$('aLead').value; dr.alertStars = +$('aStars').value; };
+$('aCal').addEventListener('click', () => { readAlerts(); const keep = cfg; cfg = Object.assign({}, dr, { name: ($('sName').value.trim() || dr.name).toUpperCase() }); try { exportCalendar(); } finally { cfg = keep; } });
+$('aTest').addEventListener('click', () => { const w = windowsFor(new Date()).find(x => x.b > new Date()) || windowsFor(addMin(new Date(), 1440))[0]; if (w) fireAlert(w, true); });
+$('sCancel').addEventListener('click', () => $('settings').style.display = 'none');
+$('sReset').addEventListener('click', () => { dr = Object.assign({}, DEFAULTS); $('sName').value = dr.name; $('sCoord').textContent = `${dr.lat}, ${dr.lon}`; findStations(false); });
+$('sSave').addEventListener('click', () => {
+  readAlerts(); dr.name = ($('sName').value.trim() || 'MY SPOT').toUpperCase();
+  const st = id => near.find(s => s[0] === id);
+  const si = st(dr.icw), so = st(dr.oce);
+  if (si && (si[0] !== cfg.icw)) dr.icwName = 'INSHORE  |  ' + shortName(si[1]);
+  if (so && (so[0] !== cfg.oce)) { dr.oceName = 'OFFSHORE  |  ' + shortName(so[1]); dr.mlat = so[3]; dr.mlon = so[4]; }
+  if (dr.oce === DEFAULTS.oce) { dr.mlat = DEFAULTS.mlat; dr.mlon = DEFAULTS.mlon; dr.oceName = DEFAULTS.oceName; }
+  if (dr.icw === DEFAULTS.icw) dr.icwName = DEFAULTS.icwName;
+  const moved = dr.lat !== cfg.lat || dr.lon !== cfg.lon || dr.icw !== cfg.icw || dr.oce !== cfg.oce;
+  cfg = dr; localStorage.setItem('dxfish', JSON.stringify(cfg)); $('settings').style.display = 'none';
+  if (moved) { localStorage.removeItem('dxtide2_icw'); localStorage.removeItem('dxtide2_oce'); S.icw = S.oce = null; updateMoon(); }
+  cycle(moved); loadReports();
+});
+
+// ------------------------------------------------------------------ fishing reports (collected every 4 h into reports.json by the GitHub job)
+let REP = null;
+const ago = iso => { if (!iso) return ''; const h = (Date.now() - new Date(iso)) / 3600000;
+  return h < 1 ? 'just now' : h < 24 ? `${Math.round(h)} h ago` : `${Math.round(h / 24)} day${h < 36 ? '' : 's'} ago`; };
+const esc = s => String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function nearestArea() {
+  if (!REP || !REP.places) return null;
+  let best = null;
+  for (const p of REP.places) { const d = miles(+cfg.lat, +cfg.lon, p.lat, p.lon); if (d <= 75 && (!best || d < best.d)) best = Object.assign({ d }, p); }
+  return best;
+}
+async function loadReports() {
+  try { const r = await fetch('reports.json?t=' + Date.now(), { cache: 'no-store' }); if (r.ok) REP = await r.json(); } catch (e) {}
+  const a = nearestArea(), fresh = a ? a.items.filter(i => i.date && Date.now() - new Date(i.date) < 7 * 86400000).length : 0;
+  $('repBtn').innerHTML = 'REPORTS' + (fresh ? `<b>${fresh}</b>` : '');
+}
+function openReports() {
+  const a = nearestArea(), L = $('repList');
+  $('repTitle').innerHTML = 'F I S H I N G &nbsp; R E P O R T S' + (a ? ` &nbsp;<span style="color:var(--dim);letter-spacing:.1em">${esc(a.name.toUpperCase())}</span>` : '');
+  if (!REP) L.innerHTML = '<div class="sub" style="color:var(--dim)">No reports yet. The report collector on GitHub has not run yet, or the app is offline.</div>';
+  else if (!a) L.innerHTML = `<div class="sub" style="color:var(--dim)">No report area set up near ${esc(cfg.name)} yet. Tap SEARCH THE WEB, or add this area to reports-places.json on GitHub.</div>`;
+  else if (!a.items.length) L.innerHTML = '<div class="sub" style="color:var(--dim)">No reports in the last 3 weeks for this area.</div>';
+  else L.innerHTML = a.items.map(i => { const isNew = i.date && Date.now() - new Date(i.date) < 2 * 86400000;
+    return `<a href="${esc(i.link)}" target="_blank" rel="noopener"><div class="rt">${esc(i.title)}</div>`
+      + `<div class="rm">${esc(i.source)}${i.date ? '  ·  ' : ''}<span class="${isNew ? 'new' : ''}">${ago(i.date)}</span></div>`
+      + (i.snippet ? `<div class="rs">${esc(i.snippet)}</div>` : '') + '</a>'; }).join('');
+  $('repInfo').textContent = REP ? `collected ${ago(REP.updated)}  ·  tap a report to read it` : '';
+  $('reports').style.display = 'flex'; L.scrollTop = 0;
+}
+$('repBtn').addEventListener('click', openReports);
+$('repClose').addEventListener('click', () => $('reports').style.display = 'none');
+$('reports').addEventListener('click', e => { if (e.target.id === 'reports') $('reports').style.display = 'none'; });
+$('repWeb').addEventListener('click', () => window.open('https://www.google.com/search?q=' + encodeURIComponent('fishing report ' + cfg.name.toLowerCase()) + '&tbs=qdr:w', '_blank'));
+loadReports(); setInterval(loadReports, 30 * 60000);
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>

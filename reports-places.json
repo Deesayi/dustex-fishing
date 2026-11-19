@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Daytona Beach area",
+    "lat": 29.21, "lon": -81.02,
+    "search": ["Daytona Beach", "Ponce Inlet", "Ormond Beach", "Halifax River", "New Smyrna Beach", "Mosquito Lagoon", "Port Orange", "Volusia"]
+  },
+  {
+    "name": "Flagler / St. Augustine",
+    "lat": 29.75, "lon": -81.25,
+    "search": ["Flagler Beach", "Palm Coast", "Matanzas Inlet", "St. Augustine"]
+  }
+]
