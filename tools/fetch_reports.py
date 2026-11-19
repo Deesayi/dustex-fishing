@@ -59,7 +59,7 @@ SPECIES = (r'redfish|red drum|snook|trout|seatrout|tarpon|black drum|snapper|gro
            r'striper|hybrid|salmon|steelhead|perch|pike|musky|muskie|halibut|rockfish|lingcod|tuna|mahi|dolphin|kingfish|king mackerel|'
            r'spanish mackerel|flounder|fluke|tautog|sheepshead|cobia|wahoo|bonefish|permit|bluefish|weakfish|corvina|yellowtail|sturgeon|'
            r'kokanee|whiting|pompano|croaker|spot|sailfish|marlin|amberjack|triggerfish|shark|panfish|white bass|calico')
-REPORT = r'fishing report|fish report|report|bite|biting|catching|caught|hooked|limits?|anglers? (are|have|report)|on the hook|outlook|forecast'
+REPORT = r'fishing report|fish report|fishing roundup|roundup|report|bite|biting|catching|caught|hooked|limits?|anglers? (are|have|report)|on the hook|outlook|forecast'
 NOISE = (r'accident|drown|died|death|dead body|missing|rescue|arrest|charged|police|deputy|sheriff|crash|lawsuit|court|tickets? on sale|'
          r'expo|festival|riverfest|fundraiser|obituar|shooting|stabbing|murder|hit-and-run|license plate|recipe|restaurant|real estate|'
          r'for sale|election|council|commission vote')
@@ -74,13 +74,13 @@ def is_report(item, words):
         return False
     species = re.search(SPECIES, text)
     report = re.search(REPORT, text)
-    return bool(species and (report or 'fish' in text)) or bool(re.search(r'fishing report|fish report', text))
+    return bool(species and (report or 'fish' in text)) or bool(re.search(r'fishing report|fish report|fishing roundup', text))
 
 
 def collect(place):
     terms = place['search']
     places = '(' + ' OR '.join(f'"{t}"' for t in terms) + ')'
-    q1 = '"fishing report" ' + places                                                          # the weekly columns
+    q1 = '("fishing report" OR "fishing roundup" OR "fishing forecast") ' + places                                                          # the weekly columns
     q2 = '(fishing OR anglers) (bite OR biting OR catching OR caught) ' + places                # catch news
     gn = lambda q: 'https://news.google.com/rss/search?' + urllib.parse.urlencode({'q': q + f' when:{MAX_AGE_DAYS}d', 'hl': 'en-US', 'gl': 'US', 'ceid': 'US:en'})
     feeds = [
