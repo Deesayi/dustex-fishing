@@ -57,7 +57,7 @@ def parse_rss(xml_bytes, default_source):
 
 def is_report(item, words):
     text = (item['title'] + ' ' + item['snippet']).lower()
-    fishy = re.search(r'fish|angler|redfish|snook|trout|tarpon|drum|snapper|grouper|bite|catch|pier|inshore|offshore|surf', text)
+    fishy = re.search(r'fish|angler|redfish|snook|trout|tarpon|drum|snapper|grouper|bite|catch|pier|inshore|offshore|surf|crappie|bass|catfish|walleye|bluegill|sunfish|striper|hybrid|lake level', text)
     return bool(fishy) and (not words or any(w.lower() in text for w in words))
 
 
