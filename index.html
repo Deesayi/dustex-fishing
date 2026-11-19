@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DUSTEX Fishing">
+<meta name="theme-color" content="#0b0b0d">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<title>DUSTEX Fishing</title>
+<style>
+  :root { --lcd:#7cffb2; --dim:#9a9da6; --head:#b8bcc6; --gold:#d8b46a; --ink:#ededea; --list:#b9b9b5; --dial:#2a3b55; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { margin:0; height:100%; background:#140405; overflow:hidden; font-family:-apple-system, "Helvetica Neue", "Segoe UI", sans-serif; color:var(--ink); -webkit-user-select:none; user-select:none; }
+  body { background: linear-gradient(90deg, #3a0a0c 0%, #1e0506 55%, #0c0203 100%); }
+  body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.5;
+    background: repeating-linear-gradient(0deg, rgba(255,220,220,.035) 0 1px, transparent 1px 3px), repeating-linear-gradient(0deg, rgba(0,0,0,.08) 0 2px, transparent 2px 5px); }
+  #stage { position:absolute; left:50%; top:50%; width:1180px; height:600px; transform-origin:0 0;
+    border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(rgba(28,30,35,.96), rgba(10,11,13,.96));
+    box-shadow: 0 14px 40px rgba(0,0,0,.7); }
+  .abs { position:absolute; }
+  .panel { position:absolute; border-radius:6px; background:#0c0d10; border:1px solid #26282d; }
+  .lbl { position:absolute; font-weight:900; font-size:10px; color:var(--gold); letter-spacing:.02em; }
+  .mono { font-family:Menlo, Consolas, monospace; white-space:pre; }
+  .t { position:absolute; white-space:nowrap; }
+  .t.mono { white-space:pre; }
+  #status { right:14px; top:9px; font-size:10px; color:var(--dim); text-align:right; max-width:640px; overflow:hidden; text-overflow:ellipsis; }
+  #gear { position:absolute; right:14px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
+  #settings { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:10; }
+  #settings .box { width:520px; border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0a0b0d); padding:20px 24px; color:var(--ink); }
+  #settings h3 { margin:0 0 12px; color:var(--gold); font-size:12px; letter-spacing:.3em; }
+  #settings label { display:block; font-size:11px; color:var(--dim); margin:10px 0 4px; }
+  #settings input { width:100%; background:#0c0d10; color:var(--ink); border:1px solid #34373e; border-radius:8px; padding:8px 10px; font-size:14px; -webkit-user-select:text; user-select:text; }
+  #settings .row { display:flex; gap:12px; } #settings .row > div { flex:1; }
+  #settings .btns { display:flex; justify-content:flex-end; gap:10px; margin-top:16px; }
+  .pill { font-size:11px; letter-spacing:.25em; padding:7px 16px; border-radius:14px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); color:var(--ink); }
+  .needle { transition: transform .9s cubic-bezier(.25,.8,.35,1); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="t" style="left:14px;top:8px;font-size:11px;color:var(--head);font-weight:600" id="hdr">DAYTONA BEACH &nbsp;|&nbsp; FISHING CONDITIONS</div>
+  <div class="t" id="status">loading...</div>
+
+  <!-- NOW / TOMORROW -->
+  <div class="panel" style="left:12px;top:30px;width:286px;height:196px"></div>
+  <div class="panel" style="left:12px;top:234px;width:286px;height:194px"></div>
+  <div class="lbl" style="left:24px;top:38px">NOW</div>
+  <svg class="abs" id="iconNow" style="left:22px;top:58px" width="84" height="84" viewBox="0 0 84 84"></svg>
+  <div class="t" id="tempNow" style="left:118px;top:48px;font-size:46px;font-weight:200">--</div>
+  <div class="t" id="condNow" style="left:120px;top:110px;font-size:15px;color:var(--head)"></div>
+  <div class="t" id="feelNow" style="left:120px;top:134px;font-size:11px;color:var(--dim)"></div>
+  <div class="t" id="sunNow" style="left:24px;top:168px;font-size:11px;color:var(--dim)"></div>
+  <div class="t mono" id="waterNow" style="left:24px;top:192px;font-size:11px;color:var(--lcd)"></div>
+  <div class="lbl" style="left:24px;top:242px">TOMORROW</div>
+  <svg class="abs" id="iconTom" style="left:24px;top:264px" width="72" height="72" viewBox="0 0 72 72"></svg>
+  <div class="t" id="tempTom" style="left:110px;top:260px;font-size:28px;font-weight:200">--</div>
+  <div class="t" id="condTom" style="left:112px;top:300px;font-size:13px;color:var(--head)"></div>
+  <div class="t mono" id="tomLines" style="left:24px;top:344px;font-size:11px;color:var(--list);line-height:1.45"></div>
+
+  <!-- gauges -->
+  <div class="abs" id="gBaro" style="left:312px;top:32px"></div>
+  <div class="abs" id="gWind" style="left:462px;top:32px"></div>
+  <div class="abs" id="gSea"  style="left:612px;top:32px"></div>
+  <div class="abs" id="gDir"  style="left:762px;top:32px"></div>
+
+  <!-- tides -->
+  <div class="panel" style="left:312px;top:194px;width:296px;height:236px"></div>
+  <div class="panel" style="left:614px;top:194px;width:296px;height:236px"></div>
+  <div class="lbl" id="icwTitle" style="left:322px;top:201px;font-size:9.5px"></div>
+  <div class="lbl" id="oceTitle" style="left:624px;top:201px;font-size:9.5px"></div>
+  <svg class="abs" id="plotIcw" style="left:322px;top:222px" width="276" height="128" viewBox="0 0 276 128"></svg>
+  <svg class="abs" id="plotOce" style="left:624px;top:222px" width="276" height="128" viewBox="0 0 276 128"></svg>
+  <div class="t mono" id="infoIcw" style="left:322px;top:356px;font-size:11px;color:var(--lcd)"></div>
+  <div class="t mono" id="infoOce" style="left:624px;top:356px;font-size:11px;color:var(--lcd)"></div>
+  <div class="t mono" id="listIcw" style="left:322px;top:374px;font-size:10px;color:var(--list);line-height:1.35"></div>
+  <div class="t mono" id="listOce" style="left:624px;top:374px;font-size:10px;color:var(--list);line-height:1.35"></div>
+
+  <!-- moon -->
+  <div class="panel" style="left:916px;top:30px;width:252px;height:398px"></div>
+  <div class="lbl" style="left:928px;top:38px">MOON &amp; SOLUNAR</div>
+  <svg class="abs" id="moon" style="left:977px;top:60px;overflow:visible" width="130" height="130" viewBox="0 0 130 130"></svg>
+  <div class="t" id="moonName" style="left:916px;top:196px;width:252px;text-align:center;font-size:14px;color:var(--head)"></div>
+  <div class="t" id="moonInfo" style="left:916px;top:218px;width:252px;text-align:center;font-size:11px;color:var(--dim)"></div>
+  <div class="lbl" style="left:928px;top:250px;font-size:9.5px">FEEDING TIMES TODAY</div>
+  <div class="t mono" id="solList" style="left:928px;top:270px;font-size:11px;color:var(--list);line-height:1.38"></div>
+
+  <!-- forecast -->
+  <div class="panel" style="left:12px;top:436px;width:1156px;height:152px"></div>
+  <div class="lbl" style="left:24px;top:444px">FISHING FORECAST</div>
+  <div class="abs" id="gIn"  style="left:26px;top:458px"></div>
+  <div class="abs" id="gOff" style="left:150px;top:458px"></div>
+  <div class="t" id="anaHead" style="left:280px;top:444px;font-size:15px"></div>
+  <div class="t mono" id="anaWhy" style="left:280px;top:472px;font-size:11px;color:var(--list);line-height:1.4"></div>
+  <div class="lbl" style="left:860px;top:450px;font-size:9.5px">BEST TIMES TODAY</div>
+  <div class="t mono" id="anaBest" style="left:860px;top:470px;font-size:11px;color:var(--list);line-height:1.4"></div>
+  <div id="gear">SETTINGS</div>
+</div>
+
+<div id="settings"><div class="box">
+  <h3>S E T T I N G S</h3>
+  <label>Place name (header)</label><input id="sName">
+  <div class="row"><div><label>Weather latitude</label><input id="sLat" inputmode="decimal"></div><div><label>Weather longitude</label><input id="sLon" inputmode="decimal"></div></div>
+  <div class="row"><div><label>Seas latitude (offshore)</label><input id="sMLat" inputmode="decimal"></div><div><label>Seas longitude</label><input id="sMLon" inputmode="decimal"></div></div>
+  <div class="row"><div><label>Inshore NOAA station</label><input id="sIcw" inputmode="numeric"></div><div><label>Inshore title</label><input id="sIcwN"></div></div>
+  <div class="row"><div><label>Offshore NOAA station</label><input id="sOce" inputmode="numeric"></div><div><label>Offshore title</label><input id="sOceN"></div></div>
+  <div class="btns"><button class="pill" id="sReset">DEFAULTS</button><button class="pill" id="sCancel">CANCEL</button><button class="pill" id="sSave">SAVE</button></div>
+</div></div>
+
+<script>
+'use strict';
+// ------------------------------------------------------------------ settings (saved on the iPad)
+const DEFAULTS = { name: 'DAYTONA BEACH', lat: 29.2108, lon: -81.0228, mlat: 29.2, mlon: -80.85,
+  icw: '8720954', icwName: 'INTRACOASTAL  |  Halifax River, Ormond Bch', oce: '8721120', oceName: 'OFFSHORE  |  Sunglow Pier, Daytona Bch Shores' };
+let cfg = Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem('dxfish') || '{}'));
+const $ = id => document.getElementById(id);
+const SVGNS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent) { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+
+// ------------------------------------------------------------------ fit the 1180 x 600 panel to the screen
+function fit() {
+  const s = Math.min((innerWidth - 24) / 1180, (innerHeight - 70) / 600);
+  const st = $('stage'); st.style.left = '0'; st.style.top = '0';
+  st.style.transform = `translate(${(innerWidth - 1180 * s) / 2}px, ${(innerHeight - 634 * s) / 2}px) scale(${s})`;
+}
+addEventListener('resize', fit); fit();
+
+// ------------------------------------------------------------------ chrome dials (same parts as the desktop widget: Blender face + glass, DUSTEX cap)
+function PtA(c, r, deg) { const a = deg * Math.PI / 180; return [c + r * Math.sin(a), c - r * Math.cos(a)]; }
+function arcPath(c, r, a1, a2) { const p1 = PtA(c, r, a1), p2 = PtA(c, r, a2); return `M${p1[0]},${p1[1]} A${r},${r} 0 ${(a2 - a1) > 180 ? 1 : 0} 1 ${p2[0]},${p2[1]}`; }
+function dial(host, o) {
+  const size = o.size, c = size / 2, R = c - 3, span = o.max - o.min;
+  const svg = el('svg', { width: size, height: size + 22, viewBox: `0 0 ${size} ${size + 22}`, style: 'overflow:visible' }, host);
+  const defs = el('defs', {}, svg);
+  const sh = el('filter', { id: 'sh' + host.id, x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs);
+  el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 4, 'flood-opacity': .7 }, sh);
+  const ng = el('linearGradient', { id: 'ng' + host.id, x1: 0, y1: 0, x2: 1, y2: 0 }, defs);
+  el('stop', { offset: 0, 'stop-color': '#ff9a4d' }, ng); el('stop', { offset: 1, 'stop-color': '#e04a00' }, ng);
+  el('image', { href: 'gauge_face.png', x: 0, y: 0, width: size, height: size, filter: `url(#sh${host.id})` }, svg);
+  if (o.logo !== false) el('image', { href: 'gauge_logo.png', x: size * .1, y: size * .1, width: size * .8, height: size * .8 }, svg);
+  const ang = v => -135 + 270 * Math.max(0, Math.min(1.02, (v - o.min) / span));
+  for (const z of o.zones) el('path', { d: arcPath(c, R - 13, ang(z[0]), ang(z[1])), stroke: z[2], 'stroke-width': 4, fill: 'none' }, svg);
+  const nt = o.majors * 5;
+  for (let i = 0; i <= nt; i++) {
+    const a = -135 + 270 * i / nt, major = i % 5 === 0;
+    const p1 = PtA(c, R - 8, a), p2 = PtA(c, major ? R - 19 : R - 13, a);
+    el('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: major ? '#15171b' : 'rgba(58,62,70,.67)', 'stroke-width': major ? 1.8 : .8 }, svg);
+    if (major) { const v = o.min + span * i / nt, tp = PtA(c, R - 30, a);
+      const t = el('text', { x: tp[0], y: tp[1] + size * .068 * .35, 'text-anchor': 'middle', 'font-size': size * .068, 'font-weight': 600, fill: '#1a1c21' }, svg); t.textContent = v.toFixed(o.dec || 0); }
+  }
+  const numBot = c + (R - 30) * .7071 + size * .068 * .62;
+  const lb = el('text', { x: c, y: numBot + 2 + size * .072, 'text-anchor': 'middle', 'font-size': size * .072, 'font-weight': 900, fill: '#2a3b55' }, svg); lb.textContent = o.label;
+  const pk = el('polygon', { points: `${c - 1.2},${c - R * .35} ${c + 1.2},${c - R * .35} ${c + .6},${c - R + 10} ${c - .6},${c - R + 10}`, fill: 'rgba(229,72,77,.67)', class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);display:none` }, svg);
+  const k = size / 150;
+  const nd = el('polygon', { points: `${c - 3.2 * k},${c + R * .16} ${c + 3.2 * k},${c + R * .16} ${c + k},${c - R + 11 * k} ${c - k},${c - R + 11 * k}`, fill: `url(#ng${host.id})`, class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))` }, svg);
+  el('circle', { cx: c, cy: c, r: size * .055, fill: 'url(#cap)', stroke: '#2a2c31' }, svg);
+  el('image', { href: 'gauge_glass.png', x: 0, y: 0, width: size, height: size }, svg);
+  const vt = el('text', { x: c, y: size + 15, 'text-anchor': 'middle', 'font-size': Math.max(10, size * .078), fill: '#7cffb2', 'font-family': 'Menlo, monospace' }, svg);
+  return { set(v, peak, text) { nd.style.transform = `rotate(${ang(v)}deg)`; if (peak != null) { pk.style.display = ''; pk.style.transform = `rotate(${ang(peak)}deg)`; } vt.textContent = text; } };
+}
+function compass(host, size) {
+  const c = size / 2, R = c - 3;
+  const svg = el('svg', { width: size, height: size + 22, viewBox: `0 0 ${size} ${size + 22}`, style: 'overflow:visible' }, host);
+  const defs = el('defs', {}, svg); const sh = el('filter', { id: 'shc', x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs);
+  el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 4, 'flood-opacity': .7 }, sh);
+  el('image', { href: 'gauge_face.png', x: 0, y: 0, width: size, height: size, filter: 'url(#shc)' }, svg);
+  for (let i = 0; i < 32; i++) { const a = i * 11.25, major = i % 4 === 0; const p1 = PtA(c, R - 8, a), p2 = PtA(c, major ? R - 18 : R - 13, a);
+    el('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: major ? '#15171b' : 'rgba(58,62,70,.67)', 'stroke-width': major ? 1.8 : .8 }, svg); }
+  for (const [t, a, col] of [['N', 0, '#2a3b55'], ['E', 90, '#1a1c21'], ['S', 180, '#1a1c21'], ['W', 270, '#1a1c21']]) {
+    const tp = PtA(c, R - 30, a); const tx = el('text', { x: tp[0], y: tp[1] + size * .1 * .36, 'text-anchor': 'middle', 'font-size': size * .1, 'font-weight': 900, fill: col }, svg); tx.textContent = t; }
+  const g = el('g', { class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(0deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))` }, svg);
+  el('polygon', { points: `${c - 5},${c} ${c + 5},${c} ${c},${c + R * .42}`, fill: '#5e636b' }, g);
+  el('polygon', { points: `${c - 5},${c} ${c + 5},${c} ${c},${c - R + 14}`, fill: '#e04a00' }, g);
+  el('circle', { cx: c, cy: c, r: size * .055, fill: 'url(#cap)', stroke: '#2a2c31' }, svg);
+  el('image', { href: 'gauge_glass.png', x: 0, y: 0, width: size, height: size }, svg);
+  const vt = el('text', { x: c, y: size + 15, 'text-anchor': 'middle', 'font-size': Math.max(10, size * .078), fill: '#7cffb2', 'font-family': 'Menlo, monospace' }, svg);
+  return { set(deg, text) { g.style.transform = `rotate(${deg}deg)`; vt.textContent = text; } };
+}
+// shared hub-cap gradient
+(() => { const s = el('svg', { width: 0, height: 0, style: 'position:absolute' }, document.body); const d = el('defs', {}, s);
+  const r = el('radialGradient', { id: 'cap', cx: .4, cy: .35, r: .7 }, d); el('stop', { offset: 0, 'stop-color': '#fff' }, r); el('stop', { offset: 1, 'stop-color': '#5e636b' }, r); })();
+
+const dBaro = dial($('gBaro'), { label: 'BAROMETER', min: 29.2, max: 30.8, majors: 4, dec: 1, size: 140, zones: [[29.2, 29.6, '#c8202a'], [29.6, 29.9, '#e08a00'], [29.9, 30.8, '#1f9d57']] });
+const dWind = dial($('gWind'), { label: 'WIND', min: 0, max: 40, majors: 4, size: 140, zones: [[0, 12, '#1f9d57'], [12, 20, '#e08a00'], [20, 40, '#c8202a']] });
+const dSea = dial($('gSea'), { label: 'SEAS', min: 0, max: 10, majors: 5, size: 140, zones: [[0, 3, '#1f9d57'], [3, 5, '#e08a00'], [5, 10, '#c8202a']] });
+const dDir = compass($('gDir'), 140);
+const bz = [[0, 3, '#c8202a'], [3, 5, '#e08a00'], [5, 10, '#1f9d57']];
+const dIn = dial($('gIn'), { label: 'INSHORE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
+const dOff = dial($('gOff'), { label: 'OFFSHORE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
+
+// ------------------------------------------------------------------ small helpers
+const C16 = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+const compass16 = d => C16[Math.round((((d % 360) + 360) % 360) / 22.5) % 16];
+const hm = t => t.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+const hmt = t => hm(t).replace(' AM', 'a').replace(' PM', 'p');
+const dayHm = t => t.toLocaleDateString('en-US', { weekday: 'short' }).toLowerCase() + ' ' + hmt(t);
+const pad = (s, n) => (s + ' '.repeat(n)).slice(0, n);
+const lpad = (s, n) => (' '.repeat(n) + s).slice(-n);
+const addMin = (t, m) => new Date(t.getTime() + m * 60000);
+const parseLocal = s => new Date(s.replace(' ', 'T'));
+function wxText(c) { if (c === 0) return 'Clear'; if (c === 1) return 'Mostly clear'; if (c === 2) return 'Partly cloudy'; if (c === 3) return 'Overcast';
+  if (c === 45 || c === 48) return 'Fog'; if ([51,53,55].includes(c)) return 'Drizzle'; if ([56,57].includes(c)) return 'Freezing drizzle'; if ([61,63,65].includes(c)) return 'Rain';
+  if ([66,67].includes(c)) return 'Freezing rain'; if ([71,73,75,77].includes(c)) return 'Snow'; if ([80,81,82].includes(c)) return 'Showers'; if ([85,86].includes(c)) return 'Snow showers';
+  if (c === 95) return 'Thunderstorms'; if (c === 96 || c === 99) return 'T-storms + hail'; return '--'; }
+function drawWx(svg, code, day, s) {
+  svg.innerHTML = '';
+  const defs = el('defs', {}, svg);
+  const cloudG = (id, hex) => { const g = el('linearGradient', { id, x1: 0, y1: 0, x2: 0, y2: 1 }, defs); el('stop', { offset: 0, 'stop-color': '#f2f4f7' }, g); el('stop', { offset: 1, 'stop-color': hex }, g); };
+  const cloud = (x, y, k, hex) => { const id = 'cg' + Math.random().toString(36).slice(2); cloudG(id, hex);
+    for (const e of [[.10,.42,.42,.34],[.30,.22,.46,.46],[.56,.36,.36,.32],[.12,.52,.76,.24]]) el('ellipse', { cx: x + (e[0] + e[2] / 2) * k, cy: y + (e[1] + e[3] / 2) * k, rx: e[2] * k / 2, ry: e[3] * k / 2, fill: `url(#${id})` }, svg); };
+  const sun = (x, y, k) => { for (let i = 0; i < 8; i++) { const p1 = PtA(0, k * .30, i * 45), p2 = PtA(0, k * .42, i * 45); el('line', { x1: x + p1[0], y1: y + p1[1], x2: x + p2[0], y2: y + p2[1], stroke: '#ffc24d', 'stroke-width': k * .05 }, svg); }
+    const g = el('radialGradient', { id: 'sun' + s }, defs); el('stop', { offset: 0, 'stop-color': '#fff1b8' }, g); el('stop', { offset: 1, 'stop-color': '#ffa51f' }, g);
+    el('circle', { cx: x, cy: y, r: k * .22, fill: `url(#sun${s})` }, svg); };
+  const moon = (x, y, k) => { const m = el('mask', { id: 'mm' + s }, defs); el('rect', { x: 0, y: 0, width: s, height: s, fill: '#fff' }, m); el('circle', { cx: x + k * .13, cy: y - k * .08, r: k * .21, fill: '#000' }, m);
+    el('circle', { cx: x, cy: y, r: k * .24, fill: '#e8e6da', mask: `url(#mm${s})` }, svg); };
+  const drops = (n, hex) => { for (let i = 0; i < n; i++) { const x0 = s * (.28 + .14 * i); el('line', { x1: x0, y1: s * .80, x2: x0 - s * .06, y2: s * .96, stroke: hex, 'stroke-width': s * .04, 'stroke-linecap': 'round' }, svg); } };
+  const clear = code <= 1, partly = code === 2;
+  if (clear || partly) { if (day) sun(s * .42, s * .40, s); else moon(s * .42, s * .40, s); }
+  if (partly) cloud(s * .20, s * .30, s * .78, '#aeb3bb');
+  else if (code === 3 || code === 45 || code === 48) cloud(s * .02, s * .12, s * .95, '#8d929b');
+  else if (code >= 51) cloud(s * .02, s * .05, s * .95, '#6e737c');
+  if (code === 45 || code === 48) { for (let i = 0; i < 3; i++) el('line', { x1: s * .12, x2: s * .88, y1: s * (.78 + .08 * i), y2: s * (.78 + .08 * i), stroke: '#b8bcc6', 'stroke-width': s * .035 }, svg); }
+  else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) drops(4, '#4da3ff');
+  else if ((code >= 71 && code <= 77) || code === 85 || code === 86) drops(4, '#ffffff');
+  else if (code >= 95) { el('polygon', { points: `${s*.52},${s*.62} ${s*.38},${s*.84} ${s*.50},${s*.84} ${s*.42},${s} ${s*.64},${s*.76} ${s*.52},${s*.76} ${s*.60},${s*.62}`, fill: '#ffd23a' }, svg); drops(2, '#4da3ff'); }
+}
+
+// ------------------------------------------------------------------ moon (Schlyter low-precision method, same as the desktop widget)
+const rev = x => x - 360 * Math.floor(x / 360), sind = d => Math.sin(d * Math.PI / 180), cosd = d => Math.cos(d * Math.PI / 180), DEG = 180 / Math.PI;
+function moonPos(date) {
+  const dd = date.getTime() / 86400000 + 2440587.5 - 2451543.5;
+  const N = rev(125.1228 - 0.0529538083 * dd), i = 5.1454, w = rev(318.0634 + 0.1643573223 * dd), a = 60.2666, e = 0.0549, M = rev(115.3654 + 13.0649929509 * dd);
+  const ws = rev(282.9404 + 4.70935e-5 * dd), Ms = rev(356.0470 + 0.9856002585 * dd), es = 0.016709 - 1.151e-9 * dd;
+  let E = M + DEG * e * sind(M) * (1 + e * cosd(M));
+  for (let k = 0; k < 5; k++) E = E - (E - DEG * e * sind(E) - M) / (1 - e * cosd(E));
+  const xv = a * (cosd(E) - e), yv = a * Math.sqrt(1 - e * e) * sind(E), v = Math.atan2(yv, xv) * DEG, r = Math.hypot(xv, yv);
+  const xh = r * (cosd(N) * cosd(v + w) - sind(N) * sind(v + w) * cosd(i)), yh = r * (sind(N) * cosd(v + w) + cosd(N) * sind(v + w) * cosd(i)), zh = r * sind(v + w) * sind(i);
+  let lon = rev(Math.atan2(yh, xh) * DEG), lat = Math.atan2(zh, Math.hypot(xh, yh)) * DEG;
+  const Ls = rev(ws + Ms), Lm = rev(N + w + M), D = rev(Lm - Ls), F = rev(Lm - N);
+  lon += -1.274 * sind(M - 2 * D) + 0.658 * sind(2 * D) - 0.186 * sind(Ms) - 0.059 * sind(2 * M - 2 * D) - 0.057 * sind(M - 2 * D + Ms) + 0.053 * sind(M + 2 * D) + 0.046 * sind(2 * D - Ms) + 0.041 * sind(M - Ms) - 0.035 * sind(D) - 0.031 * sind(M + Ms) - 0.015 * sind(2 * F - 2 * D) + 0.011 * sind(M - 4 * D);
+  lat += -0.173 * sind(F - 2 * D) - 0.055 * sind(M - F - 2 * D) - 0.046 * sind(M + F - 2 * D) + 0.033 * sind(F + 2 * D) + 0.017 * sind(2 * M + F);
+  const Es = Ms + DEG * es * sind(Ms) * (1 + es * cosd(Ms)), sx = cosd(Es) - es, sy = Math.sqrt(1 - es * es) * sind(Es), sunLon = rev(Math.atan2(sy, sx) * DEG + ws);
+  const obl = 23.4393 - 3.563e-7 * dd, xg = cosd(lon) * cosd(lat), yg = sind(lon) * cosd(lat), zg = sind(lat);
+  const ye = yg * cosd(obl) - zg * sind(obl), ze = yg * sind(obl) + zg * cosd(obl);
+  return { ra: rev(Math.atan2(ye, xg) * DEG), dec: Math.atan2(ze, Math.hypot(xg, ye)) * DEG, gmst: rev(280.46061837 + 360.98564736629 * (dd + 2451543.5 - 2451545.0)), elong: rev(lon - sunLon) };
+}
+function moonDay(day, lat, lonE) {
+  const t0 = new Date(day.getFullYear(), day.getMonth(), day.getDate()); let pAlt = null, pHA = null; const ev = { rise: null, set: null, transit: null, under: null };
+  const fr = (a0, a1) => a1 === a0 ? .5 : a0 / (a0 - a1);
+  for (let k = 0; k <= 300; k++) {
+    const t = addMin(t0, k * 5), p = moonPos(t); let ha = rev(p.gmst + lonE - p.ra); if (ha > 180) ha -= 360;
+    const alt = Math.asin(sind(lat) * sind(p.dec) + cosd(lat) * cosd(p.dec) * cosd(ha)) * DEG - 0.125;
+    if (pAlt !== null && t.getDate() === t0.getDate()) {
+      if (pAlt < 0 && alt >= 0 && !ev.rise) ev.rise = addMin(t, -5 + 5 * fr(pAlt, alt));
+      if (pAlt >= 0 && alt < 0 && !ev.set) ev.set = addMin(t, -5 + 5 * fr(pAlt, alt));
+      if (pHA < 0 && ha >= 0 && !ev.transit) ev.transit = addMin(t, -5 + 5 * fr(pHA, ha));
+      if (pHA > 90 && ha < -90 && !ev.under) ev.under = addMin(t, -5 + 5 * fr(pHA - 180, ha + 180));
+    }
+    pAlt = alt; pHA = ha;
+  }
+  return ev;
+}
+function phaseName(e) { if (e < 11.25 || e >= 348.75) return 'NEW MOON'; if (e < 78.75) return 'WAXING CRESCENT'; if (e < 101.25) return 'FIRST QUARTER'; if (e < 168.75) return 'WAXING GIBBOUS';
+  if (e < 191.25) return 'FULL MOON'; if (e < 258.75) return 'WANING GIBBOUS'; if (e < 281.25) return 'LAST QUARTER'; return 'WANING CRESCENT'; }
+function drawMoon(e) {
+  const svg = $('moon'); svg.innerHTML = ''; const c = 65, r = 58;
+  const defs = el('defs', {}, svg);
+  const dg = el('radialGradient', { id: 'md' }, defs); el('stop', { offset: 0, 'stop-color': '#2a2d33' }, dg); el('stop', { offset: 1, 'stop-color': '#111215' }, dg);
+  const lg = el('radialGradient', { id: 'ml', cx: .4, cy: .35, r: .75 }, defs); el('stop', { offset: 0, 'stop-color': '#f4f1e4' }, lg); el('stop', { offset: 1, 'stop-color': '#b7b3a4' }, lg);
+  const gl = el('filter', { id: 'mglow', x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs); el('feDropShadow', { dx: 0, dy: 0, stdDeviation: 7, 'flood-color': '#f4f1e4', 'flood-opacity': .5 }, gl);
+  el('circle', { cx: c, cy: c, r, fill: 'url(#md)', stroke: '#3a3d44' }, svg);
+  const rx = Math.max(.01, Math.abs(Math.cos(e * Math.PI / 180)) * r), waxing = e < 180, gibbous = e > 90 && e < 270;
+  const limb = waxing ? 1 : 0; const term = waxing ? (gibbous ? 1 : 0) : (gibbous ? 0 : 1);
+  const d = `M${c},${c - r} A${r},${r} 0 0 ${limb} ${c},${c + r} A${rx},${r} 0 0 ${term} ${c},${c - r} Z`;
+  const cp = el('clipPath', { id: 'mclip' }, defs); el('path', { d }, cp);
+  el('path', { d, fill: 'url(#ml)', filter: 'url(#mglow)' }, svg);
+  const maria = el('g', { 'clip-path': 'url(#mclip)' }, svg);
+  for (const m of [[-18,-16,22,16],[10,-24,16,12],[4,6,26,18],[-24,14,14,10],[20,22,12,9]]) el('ellipse', { cx: c + m[0], cy: c + m[1], rx: m[2] / 2, ry: m[3] / 2, fill: 'rgba(0,0,0,.13)' }, maria);
+}
+
+// ------------------------------------------------------------------ tides
+const tideEvents = preds => (preds || []).map(p => ({ t: parseLocal(p.t), v: +p.v, ty: p.type }));
+function tideState(preds, t) {
+  const ev = tideEvents(preds); let prev = null, next = null;
+  for (const e of ev) { if (e.t <= t) prev = e; else { next = e; break; } }
+  if (!prev || !next) return null;
+  return { prev, next, since: (t - prev.t) / 60000, until: (next.t - t) / 60000, rising: next.ty === 'H' };
+}
+function drawTide(svgId, infoId, listId, preds) {
+  const svg = $(svgId); svg.innerHTML = '';
+  if (!preds) { $(infoId).textContent = 'no tide data'; return; }
+  const ev = tideEvents(preds), now = new Date(), t0 = addMin(now, -180), t1 = addMin(now, 21 * 60), pw = 276, ph = 128;
+  const hAt = t => { for (let i = 0; i < ev.length - 1; i++) if (t >= ev[i].t && t <= ev[i + 1].t) { const f = (t - ev[i].t) / (ev[i + 1].t - ev[i].t); return ev[i].v + (ev[i + 1].v - ev[i].v) * (1 - Math.cos(Math.PI * f)) / 2; } return null; };
+  const win = ev.filter(e => e.t >= addMin(t0, -480) && e.t <= addMin(t1, 480));
+  let lo = Math.min(...win.map(e => e.v)), hi = Math.max(...win.map(e => e.v)); if (hi - lo < .3) hi = lo + .3;
+  const X = t => (t - t0) / (t1 - t0) * pw, Y = v => ph - 14 - (v - lo) / (hi - lo) * (ph - 34);
+  for (let h = 0; h <= 24; h += 6) el('line', { x1: h / 24 * pw, x2: h / 24 * pw, y1: 0, y2: ph, stroke: '#1a1d21' }, svg);
+  const pts = [];
+  for (let k = 0; k <= 96; k++) { const t = addMin(t0, k * 15), v = hAt(t); if (v !== null) pts.push([X(t), Y(v)]); }
+  const defs = el('defs', {}, svg); const g = el('linearGradient', { id: 'tg' + svgId, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  el('stop', { offset: 0, 'stop-color': 'rgba(60,200,255,.35)' }, g); el('stop', { offset: 1, 'stop-color': 'rgba(60,200,255,.04)' }, g);
+  if (pts.length) {
+    el('polygon', { points: `0,${ph} ` + pts.map(p => p.join(',')).join(' ') + ` ${pw},${ph}`, fill: `url(#tg${svgId})` }, svg);
+    el('polyline', { points: pts.map(p => p.join(',')).join(' '), fill: 'none', stroke: '#4dc3ff', 'stroke-width': 2 }, svg);
+  }
+  for (const e of ev.filter(e => e.t >= t0 && e.t <= t1)) {
+    const ex = X(e.t), ey = Y(e.v);
+    el('circle', { cx: ex, cy: ey, r: 3, fill: e.ty === 'H' ? '#7cffb2' : '#ffc24d' }, svg);
+    const tx = el('text', { x: Math.max(0, Math.min(pw - 52, ex - 24)), y: e.ty === 'H' ? Math.max(9, ey - 6) : Math.min(ph - 2, ey + 13), 'font-size': 9, fill: '#b9b9b5', 'font-family': 'Menlo, monospace' }, svg);
+    tx.textContent = `${e.ty} ${hmt(e.t)}`;
+  }
+  const nx = X(now); el('line', { x1: nx, x2: nx, y1: 0, y2: ph, stroke: 'rgba(229,72,77,.67)', 'stroke-dasharray': '3 2' }, svg);
+  const nv = hAt(now); if (nv !== null) el('circle', { cx: nx, cy: Y(nv), r: 4, fill: '#ff5c61' }, svg);
+  const next = ev.find(e => e.t > now);
+  $(infoId).textContent = (next && nv !== null) ? `${next.ty === 'H' ? 'RISING' : 'FALLING'}  ${nv.toFixed(1)} ft  ->  ${next.ty === 'H' ? 'HIGH' : 'LOW'} ${hm(next.t)}` : '';
+  $(listId).textContent = ev.filter(e => e.t > now).slice(0, 4).map(e => `${e.ty === 'H' ? 'HIGH' : 'LOW '}  ${pad(dayHm(e.t), 10)} ${lpad(e.v.toFixed(1), 5)} ft`).join('\n');
+}
+
+// ------------------------------------------------------------------ data
+const S = { wx: null, mar: null, icw: null, oce: null, err: [], baroTrend: null, sunR: null, sunS: null, solWin: [], moonEl: null };
+async function J(u) { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok) throw new Error(r.status); return r.json(); }
+async function loadWeather() {
+  try { S.wx = await J(`https://api.open-meteo.com/v1/forecast?latitude=${cfg.lat}&longitude=${cfg.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl&hourly=pressure_msl&past_hours=3&forecast_hours=1&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=2`); }
+  catch (e) { S.err.push('weather: ' + e.message); }
+  try { S.mar = await J(`https://marine-api.open-meteo.com/v1/marine?latitude=${cfg.mlat}&longitude=${cfg.mlon}&current=wave_height,wave_period,wave_direction,sea_surface_temperature&daily=wave_height_max&length_unit=imperial&timezone=auto&forecast_days=2`); }
+  catch (e) { S.err.push('seas: ' + e.message); }
+}
+async function loadTides() {
+  const d = new Date(Date.now() - 86400000), b = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  for (const [key, st] of [['icw', cfg.icw], ['oce', cfg.oce]]) {
+    try { const r = await J(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=DUSTEX_Fishing&begin_date=${b}&range=72&datum=MLLW&station=${st}&time_zone=lst_ldt&units=english&interval=hilo&format=json`);
+      if (r.predictions) { S[key] = r.predictions; localStorage.setItem('dxtide_' + key, JSON.stringify(r.predictions)); } else S.err.push(`tides ${st}: no data`); }
+    catch (e) { S.err.push(`tides ${st}: ${e.message}`); }
+  }
+}
+
+// ------------------------------------------------------------------ analysis (same rules as the desktop widget)
+const rate = v => v >= 8.5 ? 'EXCELLENT' : v >= 7 ? 'VERY GOOD' : v >= 5 ? 'GOOD' : v >= 3 ? 'FAIR' : 'POOR';
+function scoreBite(offshore) {
+  const now = new Date(); let sc = 0; const why = []; const cur = S.wx && S.wx.current;
+  const dp = S.baroTrend;
+  if (dp !== null) {
+    if (dp < -0.08) { sc += 1.0; why.push('Barometer dropping fast: bite can spike, then shut off'); }
+    else if (dp < -0.02) { sc += 2.5; why.push('Barometer falling slowly: fish tend to feed'); }
+    else if (dp <= 0.02) { sc += 1.6; why.push('Barometer steady: normal activity'); }
+    else if (dp <= 0.06) { sc += 1.0; why.push('Barometer rising: bite may slow'); }
+    else { sc += 0.4; why.push('Barometer rising fast (post-front): tough bite'); }
+  }
+  if (cur) { const w = +cur.wind_speed_10m;
+    if (w <= 8) { sc += 2.0; why.push(`Light wind ${w.toFixed(0)} mph: easy boat control`); }
+    else if (w <= 12) { sc += 1.5; why.push(`Moderate wind ${w.toFixed(0)} mph: some chop`); }
+    else if (w <= 18) { sc += 0.7; why.push(`Breezy ${w.toFixed(0)} mph: fish lee shores`); }
+    else why.push(`Strong wind ${w.toFixed(0)} mph: rough conditions`); }
+  const ts = tideState(offshore ? S.oce : S.icw, now);
+  if (ts) { if (ts.since < 40 || ts.until < 40) { sc += 0.5; why.push('Tide near slack: current is weak'); }
+    else { sc += offshore ? 1.0 : 2.0; why.push(`${ts.rising ? 'Incoming' : 'Outgoing'} tide moving: ${ts.rising ? 'high' : 'low'} at ${hm(ts.next.t)}`); } }
+  if (offshore && S.mar && S.mar.current) { const sea = +S.mar.current.wave_height;
+    if (sea <= 2) { sc += 1.5; why.push(`Seas ${sea.toFixed(1)} ft: calm offshore`); }
+    else if (sea <= 3) { sc += 1.0; why.push(`Seas ${sea.toFixed(1)} ft: comfortable`); }
+    else if (sea <= 4) { sc += 0.4; why.push(`Seas ${sea.toFixed(1)} ft: sporty`); }
+    else why.push(`Seas ${sea.toFixed(1)} ft: rough offshore`); }
+  const inWin = S.solWin.find(w => now >= w.a && now <= w.b), soon = S.solWin.find(w => w.a > now && (w.a - now) / 60000 <= 60);
+  if (inWin) { sc += inWin.k === 'MAJOR' ? 2.0 : 1.2; why.push(`In a ${inWin.k.toLowerCase()} solunar period until ${hm(inWin.b)}`); }
+  else if (soon) { sc += 0.6; why.push(`${soon.k} solunar period starts ${hm(soon.a)}`); }
+  if (S.moonEl !== null) { const e = S.moonEl; if (e < 36 || e > 324 || (e > 144 && e < 216)) { sc += 1.0; why.push('Near new/full moon: strong tides, active fish'); } else sc += 0.5; }
+  if (S.sunR && S.sunS) { if (Math.abs(now - S.sunR) / 60000 <= 75 || Math.abs(now - S.sunS) / 60000 <= 75) { sc += 1.0; why.push('Dawn/dusk low light: prime feeding'); }
+    else if (now > S.sunR && now < S.sunS) sc += 0.3; else sc += 0.5; }
+  if (cur && +cur.weather_code >= 95) { sc -= 3; why.push('THUNDERSTORMS: get off the water'); }
+  if (offshore && S.mar && S.mar.current && +S.mar.current.wave_height > 5) { sc = Math.min(sc, 2.5); why.push('Seas over 5 ft: small craft caution'); }
+  return { score: Math.max(0, Math.min(10, Math.round(sc * 10) / 10)), why };
+}
+function updateAnalysis() {
+  const a = scoreBite(false), o = scoreBite(true);
+  dIn.set(a.score, null, `${rate(a.score)}  ${a.score.toFixed(1)}`); dOff.set(o.score, null, `${rate(o.score)}  ${o.score.toFixed(1)}`);
+  $('anaHead').textContent = `Inshore ${rate(a.score)}   |   Offshore ${rate(o.score)}`;
+  const lines = a.why.slice(0, 6).map(w => '- ' + w); const so = o.why.filter(w => w.startsWith('Seas')); if (so.length) lines.push('- Offshore: ' + so[0]);
+  $('anaWhy').textContent = lines.slice(0, 7).join('\n');
+  const now = new Date(), cand = [];
+  for (const w of S.solWin) cand.push({ a: w.a, b: w.b, q: w.k === 'MAJOR' ? 3 : 2, l: w.k.toLowerCase() + ' solunar' });
+  if (S.sunR) cand.push({ a: addMin(S.sunR, -60), b: addMin(S.sunR, 60), q: 2, l: 'dawn' });
+  if (S.sunS) cand.push({ a: addMin(S.sunS, -60), b: addMin(S.sunS, 60), q: 2, l: 'dusk' });
+  const best = cand.filter(c => c.b > now && c.a.toDateString() === now.toDateString()).map(c => {
+    let q = c.q; for (const x of cand) if (x !== c && x.a < c.b && x.b > c.a) q += 1;
+    const ts = tideState(S.icw, new Date((c.a.getTime() + c.b.getTime()) / 2)); if (ts && ts.since >= 40 && ts.until >= 40) q += 1;
+    return { a: c.a, b: c.b, q, l: c.l }; });
+  const top = best.sort((x, y) => y.q - x.q).slice(0, 4).sort((x, y) => x.a - y.a);
+  $('anaBest').textContent = top.length ? top.map(c => `${pad('*'.repeat(Math.min(4, c.q - 1)), 4)} ${lpad(hmt(c.a), 6)}-${pad(hmt(c.b), 7)} ${c.l}`).join('\n') : 'no more windows today';
+}
+function updateMoon() {
+  const now = new Date(), p = moonPos(now), illum = (1 - cosd(p.elong)) / 2 * 100;
+  drawMoon(p.elong); $('moonName').textContent = phaseName(p.elong);
+  const toFull = ((180 - p.elong) + 360) % 360, toNew = 360 - p.elong;
+  $('moonInfo').textContent = `${illum.toFixed(0)}% lit  |  ` + (p.elong < 180 ? `full in ${(toFull / 360 * 29.53).toFixed(1)} days` : `new in ${(toNew / 360 * 29.53).toFixed(1)} days`);
+  const ev = moonDay(now, +cfg.lat, +cfg.lon), win = [];
+  if (ev.transit) win.push({ k: 'MAJOR', a: addMin(ev.transit, -60), b: addMin(ev.transit, 60) });
+  if (ev.under) win.push({ k: 'MAJOR', a: addMin(ev.under, -60), b: addMin(ev.under, 60) });
+  if (ev.rise) win.push({ k: 'minor', a: addMin(ev.rise, -30), b: addMin(ev.rise, 30) });
+  if (ev.set) win.push({ k: 'minor', a: addMin(ev.set, -30), b: addMin(ev.set, 30) });
+  win.sort((x, y) => x.a - y.a);
+  const f = t => t ? hm(t) : '--';
+  const lines = win.map(w => `${(now >= w.a && now <= w.b) ? '>' : ' '}${pad(w.k, 5)}  ${lpad(hmt(w.a), 6)} - ${lpad(hmt(w.b), 6)}`);
+  lines.push('', `moonrise  ${f(ev.rise)}`, `moonset   ${f(ev.set)}`, `overhead  ${f(ev.transit)}`);
+  $('solList').textContent = lines.join('\n'); S.solWin = win; S.moonEl = p.elong;
+}
+function updateView() {
+  const wx = S.wx, mar = S.mar;
+  $('hdr').innerHTML = `${cfg.name.toUpperCase()} &nbsp;|&nbsp; FISHING CONDITIONS`;
+  $('icwTitle').textContent = cfg.icwName; $('oceTitle').textContent = cfg.oceName;
+  if (wx && wx.current) {
+    const cur = wx.current;
+    drawWx($('iconNow'), +cur.weather_code, !!cur.is_day, 84);
+    $('tempNow').textContent = `${Math.round(cur.temperature_2m)}°`;
+    $('condNow').textContent = wxText(+cur.weather_code);
+    $('feelNow').textContent = `feels ${Math.round(cur.apparent_temperature)}°  |  humidity ${Math.round(cur.relative_humidity_2m)}%`;
+    S.sunR = parseLocal(wx.daily.sunrise[0]); S.sunS = parseLocal(wx.daily.sunset[0]);
+    $('sunNow').textContent = `sunrise ${hm(S.sunR)}   sunset ${hm(S.sunS)}`;
+    const inHg = +cur.pressure_msl * 0.0295300, ph = wx.hourly && wx.hourly.pressure_msl || []; let trend = '', dp = 0;
+    if (ph.length >= 2 && ph[0] != null) { dp = (+cur.pressure_msl - +ph[0]) * 0.0295300; trend = dp > 0.02 ? 'RISING' : dp < -0.02 ? 'FALLING' : 'STEADY'; }
+    S.baroTrend = dp;
+    dBaro.set(inHg, null, `${inHg.toFixed(2)} inHg  ${trend}`);
+    dWind.set(+cur.wind_speed_10m, +cur.wind_gusts_10m, `${Math.round(cur.wind_speed_10m)} mph  gusts ${Math.round(cur.wind_gusts_10m)}`);
+    dDir.set(+cur.wind_direction_10m, `from ${compass16(+cur.wind_direction_10m)}  ${Math.round(cur.wind_speed_10m)} mph`);
+    const d = wx.daily;
+    drawWx($('iconTom'), +d.weather_code[1], true, 72);
+    $('tempTom').textContent = `${Math.round(d.temperature_2m_max[1])}° / ${Math.round(d.temperature_2m_min[1])}°`;
+    $('condTom').textContent = wxText(+d.weather_code[1]);
+    const seasTom = mar && mar.daily ? `${(+mar.daily.wave_height_max[1]).toFixed(1)} ft` : '--';
+    $('tomLines').textContent = `wind  ${pad(compass16(+d.wind_direction_10m_dominant[1]), 3)} ${Math.round(d.wind_speed_10m_max[1])}  gusts ${Math.round(d.wind_gusts_10m_max[1])} mph\nrain  ${Math.round(d.precipitation_probability_max[1])}% chance\nseas  ${seasTom} max offshore`;
+  }
+  if (mar && mar.current) {
+    const wh = +mar.current.wave_height;
+    dSea.set(wh, null, `${wh.toFixed(1)} ft  @ ${Math.round(mar.current.wave_period)} s`);
+    if (mar.current.sea_surface_temperature != null) $('waterNow').textContent = `water ${Math.round(mar.current.sea_surface_temperature * 9 / 5 + 32)}°F  |  swell from ${compass16(+mar.current.wave_direction)}`;
+  }
+  drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw);
+  drawTide('plotOce', 'infoOce', 'listOce', S.oce);
+  try { updateAnalysis(); } catch (e) { $('anaHead').textContent = 'analysis error: ' + e.message; }
+  $('status').textContent = `updated ${hm(new Date())}` + (S.err.length ? '  |  ' + S.err.join(' | ') : '') + (navigator.onLine ? '' : '  |  offline');
+}
+
+// ------------------------------------------------------------------ refresh cycle: weather every 15 min, tides every 3 h, moon every 30 min
+let lastWx = 0, lastTide = 0, lastMoon = 0;
+async function cycle(force) {
+  const now = Date.now(); S.err = [];
+  if (force || now - lastWx > 15 * 60000) { await loadWeather(); lastWx = now; }
+  if (force || now - lastTide > 3 * 3600000) { await loadTides(); lastTide = now; }
+  if (force || now - lastMoon > 30 * 60000) { updateMoon(); lastMoon = now; }
+  updateView();
+}
+S.icw = JSON.parse(localStorage.getItem('dxtide_icw') || 'null'); S.oce = JSON.parse(localStorage.getItem('dxtide_oce') || 'null');
+updateMoon(); updateView(); cycle(true);
+setInterval(() => cycle(false), 60000);
+setInterval(() => { drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw); drawTide('plotOce', 'infoOce', 'listOce', S.oce); }, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) cycle(Date.now() - lastWx > 5 * 60000); });
+$('status').addEventListener('click', () => cycle(true));
+
+// ------------------------------------------------------------------ settings sheet
+const fields = { sName: 'name', sLat: 'lat', sLon: 'lon', sMLat: 'mlat', sMLon: 'mlon', sIcw: 'icw', sIcwN: 'icwName', sOce: 'oce', sOceN: 'oceName' };
+function openSettings() { for (const id in fields) $(id).value = cfg[fields[id]]; $('settings').style.display = 'flex'; }
+$('gear').addEventListener('click', openSettings);
+$('sCancel').addEventListener('click', () => $('settings').style.display = 'none');
+$('sReset').addEventListener('click', () => { for (const id in fields) $(id).value = DEFAULTS[fields[id]]; });
+$('sSave').addEventListener('click', () => {
+  for (const id in fields) { const k = fields[id], v = $(id).value.trim(); cfg[k] = ['lat', 'lon', 'mlat', 'mlon'].includes(k) ? (parseFloat(v) || DEFAULTS[k]) : (v || DEFAULTS[k]); }
+  localStorage.setItem('dxfish', JSON.stringify(cfg)); $('settings').style.display = 'none';
+  localStorage.removeItem('dxtide_icw'); localStorage.removeItem('dxtide_oce'); S.icw = S.oce = null; cycle(true);
+});
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
