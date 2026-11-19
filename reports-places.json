@@ -1,12 +1,16 @@
 [
-  {
-    "name": "Daytona Beach area",
-    "lat": 29.21, "lon": -81.02,
-    "search": ["Daytona Beach", "Ponce Inlet", "Ormond Beach", "Halifax River", "New Smyrna Beach", "Mosquito Lagoon", "Port Orange", "Volusia"]
-  },
-  {
-    "name": "Flagler / St. Augustine",
-    "lat": 29.75, "lon": -81.25,
-    "search": ["Flagler Beach", "Palm Coast", "Matanzas Inlet", "St. Augustine"]
-  }
+  { "name": "Daytona Beach area", "lat": 29.21, "lon": -81.02,
+    "search": ["Daytona Beach", "Ponce Inlet", "Ormond Beach", "Halifax River", "New Smyrna Beach", "Mosquito Lagoon", "Port Orange", "Volusia"] },
+  { "name": "Flagler / St. Augustine", "lat": 29.75, "lon": -81.25,
+    "search": ["Flagler Beach", "Palm Coast", "Matanzas Inlet", "St. Augustine"] },
+  { "name": "Jacksonville / Amelia Island", "lat": 30.33, "lon": -81.45,
+    "search": ["Jacksonville", "Mayport", "St. Johns River", "Nassau Sound", "Amelia Island", "Fernandina Beach"] },
+  { "name": "Space Coast", "lat": 28.4, "lon": -80.65,
+    "search": ["Port Canaveral", "Cocoa Beach", "Sebastian Inlet", "Indian River Lagoon", "Titusville", "Melbourne"] },
+  { "name": "Tampa Bay", "lat": 27.8, "lon": -82.6,
+    "search": ["Tampa Bay", "St. Petersburg", "Clearwater", "Anna Maria", "Sarasota"] },
+  { "name": "Florida Panhandle", "lat": 30.3, "lon": -86.4,
+    "search": ["Destin", "Panama City Beach", "Pensacola", "Navarre", "Fort Walton Beach"] },
+  { "name": "Oklahoma City lakes", "lat": 35.47, "lon": -97.52,
+    "search": ["Oklahoma City", "Lake Hefner", "Lake Overholser", "Arcadia Lake", "Lake Thunderbird", "Lake Stanley Draper", "Norman", "Edmond", "Canadian River"] }
 ]
