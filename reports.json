@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T21:48:30+00:00",
+ "updated": "2026-11-19T21:54:42+00:00",
  "places": [
   {
    "name": "Daytona Beach area",
@@ -34,15 +34,42 @@
    "lat": 27.0,
    "lon": -80.1,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "Miami / Fort Lauderdale",
    "lat": 25.9,
    "lon": -80.12,
-   "items": [],
+   "items": [
+    {
+     "title": "Nov. 12 Fishing Report",
+     "source": "WPLG Local 10",
+     "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9kNlRwNnpOZHdxdWxlSEdpelVkdjlFcnlXR2lBQzBQZURScUJNWl9PRVJSQlBxLTZBUWRzOWlUV0JOUm9RVzd1SE1wdWdGTFZlU3IyN0ViYWRySFZIdVJWUTJMVkFsUF9wekJEenRMc0MycUV0M0xkeVl3Yw?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T12:18:53+00:00"
+    },
+    {
+     "title": "Nov. 7 Fishing Report",
+     "source": "WPLG Local 10",
+     "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9xcDBkQkstN1lYNUw4OENhY2JWbG9wSXpRLVY4Y3E3RF9JWG43VGhDdUc5MmZfTW82MWVHdXpTQUxJTGJPYXFDVXhyYXpMelBhZW9LQUZzMHlsV1BRWi1Vc2cyd0pPR3lOYmI1UEhobW16WEFiNjdSNWNR?oc=5",
+     "snippet": "",
+     "date": "2026-11-07T12:55:49+00:00"
+    },
+    {
+     "title": "Nov. 6 Fishing Report",
+     "source": "WPLG Local 10",
+     "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1zS3JkRHRTLUpHeE04SVg4UlNzVDNtbUZ6Nll2MmpvVzd4eG1XRmx5YXo5ci0yUnhYNk1abGtnYlhtc05fSjF6Y0liRy1PVjFCTkp4RWVFaFRYS2R3NS1RcmZ1Qjd1QktPa0dYckgydTJ0TEtwb2xNQl93?oc=5",
+     "snippet": "",
+     "date": "2026-11-06T08:00:00+00:00"
+    },
+    {
+     "title": "Oct. 30 Fishing Report",
+     "source": "WPLG Local 10",
+     "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBKR015b3lYOHZTTDduTkdmMDFmX2pZSGo0dVZrN2NHTEI5YW9OdWE3NjktcnJVeUQzOGZnZEhWMU9lZGxkSVp4eHRYbVRhU3R4OWZncmlJNklOV1d3Nmp4T3FSWnQ4ZFdPRHowRTFqdzhvR3I0bUxxdDBwMA?oc=5",
+     "snippet": "",
+     "date": "2026-10-30T07:00:00+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -56,7 +83,15 @@
    "name": "Southwest Florida",
    "lat": 26.5,
    "lon": -82.0,
-   "items": [],
+   "items": [
+    {
+     "title": "WATERLINE: Fishing report",
+     "source": "yoursun.com",
+     "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQV2pYLUJkNjZmY1dpeXE5VEwtRzV6bnRjV3I4U1NkRGhWWmRJZlNYLS1jYmhwTTFud1lzd1Y5UGdUVVZHTmliNFdHSldQVzN6UlVVNG45TlhKcF9Ob0pzQ0p2MzlSV2JVWFM2TVJuQkhqSnRlcmxvazhoeUNYM2R5elk0VXFCdldFTFA2NUJ4NV9yTS1qb3pqdEV0d0k3RGhVSFdHUDBIZGFJWE12SWxhTk1jWS1lTEFwMWFGQ1RxdVlsQQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T10:30:00+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -65,16 +100,35 @@
    "lon": -82.6,
    "items": [
     {
+     "title": "WATERLINE: Fishing report",
+     "source": "yoursun.com",
+     "link": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQV2pYLUJkNjZmY1dpeXE5VEwtRzV6bnRjV3I4U1NkRGhWWmRJZlNYLS1jYmhwTTFud1lzd1Y5UGdUVVZHTmliNFdHSldQVzN6UlVVNG45TlhKcF9Ob0pzQ0p2MzlSV2JVWFM2TVJuQkhqSnRlcmxvazhoeUNYM2R5elk0VXFCdldFTFA2NUJ4NV9yTS1qb3pqdEV0d0k3RGhVSFdHUDBIZGFJWE12SWxhTk1jWS1lTEFwMWFGQ1RxdVlsQQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T10:30:00+00:00"
+    },
+    {
      "title": "Idaho Steelhead Harvest Report: What the Clearwater, Salmon and Snake Numbers Say",
      "source": "Montana Outdoor",
      "link": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxORldNWGhsYXpkbVJUZmFwWHdMUDh0VXFEYXg5QTV6TTJoRmtEMDItUDQtLWdSc0FCZlk4MDdWUmpRT0tMeS1qUUo1M2V5Qkl5aW5JZG1ISE1UdW91OWlMY1l6R3RiRG9PTFR1SElLZVBvMDZkN1VhNTJJOHJMaGRiaC1fZTZTbmNYV1FrTFZRNWFfc3NZODU3LTBTV2JYajhsb3hQalRLZ0kzWGI2SHFMREsyUjhINGhETElz?oc=5",
      "snippet": "",
      "date": "2026-11-17T15:00:00+00:00"
+    },
+    {
+     "title": "Alan Liere’s hunting and fishing report for Nov. 12, 2026",
+     "source": "The Spokesman-Review",
+     "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQRklrdmVMZ3h0SllSR2hYWnZ0Zmh4VWlyVzljdW5kVU9GMzJ5aWE4X0NFOGVSNFhjejBVbFNkMkI3cjdLM0ZYbkpMSllnXzExV3QtT1NIRkplU2t4MEpNQ2pJY2ZIcjh2UHpDR2pkZHNPbkhhaFNfY0NQYmpTWU5mN0tidUg2emxKYzZXcHU3NkJtZ3dZLVJUTDV2cUNTdw?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T08:00:00+00:00"
+    },
+    {
+     "title": "Upper Salmon River steelhead fishing report (Nov. 10, 2026)",
+     "source": "Idaho Fish and Game (.gov)",
+     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNMkRDbHJOTlhfTUUwTklXd3pSZzlTR3VrNUctbm9yelM2eHVVREUwU1h0NlBVeDdsWGtyVDlTdm9OOTlFTTBxUlZtSzQ5clB1NXZ5OF9ndm5BcUp6MWpHZnpaYUNVVUtuY3YzcGxFbzRRVUhJenktZy1weWd6M2RqdUtMVW1kRlI0VFpCMUxHdw?oc=5",
+     "snippet": "",
+     "date": "2026-11-10T08:00:00+00:00"
     }
    ],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "Nature Coast / Big Bend",
@@ -119,9 +173,16 @@
     {
      "title": "Good catches from Galveston Bay",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff6ee8645a4f5484c3733fae1678b4&url=https%3a%2f%2fwww.galvnews.com%2fsports%2ffishing_report%2fgood-catches-from-galveston-bay%2farticle_04005bab-52c7-4dcb-8362-7dc1877eb336.html&c=7231955672839873252&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff705b842d40959e7c0dc50bd1eeed&url=https%3a%2f%2fwww.galvnews.com%2fsports%2ffishing_report%2fgood-catches-from-galveston-bay%2farticle_04005bab-52c7-4dcb-8362-7dc1877eb336.html&c=7231955672839873252&mkt=en-us",
      "snippet": "Capt. Juan Cruz fished with Ed Washington out of Eagle Point Fishing Camp and found a good bite at first light. Ed caught his limit of trout, reds and black ...",
      "date": "2026-11-08T16:30:00+00:00"
+    },
+    {
+     "title": "Long Island and NYC Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQS0lvWU5odlI4MHEzdHdXSzdySl9oRW5LRHlCb0xQR1dwTUpENzNKVWpDaWNfTlZfejhzUVhBM0lmUU1xQUdsODd4anNFN04wY0RLVFlyTGlVdGl2aWJyOHRBc0pnb05fZGVuQkN3RFl6dk95Nnh1YktpVllHMXF4Y2tIY085bjNGR3hrNTlYWTlsMk1rRGRhSWtXbkZDQQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
     }
    ],
    "errors": []
@@ -131,9 +192,7 @@
    "lat": 27.8,
    "lon": -97.1,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "South Padre Island",
@@ -150,9 +209,16 @@
     {
      "title": "5050 Fishing and Matt Jackson catch large bass in Savannah ponds",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff6ef45f5f46f78105a5867129d906&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2f5050-fishing-and-matt-jackson-catch-large-bass-in-savannah-ponds%2fvi-AA2hEgWa&c=4589241834405275148&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff706699d040ddb306727aeb3ec6b2&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2f5050-fishing-and-matt-jackson-catch-large-bass-in-savannah-ponds%2fvi-AA2hEgWa&c=4589241834405275148&mkt=en-us",
      "snippet": "5050 Fishing joins Matt Jackson in Savannah, Georgia, for pond-hopping. They fish several ponds and land multiple large bass.",
      "date": "2026-11-17T12:19:28+00:00"
+    },
+    {
+     "title": "Joshua Barber’s Southern Waters Fishing Report – October 31",
+     "source": "Georgia Outdoor News",
+     "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPc1M0WUlxN0o2dm9UVDloOHNzbS0wLW4wYk55TGVSZUw1cHUwWkhtSzVZekpHa3dPVmhMUlowVVdrVEVHMDY5SlFibE8zT0Q1NG1jOVFTcjZtdDBISjMyVmVZTkxVQWZOMl9UclFXTmtQanFoc1ljU1VlNzdmSDJEaGZQS1ppa1BvZFFCNUsta3Y1dw?oc=5",
+     "snippet": "",
+     "date": "2026-10-31T10:00:42+00:00"
     },
     {
      "title": "A fishing trip off Tybee Island took an intense turn when a great white shark lunged toward a passenger",
@@ -175,7 +241,15 @@
    "name": "Myrtle Beach",
    "lat": 33.7,
    "lon": -78.9,
-   "items": [],
+   "items": [
+    {
+     "title": "Arkansas Wildlife Weekly Fishing Report",
+     "source": "Arkansas Game and Fish Commission",
+     "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1WVlhhY3NNVVB4RGdBQkpyeDJoNWVjYlZMNlJGd1VVN2hsRTV4NTh5bVZvUzVkbHRBUHR1djNYZ3BzSW9Cd2VaanRfSkRkcE82aFB0SnBfY1dRdmo1NmFrVHF5bjlqMVFKR082TWg0NjZScTRqSXZXc213?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T22:44:58+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -212,6 +286,63 @@
      "date": "2026-11-19T16:36:59+00:00"
     },
     {
+     "title": "Maryland Fishing Report – November 18",
+     "source": "Maryland.gov",
+     "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOOW1FSDg4WDBlbm5GcnFTOUFsRnJ4WkhjUTdRWkFVT3FDalA5MUxONm1rbGhsQzVCQ2VEc29QUVI3V3p6TzFsZm4wY0ZuWGJIY1hEelM4WDE4MWFISWpXRllpZWZBOUxhT0pyQ0Q2WVR2dkdyUjY5RzI2S2FjdjdYRWNSRQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-18T22:15:43+00:00"
+    },
+    {
+     "title": "Maryland and Chesapeake Bay Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPeHAxcUZnVEVWTlJoa3h3Z1NUbmxXN001QlFSekY1U1NNV0xFcVhFNE5ZakZwcGJoT2hIT0lLdmVQWHdfMlpwMjU5ZnlUckVfaFAtWXYzYW9SOGRYMDNJenpHTUI5TjJTZFA4TFNjZGdhRmN4UFo5SEhwVkQtNkpSRmZVbTY4UUxfQkNCZDUyZGZuY1R1UEZRZXNncWxnQjJRcjBLLWxhZ0tCQQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T16:27:26+00:00"
+    },
+    {
+     "title": "Maryland Fishing Report – November 11",
+     "source": "Maryland.gov",
+     "link": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNaTdOX3hYUXdDTFpYSjZvWVE0d2pWbUJSTHV4cmN4bm1HX2lKcmIydERpVTZvU1N6ci1lQUJDU3pNN1ViSzRqRXBudGdHY1A0LUhkMEZ6Y3NYN2dkQWNvRi1ZQjlzZ3piMURhcEI2MDJZbVFPUlBWSWl4OWhjeE1USURyWQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-11T14:39:06+00:00"
+    },
+    {
+     "title": "Maryland and Chesapeake Bay Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxNZXFHcEt4Q1Bpa0dRS0JwVC1UVHRxOTRnQk5kM1BtZGxUbmJKeFlidDdnODcwN1pRNWJrdThHdHg0ek5fVVRuWElDVnBTTW0yT0VVVXZyNkg4akp2RURXYlNQc3N1TlRLMjlhWXBUei1KVnI0X24tWHItZWk3c0hfblJNUkNtVHkyemFvLWlIVjF0ckkxTndBeTlwOTF6Y19naUVORXRqb1I?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "Maryland Fishing Report – November 4",
+     "source": "Maryland.gov",
+     "link": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQYjh6em1tZXFWRi12cWRYdDBhY20tYmlrWkJFaFFqVm5XVVpCQlFlTVRXcm9URXp4MWk4eUxZMzBBTEdMc3BFZTgzdjlCTXpDTGdBTUVOZWJ6eTFHUmtIOUhCY3R1eFByNW5lX1dGN21YdnQ3NUZNVHp4T2w5V0h0NV93?oc=5",
+     "snippet": "",
+     "date": "2026-11-04T08:00:00+00:00"
+    }
+   ],
+   "errors": []
+  },
+  {
+   "name": "Ocean City / Delmarva",
+   "lat": 38.33,
+   "lon": -75.08,
+   "items": [
+    {
+     "title": "Maryland and Chesapeake Bay Fishing Report- November 19, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNUEdXNTlYZlBSTjlVbTNxZ2l1U1FRbktaN1pGOXFsRkVZYjctMl9vc3dZVjFUaTI1eVhwNnNCZzQ4V2xPanVoSHFiUzE1dllsNkxyZkNaOFR6NlhnZzU3SGlRVGFNTW9LcDhMeU51b2Y4bjA2OHRTcmQ2bFBPYjhUeXRMaS1UY2pXUTFXaVFYa1IySlYweUFfcnlGSlJiX0R5a3JULVY1VnZBZw?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T16:36:59+00:00"
+    },
+    {
+     "title": "Southern New Jersey Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPMEpNemNOcWJIZ0tVQWxsXzM0cS1naENPWVhNYVhUMkJnWEFUNUlWMExzUl9ab1pOdkluVjZ3TDlKMENrQ0VGSjkzV2NZMFNMQmR5UEdFSVNFeXBaNHhzY0ttWm5jZjlqeTZ1NUxYUUVPeHdlRHdhWGlGY0syUS1IaEVQdkRNVnA2RHVJRzhiNU1mTjFFY0dJd1VNWUt6czA?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T21:27:45+00:00"
+    },
+    {
      "title": "Maryland and Chesapeake Bay Fishing Report- November 12, 2026",
      "source": "On The Water",
      "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPeHAxcUZnVEVWTlJoa3h3Z1NUbmxXN001QlFSekY1U1NNV0xFcVhFNE5ZakZwcGJoT2hIT0lLdmVQWHdfMlpwMjU5ZnlUckVfaFAtWXYzYW9SOGRYMDNJenpHTUI5TjJTZFA4TFNjZGdhRmN4UFo5SEhwVkQtNkpSRmZVbTY4UUxfQkNCZDUyZGZuY1R1UEZRZXNncWxnQjJRcjBLLWxhZ0tCQQ?oc=5",
@@ -229,17 +360,52 @@
    "errors": []
   },
   {
-   "name": "Ocean City / Delmarva",
-   "lat": 38.33,
-   "lon": -75.08,
-   "items": [],
-   "errors": []
-  },
-  {
    "name": "New Jersey Shore",
    "lat": 39.7,
    "lon": -74.15,
    "items": [
+    {
+     "title": "Southern New Jersey Fishing Report- November 19, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxONXJGbVFlMVgwQVF3cUhuWHA0ZldtWW5SOUJTTXFKcERGRnZLRmNUTWZXN09tOExQb0thQmZmNmxOcHVzallrMkRob3ZDSXNaOU8tYm1zRTFHWUg1TDE5MHRlZ3VFTkQySnNKLWFTcXhUbFJNbzg4ZGV0YjB5ZE1rTFBEVWlsOFZ4ellCQXpGZEZCSlJBb0FYeV9adzl2NEE?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T15:15:15+00:00"
+    },
+    {
+     "title": "Rockaway Fishing Report",
+     "source": "Wave of Long Island",
+     "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9pdFNWRkVZY28wZDRMQ05NZDJBcVl0b2N6c0hseERCZVVsR3YyejJtTVdMRVZnRzZCZkowWmpUZms5N2N6Y0I5MUdiQWk3VUhxNHVWS3VNVE1BT0FoUFktNlFvbGFpakxPTDRxdEktQ2k?oc=5",
+     "snippet": "",
+     "date": "2026-11-13T08:09:53+00:00"
+    },
+    {
+     "title": "Southern New Jersey Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPMEpNemNOcWJIZ0tVQWxsXzM0cS1naENPWVhNYVhUMkJnWEFUNUlWMExzUl9ab1pOdkluVjZ3TDlKMENrQ0VGSjkzV2NZMFNMQmR5UEdFSVNFeXBaNHhzY0ttWm5jZjlqeTZ1NUxYUUVPeHdlRHdhWGlGY0syUS1IaEVQdkRNVnA2RHVJRzhiNU1mTjFFY0dJd1VNWUt6czA?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T21:27:45+00:00"
+    },
+    {
+     "title": "Northern New Jersey Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPNkxyNllNa3hGMDJWQnh6VTlYWnNVT0lOUDJRQ216UHZXRUxGVkZxdi0wUXV2MGJSTl91b2tPaTlFT0huNGdzQTRkdEQ0UTE2VWU1WFI0M2EtWXYydEZ3WkhWY1FPNEtOLTl6eFpqbnF3eFdPTDVSOFowcWxraloxR2lUWnJvVW5hMHFVOTZzYkJLbVV0TDI3czN4cEpad2M?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T14:36:44+00:00"
+    },
+    {
+     "title": "Northern New Jersey Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxPNGF1dkN0S1Q4RG1VWFFYTGd0WFRUdzY4M0JZZEg2dXMxQ2hqT0ZkMWw1SWhMLVJwM3A4djdtNHNTeXY2TXRiLVVTX0JQZ3dvaS1GVG13UDlYLXdqMkZ1aVcyU2stUHU4OVljeGNOM0I2WThPVEpySE9qQTRGWUEyYmhNU0EzV1VsVDJPMUw2OVhPdkk1MHFrTmxBaU8xdw?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "Southern New Jersey Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNbmtwcy1INEMzUnBxR2IyUVZnWHFPaE5hc3MtWGJsU1ZXTGpJU0ZXNnBaZ20zd2RNX0RsQTdTOHplRFVWeTBfLTNPNTVPcFY5TkJEeHBXQVAxVUVvLW1SYU5qc3E3Y011WWEzSUI4X0xyMFZaTUttQzVic0hTVVFvMG1UYnpZcnRYN20wWGlKRTBxcFNlZEdpbS1BUzNIZw?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
     {
      "title": "NJ fishermen find big striped bass off Manasquan, sea bass limit now 15",
      "source": "Asbury Park Press",
@@ -256,6 +422,55 @@
    "lon": -73.0,
    "items": [
     {
+     "title": "Connecticut Fishing Report- November 19, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNX2phS0E2X1VVcVIwWXNkTW9mZUM3bnhMY2lKeTZXdGdhVHVISVhyaXlSWF9ENTZER1B6WHREUUtqeXBSNDRzU1ZMejRIbWNNMnhxcjdjbnpnNkdMa21mX3ZlRHJETXpGeXFBYXRKbWU3V0xFclFqLTBucUZXQkJZeFRqWk10a0o4TGpsU2pfN2lEMDNX?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T18:47:54+00:00"
+    },
+    {
+     "title": "Rockaway Fishing Report",
+     "source": "Wave of Long Island",
+     "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9pdFNWRkVZY28wZDRMQ05NZDJBcVl0b2N6c0hseERCZVVsR3YyejJtTVdMRVZnRzZCZkowWmpUZms5N2N6Y0I5MUdiQWk3VUhxNHVWS3VNVE1BT0FoUFktNlFvbGFpakxPTDRxdEktQ2k?oc=5",
+     "snippet": "",
+     "date": "2026-11-13T08:09:53+00:00"
+    },
+    {
+     "title": "Long Island and NYC Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQb0pReEtsOGlUN3FscTdOMGdjZWd2d1hHcHhZQlVZRFFHbTNvM0FvUDJrZ3dxLTAxTEpvMVR4ZlRpZzdaVnViaVY0TDlUVlRBQ1A0VENJbzg1eVhXa0RqLUFzR2VmRjJNU1hLYVlhNmRUdTRQVGNsaEdtRFR1dlNlN2NaWm9FellGdTdpRWQ3Tk9LeUZGWUViZXJqOTlENVU?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T22:10:58+00:00"
+    },
+    {
+     "title": "Connecticut Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPV292ejJjbFdBZWJzaEJVU2VIdGpaS09kUHIwd0REdmVWemNNbS1Rb0FLUEd0RG5WQThzdTdVS1M3dHdLRUZaMzNnbHBJLVBBYjNiU1B5Z3hRb2hyaWJTemtIUUlMQVdOdEtfTnJZVHM2bW53MGZIamp2cjNKclo0dnBBcWJLSHNOR3dNNFMyWU5Ebktu?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T18:13:20+00:00"
+    },
+    {
+     "title": "Northern New Jersey Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPNkxyNllNa3hGMDJWQnh6VTlYWnNVT0lOUDJRQ216UHZXRUxGVkZxdi0wUXV2MGJSTl91b2tPaTlFT0huNGdzQTRkdEQ0UTE2VWU1WFI0M2EtWXYydEZ3WkhWY1FPNEtOLTl6eFpqbnF3eFdPTDVSOFowcWxraloxR2lUWnJvVW5hMHFVOTZzYkJLbVV0TDI3czN4cEpad2M?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T14:36:44+00:00"
+    },
+    {
+     "title": "Long Island and NYC Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQS0lvWU5odlI4MHEzdHdXSzdySl9oRW5LRHlCb0xQR1dwTUpENzNKVWpDaWNfTlZfejhzUVhBM0lmUU1xQUdsODd4anNFN04wY0RLVFlyTGlVdGl2aWJyOHRBc0pnb05fZGVuQkN3RFl6dk95Nnh1YktpVllHMXF4Y2tIY085bjNGR3hrNTlYWTlsMk1rRGRhSWtXbkZDQQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "Connecticut Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQdi1jWWRpcVhIalJDLTl5ekw5TFJxZzFxb3lPX2hqMzNtSTFJTUVnME4xNHB2MEdqMHBLdWw3cXlLeE1LaVYxdE5GOGdSQklVejBTYjdDQVdVaHR5YlpQX2dSOGVsdnFOa0Joakh5NjRLbVhfSEdVTk94N1lyNU1SSGhnUXY1cnpfQ0dYd2FzQ0lfT00?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
      "title": "Generations of anglers have made the pilgrimage to Montauk to catch striped bass",
      "source": "News4JAX",
      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQVEdKVFhyM0pYTlVTVFI2MTYxQlhGNGFHV1BwQzZlbHhWbXpUaWcxSGlQVXJVVXotbWhaa25GbkZZR19RQTFac0tuX0pwUExnQjd4N2JrR2JrbGo0cEVyMHU5Z2syOFBYdFV6Wk1SSHBNZ0MyQ2RncVJhdnNJTXdvU2tHZXlNVjFrRVJHOVJERmoyYXJBaXRZTVIxYU9sUXFMQlhlTENfa0Y5WktsN09mcUhfSXBMQV9GX0lrQkVPQQ?oc=5",
@@ -269,7 +484,57 @@
    "name": "Rhode Island / Connecticut",
    "lat": 41.4,
    "lon": -71.8,
-   "items": [],
+   "items": [
+    {
+     "title": "Connecticut Fishing Report- November 19, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNX2phS0E2X1VVcVIwWXNkTW9mZUM3bnhMY2lKeTZXdGdhVHVISVhyaXlSWF9ENTZER1B6WHREUUtqeXBSNDRzU1ZMejRIbWNNMnhxcjdjbnpnNkdMa21mX3ZlRHJETXpGeXFBYXRKbWU3V0xFclFqLTBucUZXQkJZeFRqWk10a0o4TGpsU2pfN2lEMDNX?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T18:47:54+00:00"
+    },
+    {
+     "title": "Rhode Island Fishing Report- November 19, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNZ0Q2V0R4VWxTMDJJRk1fTkFnUHNVVFVERHNBWHFPeHh2eUo3ZDdxb3J6UWhOR2QzLVl1aWZMS2FkU3pCY2Z3a1BzR1pxb3RrOXlINlVYU0dqT2ZKXzRZNFZ5VzhKeHVORXd2RHNIeE92UlI4LTZBX21vb0hhcURxT2JZR01QMHZzeHpVOWVNOWY4alpmOUE?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T18:16:24+00:00"
+    },
+    {
+     "title": "Connecticut Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPV292ejJjbFdBZWJzaEJVU2VIdGpaS09kUHIwd0REdmVWemNNbS1Rb0FLUEd0RG5WQThzdTdVS1M3dHdLRUZaMzNnbHBJLVBBYjNiU1B5Z3hRb2hyaWJTemtIUUlMQVdOdEtfTnJZVHM2bW53MGZIamp2cjNKclo0dnBBcWJLSHNOR3dNNFMyWU5Ebktu?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T18:13:20+00:00"
+    },
+    {
+     "title": "Rhode Island Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQYjFIYU5aRUg3dXE1Q0RLREkzOWtlV2phTktOX3JzRXRsVXFkbkp0V1VRal9BR1dMeU85UGsxMGRKVWRJNGdyT0hEZVp5NlZqNmlPNDJFTjVPZHhTNUNKb0JHRVNQY3QyQ2hDQk1iTjVWR3hJeEgzWXFvQTBpcFRRTTB6UEYwdXRzdFFJWUo0Z2dsODNCSUE?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T17:41:19+00:00"
+    },
+    {
+     "title": "Connecticut Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQdi1jWWRpcVhIalJDLTl5ekw5TFJxZzFxb3lPX2hqMzNtSTFJTUVnME4xNHB2MEdqMHBLdWw3cXlLeE1LaVYxdE5GOGdSQklVejBTYjdDQVdVaHR5YlpQX2dSOGVsdnFOa0Joakh5NjRLbVhfSEdVTk94N1lyNU1SSGhnUXY1cnpfQ0dYd2FzQ0lfT00?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "Rhode Island Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPV3VOckNDaTUxTlJpd25aV0lCaTFxai1zd3VwM0RVZGVyWkZYUlBTX3lBN1ZOa3hUc0hrNXROQmZPU2l3YmU0MVRNUTd6NWdrTXMxZVRaNUJQOW9fZ050Ynp2TUJBVlgycGhHUzlvUkhvdS0zc0kyZ3A5QXNDSlQ4ekhDYklzTXBRRnpHOWpIMWIxcl9j?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "Massachusetts Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPTjI3YUtWTW00ckdIUkloX3VJQ002TFlmTENhNGw3dW04SDZQWEw4M1lKdmJzbDVpYjcyd3FtM2o4SnROREJadXl6T2dIVVhSSmNCbUhSb0o0eU5OaVFmbENMVnhONmNTUHl5Q2hHbEFCQXJOMG1jQXprc3FfRWt5eU5uQXBERmVrenpBYmVDdHVjLXFvWnc?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -285,11 +550,11 @@
      "date": "2026-11-19T21:27:56+00:00"
     },
     {
-     "title": "Woman injured in potential shark bite off Martha's Vineyard",
-     "source": "ABC News - Breaking News, Latest News and Videos",
-     "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPcTBHM2JYTDdoWkJ6UktSd1E5Mk1lc05jYW5CeFFmdEtrcXJkS2hxa0VUdUtsOEVqR0pLQXQ3YXJ1anRqQVdLMjQ1NE92cnRMMDAyY2tsY3RCanhlS25fSWNGZHY1ZUtzMWZQMW5KUnI5YjlieG5GMC1NUFJtQVhEQUN2bkloUzRXakpseXU4OGFIa2VUVnF5VzV4aE5hM0oyQVh0ejh30gGrAUFVX3lxTE0xbFhyanNWMGUzZGZSMnVoLXZERkROUDctdEVBNE5Xc3BGemF6ZkZTOWkxaEZUcUhvMmtwTnpOQ3YzVjcyQTBIejNZaXpRQkEtd1NnaUVxV1FtU0V0MktJSlU5TDZ5WDFMdmFDX3RhblQ5TTdEN0FyWk9hVlFLNC1DZTR2UUZKbXdKU2ktMXgwN3pGdlNEWkJEV0YyakFVU21LSTI3N2ZpUG96QQ?oc=5",
+     "title": "Massachusetts Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNQ2dzTnhlLTRZeXRveTN6ZS1CcGk5QVg5UnhKTXlNODB2OUJPRVUzNFBBVlR5V00yUThFM3k5QWdWOGRrRm5yVnp3TXJQQzZCb2tpeXFHYmVLR2x0d09JaEdYZENobDVFYzN3RkJ4VVBlb2VwVFZ1T1JSV1VjMks0NmJmR2ZfWGdfajlqQ2lLR0RmTEpKMzdZ?oc=5",
      "snippet": "",
-     "date": "2026-11-17T15:54:46+00:00"
+     "date": "2026-11-13T03:32:12+00:00"
     },
     {
      "title": "Cape Cod Fishing Report- November 12, 2026",
@@ -302,6 +567,13 @@
      "title": "Cape Cod Fishing Report- November 5, 2026",
      "source": "On The Water",
      "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNUVRBRVVlUEswcHo4OUNpZkhrTElHOXpZeEFaeWM0SGxhb1hhNnllY0RKTFpUY21WZ2dlSFVkUnN2blg0LWRiam1RT1ZremZGQTB6MmN6OGh0WkIwYzN3bG9WNC1VUmhLQmNvTGllN3dPTmdfWnE0RUJsVnlJSDZ3dUswY0ozanp2aXRVVzc1VQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "Massachusetts Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPTjI3YUtWTW00ckdIUkloX3VJQ002TFlmTENhNGw3dW04SDZQWEw4M1lKdmJzbDVpYjcyd3FtM2o4SnROREJadXl6T2dIVVhSSmNCbUhSb0o0eU5OaVFmbENMVnhONmNTUHl5Q2hHbEFCQXJOMG1jQXprc3FfRWt5eU5uQXBERmVrenpBYmVDdHVjLXFvWnc?oc=5",
      "snippet": "",
      "date": "2026-11-05T08:00:00+00:00"
     }
@@ -319,7 +591,22 @@
    "name": "San Diego",
    "lat": 32.72,
    "lon": -117.2,
-   "items": [],
+   "items": [
+    {
+     "title": "South Freshwater Fishing Report",
+     "source": "Western Outdoor News",
+     "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9YaWxKMDV6SW1zbWZQZTg0X0RKOEJHdl9xTXBIaHNoM0hVdUpzM2VLQklsa2FnSG4wU2VycDVzbHNsZEJOYmsyZWhhaUMzaVlIRnBVLUVnVzlUU2l5Z0VEY3Rtdmp6Z2l3R0J3Ug?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T21:09:06+00:00"
+    },
+    {
+     "title": "North Freshwater Fishing Report",
+     "source": "Western Outdoor News",
+     "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9mRkpUdmNNMHZ0a0E1eWlTLVhFM3N2YjBKenJ2Q3pNTWY5ellLNWJtTGZWTUpZNEJlcWtPQlRGTThkcUxMSkN0RlZYWlNXU2tka0xxX04wMFpTTVctaHp2TE1Ydy1lSFFHaG5jag?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T21:09:06+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -340,7 +627,15 @@
    "name": "San Francisco Bay / Delta",
    "lat": 37.9,
    "lon": -122.2,
-   "items": [],
+   "items": [
+    {
+     "title": "North Freshwater Fishing Report",
+     "source": "Western Outdoor News",
+     "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9mRkpUdmNNMHZ0a0E1eWlTLVhFM3N2YjBKenJ2Q3pNTWY5ellLNWJtTGZWTUpZNEJlcWtPQlRGTThkcUxMSkN0RlZYWlNXU2tka0xxX04wMFpTTVctaHp2TE1Ydy1lSFFHaG5jag?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T21:09:06+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -354,14 +649,58 @@
    "name": "Columbia River / Portland",
    "lat": 45.6,
    "lon": -122.7,
-   "items": [],
+   "items": [
+    {
+     "title": "Alan Liere’s hunting and fishing report for Nov. 19, 2026",
+     "source": "The Spokesman-Review",
+     "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQRG1fOWJITThPZVU5RldzeGE1eUl4U1BmVFNtcUZ6elFSMDJHa2pySVdyaEFMRFU4SW9DcU16UF9hMW1wQVpWV2k1UC1kVzBIbG00RXZBdS1YRVpRY3pkWkcxdjM0LXV0ZHhpT1B2d1QyUmhFVldDVlU0anVWbFBwbGVmRjBrdC0xYkZnVEJvcFZNTHVXS3dOamZxdlpDUQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T08:00:00+00:00"
+    },
+    {
+     "title": "SW WA Fishing Report (11-16-26) -",
+     "source": "Northwest Sportsman Magazine",
+     "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE1yM3VjaGRpNWU1alNHT3ZQS3FBd1JhUng5czBGTGFnY241cHpkOVBwUi1xNzF5UVRYUlZoUEx5Yzk1R3VEU2Z4aDlSYW0zYWxRWG9WNmJJYWtoUkNyZjZkUjhGOEpuSUEt?oc=5",
+     "snippet": "",
+     "date": "2026-11-16T19:19:21+00:00"
+    },
+    {
+     "title": "SW WA Fishing Report (11-10-26) -",
+     "source": "Northwest Sportsman Magazine",
+     "link": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE44Y0JhRzdFLXNoYV9hWG1BZFpXUHo4ZlBNVzd3M2VwX043aGN5cVJWYzZHbGJFVWhrZGZTOG9fdTBucF84YllpSkFNZnJCNk1WcGZWVGgzUFB6eEY4cVRvMEJzNV80ejhV?oc=5",
+     "snippet": "",
+     "date": "2026-11-10T15:51:43+00:00"
+    },
+    {
+     "title": "West Kootenay fishing report",
+     "source": "Trail Times",
+     "link": "https://news.google.com/rss/articles/CBMic0FVX3lxTE00RGt6alI1Sm5UY0ZQYUlnelpQNzhYNWlXcDJMRmR2X2N1RjVld0NvaG8tM3BOVnR2c1JLZXMySTBVRDVPd2dPYWdKSXpkQ2RLZTNUdFVXYmdTcUlEU1NNNkV4TlJwcnc5cXpTZ0RkRlptY0E?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T21:03:49+00:00"
+    },
+    {
+     "title": "SW WA, Lower Columbia Fishing Report (11-2-26) -",
+     "source": "Northwest Sportsman Magazine",
+     "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9XbTBlZS1hVlM4dWN3aFhJYlV0NTlMc2t2eGR6c2s2a3d3b09sRWNNWWVua0NGdkpKcDBETjh6YXpLVEhCdGlQdU9TTWdoN0JkOVVrS2JaR3k0WUxxUUNlN3FBaHFTSlJuVDZJNEN5SVdVU0IzaTdqeEhsMA?oc=5",
+     "snippet": "",
+     "date": "2026-11-02T08:00:00+00:00"
+    }
+   ],
    "errors": []
   },
   {
    "name": "Puget Sound / Washington coast",
    "lat": 47.5,
    "lon": -122.5,
-   "items": [],
+   "items": [
+    {
+     "title": "Massachusetts Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNQ2dzTnhlLTRZeXRveTN6ZS1CcGk5QVg5UnhKTXlNODB2OUJPRVUzNFBBVlR5V00yUThFM3k5QWdWOGRrRm5yVnp3TXJQQzZCb2tpeXFHYmVLR2x0d09JaEdYZENobDVFYzN3RkJ4VVBlb2VwVFZ1T1JSV1VjMks0NmJmR2ZfWGdfajlqQ2lLR0RmTEpKMzdZ?oc=5",
+     "snippet": "",
+     "date": "2026-11-13T03:32:12+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -399,11 +738,32 @@
    "lon": -95.3,
    "items": [
     {
+     "title": "NWA fishing report: Stripers still going strong, top-water lures working well",
+     "source": "Northwest Arkansas Democrat-Gazette",
+     "link": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOdU9uRTFWYUNuZkVCdlM2Y1MxM21BYnZ6aFV4eWZpWmhuRTN3V0hqLU9vWUF1enZIWFFIdUpBUGJoZG9zWmpIZmlxdmtaTHVSRVZoYWZhczBCa2Jzdzl4c3BxcFNoWjRBamNRMUlpZ3lDUUVLQ09PRER3OTJ2c2wySnRYWXJ3VF8zcVpERncwb3ZWRUhz?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T01:00:00+00:00"
+    },
+    {
+     "title": "NWA fishing report: Crappie fishing is slow; lakes are low in Bella Vista",
+     "source": "The McDonald County Press",
+     "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQeDJOaC0tRVI5Sm0zc1puTC1BSW54TFI0TlZubS1TVVhWRG1yQXJQWDRKcFhCOXNjaGY5Z284OENVX3A1eThmMXNTb2gzclFDRks2MTZPank0U3V0MEl4bWVLNzI5Qk1DSGEtMV9oWHRWcW1vNDBxVjNxVHhaal9OckYzXzhxdUFueFNQcEhFWVdKT1FOclNoYw?oc=5",
+     "snippet": "",
+     "date": "2026-11-13T01:00:00+00:00"
+    },
+    {
      "title": "Grand County Fishing Report: Lake Trout, Brown Trout and Rainbow Trout",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff6f51428542e98f7af8f0fa8bd3b5&url=https%3a%2f%2fwww.skyhinews.com%2fnews%2fgrand-county-fishing-report-lake-trout-brown-trout-and-rainbow-trout%2f&c=18252755230278470451&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff70bea8cf4e1bb7182f1c914d6778&url=https%3a%2f%2fwww.skyhinews.com%2fnews%2fgrand-county-fishing-report-lake-trout-brown-trout-and-rainbow-trout%2f&c=18252755230278470451&mkt=en-us",
      "snippet": "Days are shorter, the air is cooler, and the fall bite is in full swing — and it has been excellent! The boat ramps at Shadow Mountain Reservoir and Grand Lake have closed for ...",
      "date": "2026-11-11T11:31:00+00:00"
+    },
+    {
+     "title": "NWA fishing report: Black bass fishing is fair; brown trout starting to bite",
+     "source": "Northwest Arkansas Democrat-Gazette",
+     "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQSXlHZFktWjRGM1dKMkxfQjRCZ01BUWt3NWhZZHhvVW1tUWZSdmY2emxNUFdRdTVUYU5FdjBDSndCMlU4MTB2Zkl1QTRrUDJPRDl1UGh3QjBDVlpwdGNMY19maUJ6RkRuVG4zSHZwTkRVWG9DUXhvRm5ReldBeUd1RFRGcHhzWXR0ZXBLd0IxNWRPalk?oc=5",
+     "snippet": "",
+     "date": "2026-11-03T01:01:00+00:00"
     },
     {
      "title": "Lake Eufaula Fishing Report — November 2026",
@@ -469,6 +829,34 @@
      "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1XeldIMXRyNGZoMjV5MC0zLU9neVlGMm0tU1VrbTZsemJBTVJFWDhBVUZrLVBSVkZmb2NaZVBaeDdBRE11aExXTmw3SUJaRGEzNkhBMGhpRlBkRWNoaVdtcExPOWhtdG5nTlhWN0tSd0o?oc=5",
      "snippet": "",
      "date": "2026-11-19T13:28:10+00:00"
+    },
+    {
+     "title": "NWA fishing report: Stripers still going strong, top-water lures working well",
+     "source": "The Arkansas Democrat-Gazette",
+     "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOTUZiYlVmOVJ5RjhlUUhLSzNldGJVMkpQdE5DdzVRa3pDUlh3dGlVSTNCYWlzTjVtNkhQN1gwTWFrd1pvU1BuTE94YzRNVmR5bWtpSUhNNTJ5SV9fZTVyUGQ1ZVJHSFFRemtKcE4taVpxU2w1a2ItRDBfNlpXTXp0S3dFV0liODNhMzgtY1E3VElycmJoQVFPekRsNA?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T01:00:00+00:00"
+    },
+    {
+     "title": "NWA fishing report: Crappie fishing is slow; lakes are low in Bella Vista",
+     "source": "The McDonald County Press",
+     "link": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQeDJOaC0tRVI5Sm0zc1puTC1BSW54TFI0TlZubS1TVVhWRG1yQXJQWDRKcFhCOXNjaGY5Z284OENVX3A1eThmMXNTb2gzclFDRks2MTZPank0U3V0MEl4bWVLNzI5Qk1DSGEtMV9oWHRWcW1vNDBxVjNxVHhaal9OckYzXzhxdUFueFNQcEhFWVdKT1FOclNoYw?oc=5",
+     "snippet": "",
+     "date": "2026-11-13T01:00:00+00:00"
+    },
+    {
+     "title": "Arkansas Wildlife Weekly Fishing Report",
+     "source": "Arkansas Game and Fish Commission",
+     "link": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1WVlhhY3NNVVB4RGdBQkpyeDJoNWVjYlZMNlJGd1VVN2hsRTV4NTh5bVZvUzVkbHRBUHR1djNYZ3BzSW9Cd2VaanRfSkRkcE82aFB0SnBfY1dRdmo1NmFrVHF5bjlqMVFKR082TWg0NjZScTRqSXZXc213?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T22:44:58+00:00"
+    },
+    {
+     "title": "NWA fishing report: Black bass fishing is fair; brown trout starting to bite",
+     "source": "Northwest Arkansas Democrat-Gazette",
+     "link": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQSXlHZFktWjRGM1dKMkxfQjRCZ01BUWt3NWhZZHhvVW1tUWZSdmY2emxNUFdRdTVUYU5FdjBDSndCMlU4MTB2Zkl1QTRrUDJPRDl1UGh3QjBDVlpwdGNMY19maUJ6RkRuVG4zSHZwTkRVWG9DUXhvRm5ReldBeUd1RFRGcHhzWXR0ZXBLd0IxNWRPalk?oc=5",
+     "snippet": "",
+     "date": "2026-11-03T01:01:00+00:00"
     }
    ],
    "errors": []
@@ -491,7 +879,15 @@
    "name": "Alabama lakes",
    "lat": 34.2,
    "lon": -86.3,
-   "items": [],
+   "items": [
+    {
+     "title": "Crappie fishing on Lake Guntersville",
+     "source": "Bing News",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff70e041904307bfa23ee2a6487c91&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2foutdoor-activities%2fcrappie-fishing-on-lake-guntersville%2fvi-AA27MqZz&c=12664409287604437438&mkt=en-us",
+     "snippet": "Targeting big crappie on Lake Guntersville with effective strategies and bait techniques. Perfect for anglers looking for a rewarding freshwater fishing experience. #CrappieFishing #LakeGuntersville # ...",
+     "date": "2026-11-18T02:49:32+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -538,7 +934,7 @@
     {
      "title": "Pennsylvania cuts Lake Erie steelhead stocking",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff6f8086d1490994b26eda4651450b&url=https%3a%2f%2fwww.msn.com%2fen-us%2fscience%2fecology%2fpennsylvania-cuts-lake-erie-steelhead-stocking%2far-AA2hHkaU&c=3471105906489672600&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff70eb3ba44c109dac59df6319cbc0&url=https%3a%2f%2fwww.msn.com%2fen-us%2fscience%2fecology%2fpennsylvania-cuts-lake-erie-steelhead-stocking%2far-AA2hHkaU&c=3471105906489672600&mkt=en-us",
      "snippet": "Pennsylvania's Lake Erie steelhead fishery is running on fewer stocked fish than it used to. A September 2026 Outdoor News report by Deborah Weisberg says anglers \"may begin to see fewer steelhead in ...",
      "date": "2026-11-18T06:00:00+00:00"
     },
@@ -552,7 +948,7 @@
     {
      "title": "Fishing tournament season concludes on Lake Erie",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff6f8086d1490994b26eda4651450b&url=https%3a%2f%2fwww.outdoornews.com%2f2026%2f11%2f08%2ffishing-tournament-season-concludes-on-lake-erie%2f&c=8984934837980731854&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff70eb3ba44c109dac59df6319cbc0&url=https%3a%2f%2fwww.outdoornews.com%2f2026%2f11%2f08%2ffishing-tournament-season-concludes-on-lake-erie%2f&c=8984934837980731854&mkt=en-us",
      "snippet": "After another solid year of Lake Erie walleye action, the fishing community enjoyed two final fishing events to help put an exclamation point on the season.",
      "date": "2026-11-08T05:32:00+00:00"
     },
@@ -562,6 +958,13 @@
      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQOGhBOFgzNEdJY0tQQnpzSlhtR0FCMzJfZ01uWElwWjYwOTdPSU1hYVZ3YmM2TkhVNkgxYm1ndGFsaXNQUm9WMS10ZHJ1dThUd0Niem9hdzdGVGNFYTdrLTJyWjdmYmRMbktWOEw0R2VTYlh6cDExbndPdFFkak92STl5UTdCX1R0OGV5Z2gzQVZvdUVnVE5fczRjQ1RJcmMyLVFxTXJTdGxsUE1PVm5IM0FGRW1lQlpiT1NEcEhNOA?oc=5",
      "snippet": "As the chilly nights have arrived, the emerald shiners and gizzard shad the Lake Erie game fish rely on have moved into more comfortable warmer water harbor areas. As a result, the numbers of ...",
      "date": "2026-11-06T08:00:00+00:00"
+    },
+    {
+     "title": "Upstate and Western New York Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNUzBiZHBPN0tRaHNIVWRtelNVYWdDdWZmbGhWbmZXMnROUlVwelVDdnhxZjJWZno5LUNZaTRBbk9PeWhDOU9HWS1UaV9DT194elZVWFV4azhVNGVKNDRjVGVUT3drby1POEVXRjJSck1kcVhxcmthZ3FfS3owUnllOXU4dGVQWVhFT2xiUWtNLWdHR0YyRFBXQURxc1I1Rm5SeTBwa0VSX1ZsUQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
     },
     {
      "title": "Pa. is stocking fewer steelhead in Lake Erie. Is it still world-class fishing?",
@@ -591,7 +994,22 @@
    "name": "Southern Lake Michigan",
    "lat": 42.2,
    "lon": -87.3,
-   "items": [],
+   "items": [
+    {
+     "title": "Nov. 19 Fishing Report",
+     "source": "WPLG Local 10",
+     "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBjSGFhOXRuTDN6cklCUkNMQTZfaFdLV3N0YVNZa2JkMUVTLXVxLVhXQ2ZEeFpVUGFrVDhjcUlSZDVvNGxYZVNMWnp4Q3V5VDQtWUhmdWs1ZUpCNHhFRTRZSk42SXNMMjZ0QlJlcGJBbDlCNkdsV1RLOGZFRQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-19T12:20:26+00:00"
+    },
+    {
+     "title": "Nov. 14 Fishing Report",
+     "source": "WPLG Local 10",
+     "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5iU0tZTnNQa1ZqLTUtQlkzUWx1NEtaWjg4QW9mMGxtaG54QlItejFHUENzOGxJbXdaS05kZXQwZF9ILXZrUlI1UkJkSFBBakZhOEw4WFhJSHNjaXBSLXZBT0V3NkNMLWw4QU5ESUVRU2Rfc3NWbEFCdkdMcw?oc=5",
+     "snippet": "",
+     "date": "2026-11-14T13:13:09+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -600,11 +1018,11 @@
    "lon": -76.9,
    "items": [
     {
-     "title": "These Salmon River anglers show up with comically small trout nets to help strangers land trophy fish",
-     "source": "Syracuse.com",
-     "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOV1VkamZ0NmlHMGJVQ2lFWEVxQm5VYTlFejZCaDVBMlBJU2U1cGhzZGoxcTdRd1FfZElwdVNCZDBpOTBiQV9wREZSRmZLNml6Rzk4U21NUjhsOWFlXzFHWjRUbmRQcmFKMmprYU04V2RVcVk0M0ZNR3g4SjBrWVhVWUotazFZTGczMjV4R2dBY0RQQTZOSnJQZGxTZExUX1dwR2MzMWplc3ItNTA?oc=5",
+     "title": "Upstate and Western New York Fishing Report- November 19, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQN1lZV2I4dnF0UnVtZ2YzMmpwQnVzY2Q1QXMzX3lUMm5GV3ZPSm1JM1U5S0lxNzNZQkxBSjByWC1DbWludEV4YXJzT2JFZUFLM24yR2ptM3NFNjQzUS1ZYk4weDB5MlpKX3Y5QzI1Z1FZLXBqVHJsQWVXaElSaFlhaHNoSlM2cDd1V3VxR0cyRkp1QjZRQ2xkNzZMMnlTbHZXYlp0UFQyX2Q0bkE?oc=5",
      "snippet": "",
-     "date": "2026-11-18T11:04:00+00:00"
+     "date": "2026-11-19T15:33:30+00:00"
     },
     {
      "title": "Upper Salmon River Steelhead fishing report (Nov. 17, 2026)",
@@ -614,6 +1032,13 @@
      "date": "2026-11-17T19:48:46+00:00"
     },
     {
+     "title": "Upstate and Western New York Fishing Report- November 12, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOTUh5dnFSMXAxeXFrODh1dmc1OXVLSU1TeklQWDZxZXR4ckhXd3BPckxrNkJQYWU0NjhJT1d4akI1cXNTVVpORUt4SXMwRmN6Z1c0QkE5QXNhNkg5YkRHbFhheHFpOXZZX0lzUDhBWmZsbnBLQ1NwdUpJMTVlZ21RX1hsVm5fUnZFMm5Vakw2TW55czRMdlpsTEdXNzJReHlCQUlsN09nNXJHNzA?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T15:40:41+00:00"
+    },
+    {
      "title": "Upper Salmon River steelhead fishing report (Nov. 10, 2026)",
      "source": "EIN News",
      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxNbUc3TkxsYklMbUpfaGdnZWpJbmRpVjdvU1dBOU9DRTk0V3BvUUxHVndWUnlWdzJRaTBtOG5IcVZZc0RETFZ0MXM3Y3dfZURjcFBheHlUZ1J6c2RtUW5RaDJwejAzYkVJYjJZbE5Wa0lYdFdLTmZnTkI3WjhscnMwaFhBX1FXZ1hXZl9TZENRdTNiYUZfa2RXM09NRWpLZw?oc=5",
@@ -621,11 +1046,25 @@
      "date": "2026-11-10T23:29:00+00:00"
     },
     {
+     "title": "Upstate and Western New York Fishing Report- November 5, 2026",
+     "source": "On The Water",
+     "link": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNUzBiZHBPN0tRaHNIVWRtelNVYWdDdWZmbGhWbmZXMnROUlVwelVDdnhxZjJWZno5LUNZaTRBbk9PeWhDOU9HWS1UaV9DT194elZVWFV4azhVNGVKNDRjVGVUT3drby1POEVXRjJSck1kcVhxcmthZ3FfS3owUnllOXU4dGVQWVhFT2xiUWtNLWdHR0YyRFBXQURxc1I1Rm5SeTBwa0VSX1ZsUQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
      "title": "Upper Salmon River Steelhead Fishing Report 11.3.26",
      "source": "Montana Outdoor",
      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNcjV4b3cwQWkyMUR6bFgxQzhqMm9CRHBpS3BZM05sclFwbDBGcVZQRUZ6SWtKX1pBSzFCcXgyZWhvVlR0VWxKZ1Jyb3BTejdwMDZSZGp2MVRHYVd0TUJHZDJfTG1oU0NwQzZhTmlCR1R1dHVzaVJ2eDFsU3luajYyS3FiMDNidnNxbjZHTUtpbmNwOFRSYUE?oc=5",
      "snippet": "",
      "date": "2026-11-04T08:00:00+00:00"
+    },
+    {
+     "title": "Inside the Salmon River's wildest new fishing contest",
+     "source": "Syracuse.com",
+     "link": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOYzMyVzV3dWhlQUFiTHJWenZJa1BkWjk0NTRCS0lsYmY4SFFrNnhqVE5iU0p2VFBPeUtVQ0VJRC1RSG1aYTJiMUpYZ0tkUVpRN21rUHBrVUZSZU1Ja012dUo3T0o3a3ZUbTI1RlVfZ1hObzFURTlzTXpKYjdKR2VOcFZFYy1aQ09DY3hJeXlJSUhzVXljY0p2NW9sU0RVclI2akZDeXpjY2xEZ2llSmZvNEZR?oc=5",
+     "snippet": "",
+     "date": "2026-10-31T07:00:00+00:00"
     }
    ],
    "errors": []
@@ -680,15 +1119,22 @@
    "items": [
     {
      "title": "Fishing report for week of Nov. 21",
-     "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff6f9c71404f3c9ab1667f10c672f7&url=https%3a%2f%2fwww.havasunews.com%2flifestyle%2ffishing-report-for-week-of-nov-21%2farticle_30474b18-fb83-4a5f-9ca5-d3074f8e964c.html&c=10611527904342125417&mkt=en-us",
+     "source": "Havasu News",
+     "link": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNOUtFeDVwSG8xT1kwMThzUndPU3JxRjVHSk1Pc2h1OGdvVkpHTTNjSl9Rcm43MnJ6VHVsSnFHZ3pDUHRYQ3A2UVhQRmpndUJaMVVIeGRVVVNmeGY3b19nVWhBdkRWQTV4b3VvbEVfYnh1a1o2WFRMa25uREg5SVlVN1o2MGhVcTdSdllEQjdYZVBpeHg4alhrZ3UwQmZvQmlNX0xXbkotR3BCamhoeDZER0t2YmdqekdsVTNaaQ?oc=5",
      "snippet": "A trip to the Bill Williams Peninsula produced a pair of first-time flathead catches this week, while another Lake Havasu angler hauled in the biggest fish of his life. Here’s ...",
-     "date": "2026-11-19T07:45:00+00:00"
+     "date": "2026-11-19T15:45:00+00:00"
+    },
+    {
+     "title": "South Freshwater Fishing Report",
+     "source": "Western Outdoor News",
+     "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9YaWxKMDV6SW1zbWZQZTg0X0RKOEJHdl9xTXBIaHNoM0hVdUpzM2VLQklsa2FnSG4wU2VycDVzbHNsZEJOYmsyZWhhaUMzaVlIRnBVLUVnVzlUU2l5Z0VEY3Rtdmp6Z2l3R0J3Ug?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T21:09:06+00:00"
     },
     {
      "title": "Forget Lake Havasu, Arizona's high-elevation lake is an unsung fishing and boating haven inside a national forest",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff6f9c71404f3c9ab1667f10c672f7&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2fparks%2fforget-lake-havasu-arizona-s-high-elevation-lake-is-an-unsung-fishing-and-boating-haven-inside-a-national-forest%2far-AA2hr4dZ&c=733118633740318481&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6aff7105bf664bf1a7810b2c53bd9060&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2fparks%2fforget-lake-havasu-arizona-s-high-elevation-lake-is-an-unsung-fishing-and-boating-haven-inside-a-national-forest%2far-AA2hr4dZ&c=733118633740318481&mkt=en-us",
      "snippet": "Arizona is home to a lot of beautiful spots, but if you want to get away from the crowds of Lake Havasu, you can check out this lesser-known lake.",
      "date": "2026-11-14T06:00:00+00:00"
     }
@@ -713,16 +1159,37 @@
    "name": "Northern California lakes",
    "lat": 39.0,
    "lon": -122.5,
-   "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "items": [
+    {
+     "title": "North Freshwater Fishing Report",
+     "source": "Western Outdoor News",
+     "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9mRkpUdmNNMHZ0a0E1eWlTLVhFM3N2YjBKenJ2Q3pNTWY5ellLNWJtTGZWTUpZNEJlcWtPQlRGTThkcUxMSkN0RlZYWlNXU2tka0xxX04wMFpTTVctaHp2TE1Ydy1lSFFHaG5jag?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T21:09:06+00:00"
+    },
+    {
+     "title": "Saturday Morning Fishing Report: November Fishing Begins",
+     "source": "Mix 107.3 KIOW",
+     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNSEs3LWJEOEFGeUduNUg2VEw4R2VLNTN2U2FGRmx6dnpMM2tmTmtGMlVtdTNaQmtuWmFoV1dOSVVLeFJWWE5ucHFOMnEtUmNOdHNyZnlUSjNIWDJTaWg1Y1RTekQtSVFYRXVvRjBEbkYxdWJ6X1JxMHcxb3laMUdpSVZaUDRtVmZaaHhuRUxCRQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-15T04:33:07+00:00"
+    }
+   ],
+   "errors": []
   },
   {
    "name": "Southern California lakes",
    "lat": 33.8,
    "lon": -117.3,
-   "items": [],
+   "items": [
+    {
+     "title": "South Freshwater Fishing Report",
+     "source": "Western Outdoor News",
+     "link": "https://news.google.com/rss/articles/CBMibEFVX3lxTE9YaWxKMDV6SW1zbWZQZTg0X0RKOEJHdl9xTXBIaHNoM0hVdUpzM2VLQklsa2FnSG4wU2VycDVzbHNsZEJOYmsyZWhhaUMzaVlIRnBVLUVnVzlUU2l5Z0VEY3Rtdmp6Z2l3R0J3Ug?oc=5",
+     "snippet": "",
+     "date": "2026-11-17T21:09:06+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -731,11 +1198,39 @@
    "lon": -114.0,
    "items": [
     {
+     "title": "Alan Liere’s hunting and fishing report for Nov. 19, 2026",
+     "source": "The Spokesman-Review",
+     "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQRG1fOWJITThPZVU5RldzeGE1eUl4U1BmVFNtcUZ6elFSMDJHa2pySVdyaEFMRFU4SW9DcU16UF9hMW1wQVpWV2k1UC1kVzBIbG00RXZBdS1YRVpRY3pkWkcxdjM0LXV0ZHhpT1B2d1QyUmhFVldDVlU0anVWbFBwbGVmRjBrdC0xYkZnVEJvcFZNTHVXS3dOamZxdlpDUQ?oc=5",
+     "snippet": "Fly fishing Dry Falls, Lenice, Nunnally and Lake Lenore will provide some decent trout fishing until they close Nov. 30. Some good fishing reports from Rocky Ford are beginning to trickle in.",
+     "date": "2026-11-19T08:00:00+00:00"
+    },
+    {
      "title": "Bitterroot River Fishing Report — November 16, 2026",
      "source": "Montana Outdoor",
      "link": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQV2hKcFVkYzU4dnM3UWZxUGhwNFZLSWFwdm8zeWdrVXQyLXppUEJLajNBTllBN1VOc2dQa2h3Y2t4SFN2LThjQXc5RFF6Z0tHalFGNU14b1VHUVB2S05qNVV5NWxMdFFDYW9OTWVSNnphM2hMWjk2QzF4YmV3SDNxYWNBZ1V5VnFXT0dMLXhOa05rQQ?oc=5",
      "snippet": "",
      "date": "2026-11-17T18:47:09+00:00"
+    },
+    {
+     "title": "Don Wilkins’ Weekly Fort Peck Fishing Report 11.13.26",
+     "source": "Montana Outdoor",
+     "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQTHJVNjVURWRvdGYzcnhWeXZob0lOMWM2ZTRnRU05OFY0bnVfSTEwWGRDWFNZMnlaVlJyaXl4Q1MwN3pkaW4yaHJOUHdWNUQ5ajNtZWRubmVGSXp5RTZqRFE1SGZlMjVXMkZQRC1pcFoxbms4bXBIVWhEV285VFNkRzZqakdzRnhlc1MyVkdpMjNrTW1qUEp3?oc=5",
+     "snippet": "",
+     "date": "2026-11-13T12:48:18+00:00"
+    },
+    {
+     "title": "Don Wilkins’ Weekly Fort Peck Fishing Report 11.5.26",
+     "source": "Montana Outdoor",
+     "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNSG5UYkEyb04ycVJ4dEdQMUdwV0U4S18tYlFsbkZ5OGhwYzMyX2pBNlExeFdHU1RZazZ1UU1fX1BYbWFJdWhVREVvU2JmZXh3X1VlR0ZtRlVTRVc3WU9EY1hKWW5MMkFPUnhHa2dqeGZQVEFiRlFaaHlxUHhReHU5eHhCSm5vZFhDTXprTGdnNFlPMWU5aEE?oc=5",
+     "snippet": "",
+     "date": "2026-11-06T08:00:00+00:00"
+    },
+    {
+     "title": "Don Wilkins’ Weekly Fort Peck Fishing Report 10.30.26",
+     "source": "Montana Outdoor",
+     "link": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPT2FybXlsZFNXSnVoRGVULXdKSFVCaHFFbnZUUmdOYnNDeHNOSHpjbndhOTcxcGREUkNLLV9NRUliREFyLVo4VXViUjdKdElKQ3Y0Wi02VEdHVzFYNG5TNHBOUF81clRrYzBGcnljbWN6S2ZiTXhRbVJQNGtyNElaNmpuZzJzeThHUVFvajFnU3BaMTFkMkxF?oc=5",
+     "snippet": "",
+     "date": "2026-10-30T07:00:00+00:00"
     }
    ],
    "errors": []
