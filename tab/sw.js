@@ -1,6 +1,6 @@
 // DUSTEX Tab offline cache: the app works without internet once installed; updates arrive the next time it opens online.
-const CACHE = 'dxtab-v1';
-const FILES = ['./', 'index.html', 'logo.png', 'looper-worklet.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png', 'favicon.ico',
+const CACHE = 'dxtab-v2';
+const FILES = ['./', 'index.html', 'logo.png', 'looper-worklet.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png', 'favicon.ico', 'fonts/great-vibes-latin-400-normal.woff2',
   'vendor/basic-pitch.bundle.js', 'vendor/model/model.json', 'vendor/model/group1-shard1of1.bin'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('dxtab-') && k !== CACHE)   /* only this app's old caches: the Fishing app shares the site */.map(k => caches.delete(k)))).then(() => self.clients.claim())); });
