@@ -103,7 +103,7 @@
   #g-now { left:12px; top:30px; width:280px; height:195px; }
   #g-tom { left:12px; top:233px; width:280px; height:195px; }
   #g-g { left:300px; top:64px; width:580px; height:134px; }
-  #gBaro { left:16px; top:0; } #gWind { left:161px; top:0; } #gSea { left:306px; top:0; } #gDir { left:451px; top:0; }
+  #gBaro { left:16px; top:0; } #gTemp { left:161px; top:0; } #gSea { left:306px; top:0; } #gDir { left:451px; top:0; }
   #g-icw { left:300px; top:202px; width:286px; height:226px; }
   #g-oce { left:594px; top:202px; width:286px; height:226px; }
   .tinfo { left:12px; top:139px; } .tlist { left:12px; top:159px; width:262px; }
@@ -162,7 +162,7 @@
   .phone #when { left:61px; top:312px; } .phone #whenDiv { display:none; } .phone #when > .lbl { width:100%; text-align:center; }
   .phone #g-best { left:10px; top:836px; width:400px; height:110px; }
   .phone #g-g { left:10px; top:956px; width:400px; height:350px; }
-  .phone #gBaro { left:40px; top:0; } .phone #gWind { left:220px; top:0; } .phone #gSea { left:40px; top:178px; } .phone #gDir { left:220px; top:178px; }
+  .phone #gBaro { left:40px; top:0; } .phone #gTemp { left:220px; top:0; } .phone #gSea { left:40px; top:178px; } .phone #gDir { left:220px; top:178px; }
   .phone #g-icw { left:10px; top:1316px; width:400px; height:300px; }
   .phone #g-oce { left:10px; top:1626px; width:400px; height:300px; }
   .phone .plot { width:380px; height:154px; }
@@ -201,7 +201,7 @@
   </div>
 
   <div class="grp" id="g-g">
-    <div class="abs" id="gBaro"></div><div class="abs" id="gWind"></div><div class="abs" id="gSea"></div><div class="abs" id="gWtr"></div><div class="abs" id="gDir"></div>
+    <div class="abs" id="gBaro"></div><div class="abs" id="gTemp"></div><div class="abs" id="gSea"></div><div class="abs" id="gWtr"></div><div class="abs" id="gDir"></div>
   </div>
 
   <div class="grp" id="g-icw"><div class="panel full"></div>
@@ -257,18 +257,18 @@
   <p>The DUSTEX crest and the app name sit at the top centre, with your spot's name on the left and the last update time on the right.</p>
   <p><b>NOW</b> shows the current weather, feels-like temperature and humidity, sunrise and sunset, plus water temperature and swell direction on the coast (water temperature and lake level in lake mode).</p>
   <p><b>TOMORROW</b> shows the high and low, sky, strongest wind and gusts, chance of rain, and the biggest seas offshore (or the latest water temperature in lake mode).</p>
-  <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Wind</b> in mph; the thin red needle marks the gusts. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). The <b>compass</b> points to where the wind is coming from. Green on a dial is good fishing, orange is fair, red is tough.</p>
+  <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Temperature</b> has three needles: the long orange needle is the <b>air</b>, the medium teal needle the <b>intracoastal</b> water and the short blue needle the <b>ocean</b> water, with all three read out underneath. The intracoastal reading comes from the nearest NOAA or USGS water-temperature sensor to your inshore station; when there isn't one within about 25 to 30 miles, the app estimates it from the ocean and the day's air temperature and shows it with a ~ in front. The colored zones are the water temperatures fish like: green (62 to 84°F) is best, gold is a little cold or warm, blue is cold and red is very hot. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). The <b>compass</b> points to where the wind is coming from, and its medium gold needle shows the <b>wind speed</b> on the 0 to 40 mph arc (green light, gold breezy, red strong), with a small red mark for the gusts. Green on a dial is good fishing, orange is fair, red is tough.</p>
   <p><b>Tide charts</b> cover the next 24 hours for your inshore station (river, bay or intracoastal) and your offshore station (beach, pier or inlet). The red dashed line is now, green dots are high tides and gold dots are low tides. Below each chart: whether the tide is rising or falling, the next high or low, and the next four tides with their heights.</p>
   <p><b>Moon &amp; Solunar</b> shows the moon's phase, how much of it is lit and days to the next full or new moon. <b>Feeding times</b> are the solunar periods: <b>Major</b> periods (2 hours, centered on the moon overhead or underfoot) and <b>Minor</b> periods (1 hour, centered on moonrise and moonset). The period you are in now is shown in green.</p>
 
   <h4>Forecast for a future time</h4>
   <p><b>FORECAST FOR</b> (in the middle of the bottom panel) lets you see how the fishing looks at another time, up to three days ahead. Pick a <b>day</b> from the menu and drag the <b>time slider</b> (or use the mouse wheel over it). The <b>Fishing Forecast</b> gauges, the reasons and <b>Best Times</b> then show that day and time, and their titles show the date you picked.</p>
   <p>If the time you pick falls inside a fishing window, that window is highlighted in green in Best Times.</p>
-  <p>The future scores use the hourly forecast for that hour: barometer trend, wind, storms, sea height offshore, the predicted tide, the solunar periods, the moon phase, and dawn and dusk. Press <b>NOW</b> to go back to live conditions. A picked time that arrives goes back to live by itself. The rest of the screen (Now, the four gauges, tides, moon) always shows the present. In lake mode, the lake level and water temperature can't be forecast, so the latest readings are used.</p>
+  <p>The future scores use the hourly forecast for that hour: barometer trend, wind speed and direction, air and ocean temperature, storms, sea height offshore, the predicted tide, the solunar periods, the moon phase, and dawn and dusk. Press <b>NOW</b> to go back to live conditions. A picked time that arrives goes back to live by itself. The rest of the screen (Now, the four gauges, tides, moon) always shows the present. In lake mode, the lake level and water temperature can't be forecast, so the latest readings are used.</p>
 
   <h4>Fishing forecast</h4>
   <p>The bite dials score the fishing right now from 0 to 10: <b>Poor</b> below 3, <b>Fair</b> 3 to 5, <b>Good</b> 5 to 7, <b>Very good</b> 7 to 8.5 and <b>Excellent</b> above 8.5. There is one dial for <b>Inshore</b> and one for <b>Offshore</b> (a single <b>Lake bite</b> dial in lake mode). The list beside the dials explains the score.</p>
-  <p>What goes into the score: a slowly falling barometer (fish feed) versus a fast rise after a front (tough bite); wind (light is best); moving tide versus slack water; seas offshore; being inside or near a solunar period; days near the new or full moon (stronger tides); dawn and dusk low light. Thunderstorms pull the score down hard, and seas over 5 ft cap the offshore score. In lake mode, water temperature (55 to 75°F is best), warming or cooling water, and a rising or falling lake level replace the tides and seas.</p>
+  <p>What goes into the score: a slowly falling barometer (fish feed) versus a fast rise after a front (tough bite); wind (light is best), wind direction (west winds settle the water, east winds stir it up) and gusts; water temperature where you fish (intracoastal for inshore, ocean for offshore, 66 to 82°F best); very cold or very hot air, and air far colder than the water after a front; moving tide versus slack water; seas offshore; being inside or near a solunar period; days near the new or full moon (stronger tides); dawn and dusk low light. Thunderstorms pull the score down hard, and seas over 5 ft cap the offshore score. In lake mode, water temperature (55 to 75°F is best), warming or cooling water, and a rising or falling lake level replace the tides and seas.</p>
   <p><b>Best times today</b> lists the strongest windows left today. Each solunar period, dawn and dusk is a window; it earns an extra star when it overlaps another window and another when the tide is moving. More stars, better odds.</p>
 
   <h4>Lake mode (freshwater)</h4>
@@ -402,13 +402,21 @@ function compass(host, size) {
     el('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: major ? '#15171b' : 'rgba(58,62,70,.67)', 'stroke-width': major ? 1.8 : .8 }, svg); }
   for (const [t, a, col] of [['N', 0, '#2a3b55'], ['E', 90, '#1a1c21'], ['S', 180, '#1a1c21'], ['W', 270, '#1a1c21']]) {
     const tp = PtA(c, R - 30, a); const tx = el('text', { x: tp[0], y: tp[1] + size * .1 * .36, 'text-anchor': 'middle', 'font-size': size * .1, 'font-weight': 900, fill: col }, svg); tx.textContent = t; }
+  // wind speed: a 0-40 mph arc inside the ring (green light, gold breezy, red strong), read by the medium gold needle
+  const k = size / 150, sr = R - 21 * k, sAng = v => -135 + 270 * Math.max(0, Math.min(1.02, v / 40));
+  for (const z of [[0, 12, '#1f9d57'], [12, 20, '#e08a00'], [20, 40, '#c8202a']]) el('path', { d: arcPath(c, sr, sAng(z[0]), sAng(z[1])), stroke: z[2], 'stroke-width': 2.6 * k + .4, fill: 'none', opacity: .9 }, svg);
+  for (const [v, t] of [[0, '0'], [40, '40']]) { const tp = PtA(c, sr - 7 * k, sAng(v)); const tx = el('text', { x: tp[0], y: tp[1] + size * .02, 'text-anchor': 'middle', 'font-size': size * .055, 'font-weight': 700, fill: '#3a3e46' }, svg); tx.textContent = t; }
+  const gm = el('polygon', { points: `${c - 2 * k},${c - sr - 4 * k} ${c + 2 * k},${c - sr - 4 * k} ${c},${c - sr + 3 * k}`, fill: '#e5484d', class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);display:none` }, svg);
   const g = el('g', { class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(0deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))` }, svg);
   el('polygon', { points: `${c - 5},${c} ${c + 5},${c} ${c},${c + R * .42}`, fill: '#5e636b' }, g);
   el('polygon', { points: `${c - 5},${c} ${c + 5},${c} ${c},${c - R + 14}`, fill: '#e04a00' }, g);
+  const sp = el('polygon', { points: `${c - 2.6 * k},${c + R * .12} ${c + 2.6 * k},${c + R * .12} ${c + .9 * k},${c - R * .62} ${c - .9 * k},${c - R * .62}`, fill: '#e9c478', stroke: '#6b5426', 'stroke-width': .5, class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))` }, svg);
   el('circle', { cx: c, cy: c, r: size * .055, fill: 'url(#cap)', stroke: '#2a2c31' }, svg);
   el('image', { href: 'gauge_glass.png', x: 0, y: 0, width: size, height: size }, svg);
   const vt = el('text', { x: c, y: size + 16, 'text-anchor': 'middle', 'font-size': Math.max(10.5, size * .08), fill: '#a3dcbf', 'font-weight': 500, 'letter-spacing': '.02em', 'font-family': '-apple-system, "Segoe UI", sans-serif', style: 'font-variant-numeric:tabular-nums' }, svg);
-  return { set(deg, text) { g.style.transform = `rotate(${deg}deg)`; vt.textContent = text; } };
+  return { set(deg, text, mph, gust) { g.style.transform = `rotate(${deg}deg)`; vt.textContent = text;
+    if (mph != null) sp.style.transform = `rotate(${sAng(mph)}deg)`;
+    if (gust != null && gust > (mph || 0) + 1) { gm.style.display = ''; gm.style.transform = `rotate(${sAng(gust)}deg)`; } else gm.style.display = 'none'; } };
 }
 // shared hub-cap gradient
 (() => { const s = el('svg', { width: 0, height: 0, style: 'position:absolute' }, document.body); const d = el('defs', {}, s);
@@ -416,7 +424,23 @@ function compass(host, size) {
 
 const GS = document.documentElement.classList.contains('phone') ? 140 : 112;
 const dBaro = dial($('gBaro'), { label: 'BAROMETER', min: 29.2, max: 30.8, majors: 4, dec: 1, size: GS, zones: [[29.2, 29.6, '#c8202a'], [29.6, 29.9, '#e08a00'], [29.9, 30.8, '#1f9d57']] });
-const dWind = dial($('gWind'), { label: 'WIND', min: 0, max: 40, majors: 4, size: GS, zones: [[0, 12, '#1f9d57'], [12, 20, '#e08a00'], [20, 40, '#c8202a']] });
+// temperature: long needle air, medium intracoastal water, short ocean water (zones: the water temperatures fish like)
+function tempDial(host, size) {
+  const d = dial(host, { label: 'TEMP °F', min: 30, max: 100, majors: 7, size, zones: [[30, 50, '#3a6fc4'], [50, 62, '#e08a00'], [62, 84, '#1f9d57'], [84, 92, '#e08a00'], [92, 100, '#c8202a']] });
+  const svg = host.querySelector('svg'), cap = svg.querySelector('circle[fill="url(#cap)"]'), vt = svg.lastElementChild, c = size / 2, R = c - 3, k = size / 150;
+  const ang = v => -135 + 270 * Math.max(0, Math.min(1.02, (v - 30) / 70));
+  const mk = (len, w, fill) => { const n = el('polygon', { points: `${c - w * k},${c + R * .12} ${c + w * k},${c + R * .12} ${c + .9 * k},${c - R * len} ${c - .9 * k},${c - R * len}`, fill, stroke: 'rgba(0,0,0,.35)', 'stroke-width': .5,
+    class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));display:none` }); svg.insertBefore(n, cap); return n; };
+  const nI = mk(.66, 2.8, '#2fc0ae'), nO = mk(.46, 3, '#4a90ff');
+  vt.setAttribute('font-size', Math.max(10, size * .085));
+  const put = (n, v) => { if (v == null || !isFinite(v)) { n.style.display = 'none'; return; } n.style.display = ''; n.style.transform = `rotate(${ang(v)}deg)`; };
+  const f = (v, est) => v == null || !isFinite(v) ? '--' : (est ? '~' : '') + Math.round(v);
+  return { set(air, icw, sea, icwEst, icwLab) {
+    d.set(air == null ? 30 : air, null, ''); put(nI, icw); put(nO, sea);
+    vt.innerHTML = `<tspan fill="#ffb37a">air ${f(air)}</tspan><tspan fill="#5d6470"> · </tspan><tspan fill="#5fd8c6">${icwLab || 'icw'} ${f(icw, icwEst)}</tspan>` + (sea == null ? '' : `<tspan fill="#5d6470"> · </tspan><tspan fill="#8fb8ff">sea ${f(sea)}</tspan>`);
+  } };
+}
+const dTemp = tempDial($('gTemp'), GS);
 const dSea = dial($('gSea'), { label: 'SEAS', min: 0, max: 10, majors: 5, size: GS, zones: [[0, 3, '#1f9d57'], [3, 5, '#e08a00'], [5, 10, '#c8202a']] });
 const dDir = compass($('gDir'), GS);
 const bz = [[0, 3, '#c8202a'], [3, 5, '#e08a00'], [5, 10, '#1f9d57']];
@@ -562,9 +586,11 @@ function drawTide(svgId, infoId, listId, preds) {
 const S = { wx: null, mar: null, icw: null, oce: null, err: [], baroTrend: null, sunR: null, sunS: null, solWin: [], moonEl: null, at: null };
 async function J(u) { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok) throw new Error(r.status); return r.json(); }
 async function loadWeather() {
-  try { S.wx = await J(`https://api.open-meteo.com/v1/forecast?latitude=${cfg.lat}&longitude=${cfg.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl&hourly=pressure_msl,wind_speed_10m,wind_gusts_10m,wind_direction_10m,weather_code&past_hours=3&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=4`); }
+  const mp = isLake() ? null : J(`https://marine-api.open-meteo.com/v1/marine?latitude=${cfg.mlat}&longitude=${cfg.mlon}&current=wave_height,wave_period,wave_direction,sea_surface_temperature&hourly=wave_height,wave_period,sea_surface_temperature&daily=wave_height_max&length_unit=imperial&timezone=auto&forecast_days=4`);
+  if (mp) mp.catch(() => {});
+  try { S.wx = await J(`https://api.open-meteo.com/v1/forecast?latitude=${cfg.lat}&longitude=${cfg.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl&hourly=temperature_2m,pressure_msl,wind_speed_10m,wind_gusts_10m,wind_direction_10m,weather_code&past_hours=3&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=4`); }
   catch (e) { S.err.push('weather: ' + e.message); }
-  if (!isLake()) try { S.mar = await J(`https://marine-api.open-meteo.com/v1/marine?latitude=${cfg.mlat}&longitude=${cfg.mlon}&current=wave_height,wave_period,wave_direction,sea_surface_temperature&hourly=wave_height,wave_period&daily=wave_height_max&length_unit=imperial&timezone=auto&forecast_days=4`); }
+  if (mp) try { S.mar = await mp; }
   catch (e) { S.err.push('seas: ' + e.message); }
 }
 async function loadTides() {
@@ -574,6 +600,54 @@ async function loadTides() {
       if (r.predictions) { S[key] = r.predictions; localStorage.setItem('dxtide2_' + key, JSON.stringify(r.predictions)); } else S.err.push(`tides ${st}: no data`); }
     catch (e) { S.err.push(`tides ${st}: ${e.message}`); }
   }
+}
+
+// ------------------------------------------------------------------ intracoastal water temperature: nearest real sensor to the inshore station, else an estimate
+let WT = JSON.parse(localStorage.getItem('dxwt') || 'null') || {};          // { key, src: {kind,id,name,d} | null, found, v, t }
+async function wtStations() {                                              // NOAA stations with a water temperature sensor (cached a month)
+  const c = JSON.parse(localStorage.getItem('dxwtst') || 'null'); if (c && Date.now() - c.t < 30 * 86400000) return c.s;
+  const r = await J('https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=watertemp');
+  const st = (r.stations || []).map(x => [x.id, x.name, +x.lat, +x.lng]);
+  try { localStorage.setItem('dxwtst', JSON.stringify({ t: Date.now(), s: st })); } catch (e) {} return st;
+}
+async function findWaterTemp(lat, lon) {
+  try { const best = (await wtStations()).map(x => [x, milesTo(lat, lon, x[2], x[3])]).sort((a, b) => a[1] - b[1])[0];
+    if (best && best[1] <= 30) return { kind: 'noaa', id: best[0][0], name: best[0][1], d: best[1] }; } catch (e) {}
+  try { const bbox = [lon - 0.35, lat - 0.3, lon + 0.35, lat + 0.3].map(v => v.toFixed(3)).join(',');
+    const r = await J(`${USGS}latest-continuous/items?f=json&limit=200&bbox=${bbox}&parameter_code=00010`); let best = null;
+    for (const f of r.features || []) { const pr = f.properties || {}, g = f.geometry && f.geometry.coordinates;
+      if (!g || pr.value == null || pr.value === '' || Date.now() - new Date(pr.time) > 2 * 86400000) continue;
+      const d = milesTo(lat, lon, g[1], g[0]); if (d <= 25 && (!best || d < best.d)) best = { kind: 'usgs', id: pr.monitoring_location_id, name: pr.monitoring_location_id, d }; }
+    return best; } catch (e) { return null; }
+}
+async function loadWaterTemp() {
+  if (isLake()) return;
+  if (WT.key !== cfg.icw) WT = { key: cfg.icw };
+  try {
+    if (!WT.found || Date.now() - WT.found > 7 * 86400000) {             // look for a sensor once a week
+      const st = (await stations()).find(x => x[0] === cfg.icw);
+      WT.src = st ? await findWaterTemp(st[3], st[4]) : null; WT.found = Date.now();
+    }
+    const src = WT.src; let v = null, t = 0;
+    if (src && src.kind === 'noaa') { const r = await J(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=water_temperature&date=latest&station=${src.id}&units=english&time_zone=gmt&application=DUSTEX_Fishing&format=json`);
+      const d = r.data && r.data[0]; if (d && d.v !== '') { v = +d.v; t = parseAt(d.t.replace(' ', 'T'), 0).getTime(); } }
+    else if (src && src.kind === 'usgs') { const r = await J(`${USGS}latest-continuous/items?f=json&monitoring_location_id=${src.id}&parameter_code=00010`);
+      const pr = r.features && r.features[0] && r.features[0].properties; if (pr && pr.value != null) { v = +pr.value * 9 / 5 + 32; t = new Date(pr.time).getTime(); } }
+    if (v != null && isFinite(v) && Date.now() - t < 12 * 3600000) { WT.v = v; WT.t = t; } else { WT.v = null; }
+  } catch (e) { WT.v = null; }
+  try { localStorage.setItem('dxwt', JSON.stringify(WT)); } catch (e) {}
+}
+// temperatures in °F: { air, icw, sea, icwEst } now, or at a picked future time
+function tempsAt(at) {
+  const cur = S.wx && S.wx.current, mc = S.mar && S.mar.current;
+  let air = cur ? +cur.temperature_2m : null, sea = mc && mc.sea_surface_temperature != null ? mc.sea_surface_temperature * 9 / 5 + 32 : null;
+  if (at) { const h = hourlyAt(at); air = h && h.air != null ? h.air : null; const m = marineAt(at); if (m && m.sea != null) sea = m.sea; }
+  let icw = WT.v, est = false;
+  if (icw == null) {                                                     // no sensor: shallow inshore water sits between the ocean and the day's air
+    const dd = S.wx && S.wx.daily, airDay = dd ? (+dd.temperature_2m_max[0] + +dd.temperature_2m_min[0]) / 2 : air;
+    icw = sea != null && airDay != null ? sea + (airDay - sea) * 0.35 : airDay; est = icw != null;
+  }
+  return { air, icw, sea, icwEst: est };
 }
 
 // ------------------------------------------------------------------ lake mode (inland): USGS lake level + water temperature
@@ -666,19 +740,21 @@ function hourlyAt(t) {
     return { i, v: k => h[k] && h[k][i] != null ? (h[k][i + 1] != null ? h[k][i] + (h[k][i + 1] - h[k][i]) * f : h[k][i]) : null, near: k => h[k] ? h[k][f < 0.5 ? i : i + 1] : null }; };
   const a = at(t); if (!a) return null; const b = at(addMin(t, -180));
   const p = a.v('pressure_msl'), p3 = b ? b.v('pressure_msl') : null;
-  return { wind: a.v('wind_speed_10m'), gust: a.v('wind_gusts_10m'), dir: a.near('wind_direction_10m'), code: a.near('weather_code'), pres: p, dp: p != null && p3 != null ? (p - p3) * 0.0295300 : null };
+  return { wind: a.v('wind_speed_10m'), gust: a.v('wind_gusts_10m'), dir: a.near('wind_direction_10m'), code: a.near('weather_code'), air: a.v('temperature_2m'), pres: p, dp: p != null && p3 != null ? (p - p3) * 0.0295300 : null };
 }
 function marineAt(t) {
   const h = S.mar && S.mar.hourly; if (!h || !h.time) return null;
   const off = S.mar.utc_offset_seconds, T = h._t || (h._t = h.time.map(x => parseAt(x, off).getTime())), x = t.getTime();
   let i = T.findIndex(q => q > x) - 1; if (i < 0 || i >= T.length - 1) return null; const f = (x - T[i]) / (T[i + 1] - T[i]);
   const L = k => h[k][i] != null && h[k][i + 1] != null ? h[k][i] + (h[k][i + 1] - h[k][i]) * f : h[k][i];
-  return { wave: L('wave_height'), period: L('wave_period') };
+  const sst = h.sea_surface_temperature ? L('sea_surface_temperature') : null;
+  return { wave: L('wave_height'), period: L('wave_period'), sea: sst != null ? sst * 9 / 5 + 32 : null };
 }
 function scoreBite(offshore) {
   const at = S.at, now = at || new Date(); let sc = 0; const why = []; let cur = S.wx && S.wx.current;
   let dp = S.baroTrend, seaNow = S.mar && S.mar.current ? +S.mar.current.wave_height : null;
-  if (at) { const h = hourlyAt(at); cur = h ? { wind_speed_10m: h.wind, wind_gusts_10m: h.gust, weather_code: h.code } : null; dp = h ? h.dp : null; const m = marineAt(at); seaNow = m && m.wave != null ? m.wave : null; }
+  if (at) { const h = hourlyAt(at); cur = h ? { wind_speed_10m: h.wind, wind_gusts_10m: h.gust, wind_direction_10m: h.dir, weather_code: h.code } : null; dp = h ? h.dp : null; const m = marineAt(at); seaNow = m && m.wave != null ? m.wave : null; }
+  const T = tempsAt(at);
   const solWin = at ? solWinFor(at) : S.solWin, moonEl = at ? moonPos(at).elong : S.moonEl, sun = at ? sunTimes(at, +cfg.lat, +cfg.lon) : { rise: S.sunR, set: S.sunS };
   if (dp !== null) {
     if (dp < -0.08) { sc += 1.0; why.push('Barometer dropping fast: short feeding burst'); }
@@ -693,6 +769,21 @@ function scoreBite(offshore) {
     else if (w <= 18) { sc += 0.7; why.push(`Breezy ${w.toFixed(0)} mph: fish lee shores`); }
     else why.push(`Strong wind ${w.toFixed(0)} mph: rough conditions`); }
   const lake = isLake();
+  if (!lake) {                                                             // water temperature where you fish: intracoastal inshore, ocean offshore
+    const wt = offshore ? T.sea : T.icw, wn = offshore ? 'Ocean' : 'Intracoastal';
+    if (wt != null) {
+      if (wt >= 66 && wt <= 82) { sc += 1.2; why.push(`${wn} ${wt.toFixed(0)}°F: comfortable, fish active`); }
+      else if ((wt >= 58 && wt < 66) || (wt > 82 && wt <= 87)) { sc += 0.6; why.push(`${wn} ${wt.toFixed(0)}°F: fish a little sluggish`); }
+      else { sc += 0.1; why.push(`${wn} ${wt.toFixed(0)}°F: slow bite, fish deep`); }
+      if (T.air != null && T.air < wt - 12) { sc -= 0.3; why.push(`Air ${T.air.toFixed(0)}°F, far below the water: cold-front slowdown`); }
+    }
+  }
+  const late = [];                                                         // minor factors: listed after the big ones
+  if (T.air != null) { if (T.air < 45) { sc -= 0.4; late.push(`Cold air ${T.air.toFixed(0)}°F: slow bite, fish midday`); } else if (T.air > 94) { sc -= 0.3; late.push(`Hot ${T.air.toFixed(0)}°F: fish early and late`); } }
+  if (cur && cur.wind_direction_10m != null) { const dir = +cur.wind_direction_10m;
+    if (dir >= 225 && dir <= 315) { sc += 0.4; late.push(`Wind from the ${compass16(dir)}: settled water, good bite`); }
+    else if (dir >= 45 && dir <= 135) { sc -= 0.3; late.push(`Wind from the ${compass16(dir)}: stirred-up water, slower bite`); } }
+  if (cur && cur.wind_gusts_10m != null && +cur.wind_gusts_10m - +cur.wind_speed_10m >= 12) { sc -= 0.3; late.push(`Gusty: ${Math.round(+cur.wind_gusts_10m)} mph gusts`); }
   if (lake) {
     const Lt = lastV(LAKE.tmp), dl = change24(LAKE.lvl), dt = change24(LAKE.tmp);
     if (Lt) { const w = Lt[1];
@@ -717,7 +808,8 @@ function scoreBite(offshore) {
   if (moonEl !== null) { const e = moonEl; if (e < 36 || e > 324 || (e > 144 && e < 216)) { sc += 1.0; why.push('Near new/full moon: strong tides, active fish'); } else sc += 0.5; }
   if (sun && sun.rise && sun.set) { if (Math.abs(now - sun.rise) / 60000 <= 75 || Math.abs(now - sun.set) / 60000 <= 75) { sc += 1.0; why.push('Dawn/dusk low light: prime feeding'); }
     else if (now > sun.rise && now < sun.set) sc += 0.3; else sc += 0.5; }
-  if (cur && +cur.weather_code >= 95) { sc -= 3; why.push('THUNDERSTORMS: get off the water'); }
+  why.push(...late);
+  if (cur && +cur.weather_code >= 95) { sc -= 3; why.unshift('THUNDERSTORMS: get off the water'); }
   if (!lake && offshore && seaNow != null && seaNow > 5) { sc = Math.min(sc, 2.5); why.push('Seas over 5 ft: small craft caution'); }
   return { score: Math.max(0, Math.min(10, Math.round(sc * 10) / 10)), why };
 }
@@ -884,8 +976,9 @@ function updateView() {
     if (ph.length >= 2 && ph[0] != null) { dp = (+cur.pressure_msl - +ph[0]) * 0.0295300; trend = dp > 0.02 ? 'RISING' : dp < -0.02 ? 'FALLING' : 'STEADY'; }
     S.baroTrend = dp;
     dBaro.set(inHg, null, `${inHg.toFixed(2)} inHg${trend ? ' · ' + trend.toLowerCase() : ''}`);
-    dWind.set(+cur.wind_speed_10m, +cur.wind_gusts_10m, `${Math.round(cur.wind_speed_10m)} mph · gusts ${Math.round(cur.wind_gusts_10m)}`);
-    dDir.set(+cur.wind_direction_10m, `from ${compass16(+cur.wind_direction_10m)} · ${Math.round(cur.wind_speed_10m)} mph`);
+    dDir.set(+cur.wind_direction_10m, `${compass16(+cur.wind_direction_10m)} ${Math.round(cur.wind_speed_10m)} · gusts ${Math.round(cur.wind_gusts_10m)} mph`, +cur.wind_speed_10m, +cur.wind_gusts_10m);
+    if (isLake()) { const Lt = lastV(LAKE.tmp); dTemp.set(+cur.temperature_2m, Lt ? Lt[1] : null, null, false, 'lake'); }
+    else { const T = tempsAt(null); dTemp.set(T.air, T.icw, T.sea, T.icwEst); }
     const d = wx.daily;
     drawWx($('iconTom'), +d.weather_code[1], true, 72);
     $('tempTom').textContent = `${Math.round(d.temperature_2m_max[1])}° / ${Math.round(d.temperature_2m_min[1])}°`;
@@ -906,10 +999,10 @@ function updateView() {
 }
 
 // ------------------------------------------------------------------ refresh cycle: weather every 15 min, tides every 3 h, moon every 30 min
-let lastWx = 0, lastTide = 0, lastMoon = 0;
+let lastWx = 0, lastTide = 0, lastMoon = 0, lastWt = 0;
 async function cycle(force) {
   const now = Date.now(); S.err = [];
-  if (force || now - lastWx > 15 * 60000) { await loadWeather(); lastWx = now; }
+  if (force || now - lastWx > 15 * 60000) { await Promise.all([loadWeather(), force || now - lastWt > 30 * 60000 ? loadWaterTemp().then(() => { lastWt = now; }) : null]); lastWx = now; }
   if (isLake()) { if (force || now - lastTide > 3600000) { await loadLake(); lastTide = now; } }
   else if (force || now - lastTide > 3 * 3600000) { await loadTides(); lastTide = now; }
   if (force || now - lastMoon > 30 * 60000) { updateMoon(); lastMoon = now; }
@@ -918,8 +1011,7 @@ async function cycle(force) {
 }
 S.icw = JSON.parse(localStorage.getItem('dxtide2_icw') || 'null'); S.oce = JSON.parse(localStorage.getItem('dxtide2_oce') || 'null');
 whenInit(); updateMoon(); updateView(); cycle(true);
-setInterval(() => { cycle(false); whenTick(); }, 60000);
-setInterval(() => { if (!isLake()) drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw); if (!isLake()) drawTide('plotOce', 'infoOce', 'listOce', S.oce); }, 60000);
+setInterval(() => { if (document.hidden) return; cycle(false); whenTick(); }, 60000);   // one timer; it rests while the app is in the background (updateView redraws the tides)
 document.addEventListener('visibilitychange', () => { if (!document.hidden) cycle(Date.now() - lastWx > 5 * 60000); });
 $('status').addEventListener('click', () => cycle(true));
 
