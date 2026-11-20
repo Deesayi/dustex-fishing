@@ -26,7 +26,7 @@ What goes into the score: a slowly falling barometer (fish feed) versus a fast r
 
 ## Forecast for a future time
 
-**FORECAST FOR**, in the middle of the bottom panel, shows the fishing at another time, up to three days ahead. Pick a **day** from the menu and drag the **time slider**. The bite dials, the reasons and **Best times** then show that day and time, using the hourly forecast for barometer trend, wind, storms and seas, plus the predicted tide, solunar periods, moon phase, and dawn and dusk. The slider track maps the day: the light band is daylight, bright gold marks are major solunar periods and paler marks are minor ones (with a red line for right now on today's track). Press **NOW** to go back to live conditions; a picked time that arrives returns to live by itself.
+**FORECAST FOR**, in the middle of the bottom panel, shows the fishing at another time, up to three days ahead. Pick a **day** from the menu and drag the **time slider**. The bite dials, the reasons and **Best times** then show that day and time, using the hourly forecast for barometer trend, wind, storms and seas, plus the predicted tide, solunar periods, moon phase, and dawn and dusk. If the picked time falls inside a fishing window, Best times highlights it in green. Press **NOW** to go back to live conditions; a picked time that arrives returns to live by itself.
 
 ## Lake mode (freshwater)
 

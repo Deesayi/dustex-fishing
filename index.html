@@ -117,7 +117,6 @@
   .wbtn { height:26px; line-height:24px; padding:0 14px; border-radius:13px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); color:var(--dim); font-size:11px; letter-spacing:.22em; cursor:pointer; }
   .wbtn.on { border-color:var(--gold); color:var(--gold); box-shadow:0 0 8px rgba(216,180,106,.3); }
   #whenTrack { position:absolute; left:5px; top:88px; width:268px; height:30px; cursor:pointer; touch-action:none; }
-  #whenBand { position:absolute; left:0; top:0; }
   #whenGroove { position:absolute; left:0; right:0; top:15px; height:6px; border-radius:3px; background:#050607; box-shadow:inset 0 1px 2px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.06); overflow:hidden; }
   #whenFill { position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg, rgba(147,217,180,.15), rgba(147,217,180,.55)); }
   #whenKnob { position:absolute; top:3px; width:30px; height:30px; margin-left:-15px; background:url(knob.png) center/contain no-repeat; filter:drop-shadow(0 2px 3px rgba(0,0,0,.6)); pointer-events:none; }
@@ -231,7 +230,7 @@
       <div class="lbl" style="left:0;top:8px">FORECAST FOR</div>
       <div id="whenRead">LIVE</div>
       <div class="wrow"><select id="whenDay" title="Pick a day (up to 3 days ahead)"></select><div id="whenNow" class="wbtn" title="Back to right now">NOW</div></div>
-      <div id="whenTrack" title="Drag to pick a time: gold bands are solunar periods, the light band is daylight"><svg id="whenBand" width="268" height="10"></svg><div id="whenGroove"><div id="whenFill"></div></div><div id="whenKnob"></div></div>
+      <div id="whenTrack" title="Drag to pick a time (or use the mouse wheel)"><div id="whenGroove"><div id="whenFill"></div></div><div id="whenKnob"></div></div>
       <div id="whenTicks"><span>12a</span><span>6a</span><span>12p</span><span>6p</span><span>12a</span></div>
     </div>
   </div>
@@ -259,7 +258,7 @@
 
   <h4>Forecast for a future time</h4>
   <p><b>FORECAST FOR</b> (in the middle of the bottom panel) lets you see how the fishing looks at another time, up to three days ahead. Pick a <b>day</b> from the menu and drag the <b>time slider</b> (or use the mouse wheel over it). The <b>Fishing Forecast</b> gauges, the reasons and <b>Best Times</b> then show that day and time, and their titles show the date you picked.</p>
-  <p>The slider track is a small map of the day: the light band is <b>daylight</b>, the bright gold marks are <b>major solunar</b> periods and the paler ones are <b>minor</b> periods. On today's track a red line marks right now. If the time you pick falls inside a fishing window, that window is highlighted in green in Best Times.</p>
+  <p>If the time you pick falls inside a fishing window, that window is highlighted in green in Best Times.</p>
   <p>The future scores use the hourly forecast for that hour: barometer trend, wind, storms, sea height offshore, the predicted tide, the solunar periods, the moon phase, and dawn and dusk. Press <b>NOW</b> to go back to live conditions. A picked time that arrives goes back to live by itself. The rest of the screen (Now, the four gauges, tides, moon) always shows the present. In lake mode, the lake level and water temperature can't be forecast, so the latest readings are used.</p>
 
   <h4>Fishing forecast</h4>
@@ -834,11 +833,6 @@ function whenPaint() {
   $('whenKnob').style.left = (5 + x) + 'px'; $('whenFill').style.width = x + 'px'; $('whenDay').value = W.day;
   $('whenNow').classList.toggle('on', !S.at);
   $('whenRead').innerHTML = S.at ? `${W.day ? dayName(S.at) : 'Today'}  ·  ${hm(S.at)}` : `<b>LIVE</b>Right now  ·  ${hm(new Date())}`;
-  const svg = $('whenBand'); svg.innerHTML = ''; const X = t => Math.max(0, Math.min(w, (t - d0) / 86400000 * w));
-  const st = sunTimes(d0, +cfg.lat, +cfg.lon);
-  if (st) el('rect', { x: X(st.rise), y: 3, width: X(st.set) - X(st.rise), height: 4, rx: 2, fill: 'rgba(240,226,190,.16)' }, svg);
-  for (const s2 of solWinFor(d0)) el('rect', { x: X(s2.a), y: 2, width: Math.max(2, X(s2.b) - X(s2.a)), height: 6, rx: 2, fill: s2.k === 'MAJOR' ? 'rgba(216,180,106,.85)' : 'rgba(216,180,106,.42)' }, svg);
-  if (W.day === 0) el('rect', { x: X(new Date()) - 0.75, y: 0, width: 1.5, height: 10, fill: '#e0605a' }, svg);
 }
 function whenInit() {
   whenFill(); W.min = nowMin();
