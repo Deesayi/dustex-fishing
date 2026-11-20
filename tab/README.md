@@ -23,7 +23,7 @@ studio live and your touches play it, while the sound, the guitar input and the 
 2. On the iPad, open Safari at `http://<pc-name>.local:8790` (right-click the widget > **iPad link...** shows the address)
    and type the 6-digit code once. Share > **Add to Home Screen** keeps it as an app.
 
-One finger works like the mouse (tap, drag knobs and faders, double-tap), two fingers scroll, and the keyboard button types.
+The PC widget stays in its dock (or full screen) and the iPad mirrors it. One finger works like the mouse (tap, drag knobs and faders, double-tap), two fingers pinch to zoom and move the picture, ⤢ fits it again, and the keyboard button types.
 `remote.html` is the iPad page; it is served by the PC, not by this site.
 
 Chord and note detection uses Spotify's open-source Basic Pitch model (Apache-2.0 licence, see `vendor/LICENSE-basic-pitch.txt`).

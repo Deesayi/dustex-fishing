@@ -13,7 +13,7 @@
 <style>
   html, body { margin: 0; height: 100%; background: #0e0f12; overflow: hidden; overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   body { font: 15px -apple-system, "Segoe UI", sans-serif; color: #e2c480; }
-  #view { position: fixed; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain; touch-action: none; display: block; }
+  #view { position: fixed; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain; transform-origin: 0 0; touch-action: none; display: block; }
   #pad { position: fixed; inset: 0; touch-action: none; }
   .tools { position: fixed; left: 10px; bottom: 10px; display: flex; gap: 8px; z-index: 5; }
   .tools button { width: 38px; height: 38px; border-radius: 19px; border: 1px solid rgba(226, 196, 128, .45); background: rgba(14, 15, 18, .55); color: #e2c480; font-size: 18px; opacity: .55; }
@@ -31,7 +31,7 @@
 <body>
 <img id="view" alt="">
 <div id="pad"></div>
-<div class="tools"><button id="bKb" title="Keyboard">⌨</button><button id="bRe" title="Reconnect">⟳</button></div>
+<div class="tools"><button id="bKb" title="Keyboard">⌨</button><button id="bFit" title="Fit the whole studio">⤢</button><button id="bRe" title="Reconnect">⟳</button></div>
 <input id="kb" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <div id="cover">
   <img src="/icon.png" alt="">
@@ -69,11 +69,11 @@ function hello() { send({ t: 'hello', w: VW, h: VH, dpr: devicePixelRatio || 1 }
 let rz = 0; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(hello, 250); });
 
 // frames: show the newest, skip any that arrive while one is still decoding
-let busy = false, next = null, url = '';
+let busy = false, next = null, url = '', NW = 0, NH = 0;           // NW/NH: size of the last picture shown (steady while the next one decodes)
 function show(blob) {
   if (busy) { next = blob; return; }
   busy = true; const u = URL.createObjectURL(blob);
-  view.onload = view.onerror = () => { if (url) URL.revokeObjectURL(url); url = u; busy = false; if (next) { const b = next; next = null; show(b); } };
+  view.onload = view.onerror = () => { if (view.naturalWidth) { NW = view.naturalWidth; NH = view.naturalHeight; } if (url) URL.revokeObjectURL(url); url = u; busy = false; if (next) { const b = next; next = null; show(b); } };
   view.src = u;
 }
 
@@ -96,38 +96,52 @@ async function keepAwake() { try { if ('wakeLock' in navigator && !lock) { lock 
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { connect(); keepAwake(); } });
 $('bRe').onclick = () => { if (ws) ws.close(); else connect(); };
 
-// touch: one finger = the mouse (press, drag, release; quick second tap = double-click); two fingers = scroll
-const pts = new Map(); let mode = '', held = null, heldT = 0, lastUp = { t: 0, x: 0, y: 0 }, clicks = 1, cx = 0, cy = 0;
+// zoom: two fingers pinch and move the picture (only on the iPad: the PC is not touched); ⤢ fits it again
+let Z = 1, TX = 0, TY = 0;
+function applyZoom() {
+  const r0 = { w: innerWidth, h: innerHeight };
+  Z = Math.max(1, Math.min(5, Z));
+  TX = Math.min(0, Math.max(r0.w - r0.w * Z, TX)); TY = Math.min(0, Math.max(r0.h - r0.h * Z, TY));
+  view.style.transform = Z === 1 ? '' : `translate(${TX}px, ${TY}px) scale(${Z})`;
+}
+$('bFit').onclick = () => { Z = 1; TX = 0; TY = 0; applyZoom(); };
+addEventListener('resize', applyZoom);
+// touch: one finger = the mouse (press, drag, release; quick second tap = double-click); two fingers = zoom and move the picture
+const pts = new Map(), raw = new Map(); let mode = '', held = null, heldT = 0, lastUp = { t: 0, x: 0, y: 0 }, clicks = 1, g0 = null;
 const at = e => {                                                         // where the finger is on the PC page: the picture is fitted (letterboxed) into the screen
-  const r = view.getBoundingClientRect(), nw = view.naturalWidth || VW, nh = view.naturalHeight || VH;
+  const r = view.getBoundingClientRect(), nw = NW || VW, nh = NH || VH;
   const k = Math.min(r.width / nw, r.height / nh) || 1, cw = nw * k, ch = nh * k, ox = r.left + (r.width - cw) / 2, oy = r.top + (r.height - ch) / 2;
   const x = Math.max(0, Math.min(VW - 1, (e.clientX - ox) * VW / cw)), y = Math.max(0, Math.min(VH - 1, (e.clientY - oy) * VH / ch));
   return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 };
 };
-function centroid() { let x = 0, y = 0; pts.forEach(p => { x += p.x; y += p.y; }); return { x: x / pts.size, y: y / pts.size }; }
+function gest() { const a = [...raw.values()]; return { x: (a[0].x + a[1].x) / 2, y: (a[0].y + a[1].y) / 2, d: Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y) || 1 }; }
 function press(p) {
   const near = performance.now() - lastUp.t < 350 && Math.hypot(p.x - lastUp.x, p.y - lastUp.y) < 24;
   clicks = near ? 2 : 1; send({ t: 'm', x: p.x, y: p.y }); send({ t: 'd', x: p.x, y: p.y, n: clicks }); mode = 'mouse';
 }
 pad.addEventListener('pointerdown', e => {
-  e.preventDefault(); pad.setPointerCapture(e.pointerId); pts.set(e.pointerId, at(e));
+  e.preventDefault(); pad.setPointerCapture(e.pointerId); pts.set(e.pointerId, at(e)); raw.set(e.pointerId, { x: e.clientX, y: e.clientY });
   if (pts.size === 1) { held = at(e); heldT = setTimeout(() => { if (held) { press(held); held = null; } }, 45); mode = 'wait'; }
   else if (pts.size === 2) {
     if (mode === 'wait') { clearTimeout(heldT); held = null; }
-    else if (mode === 'mouse') { const p = centroid(); send({ t: 'u', x: p.x, y: p.y, n: clicks }); }
-    mode = 'scroll'; const c = centroid(); cx = c.x; cy = c.y;
+    else if (mode === 'mouse') { const p = [...pts.values()][0]; send({ t: 'u', x: p.x, y: p.y, n: clicks }); }
+    mode = 'zoom'; g0 = Object.assign(gest(), { Z, TX, TY });
   }
 });
 pad.addEventListener('pointermove', e => {
-  if (!pts.has(e.pointerId)) return; e.preventDefault(); pts.set(e.pointerId, at(e));
+  if (!pts.has(e.pointerId)) return; e.preventDefault(); raw.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (mode !== 'zoom') pts.set(e.pointerId, at(e));
   if (mode === 'wait' && held) { clearTimeout(heldT); press(held); held = null; }
   if (mode === 'mouse') { const p = at(e); send({ t: 'm', x: p.x, y: p.y }); }
-  else if (mode === 'scroll' && pts.size >= 2) { const c = centroid(); send({ t: 'w', x: c.x, y: c.y, dx: (cx - c.x) * 2, dy: (cy - c.y) * 2 }); cx = c.x; cy = c.y; }
+  else if (mode === 'zoom' && raw.size >= 2) {
+    const g = gest(), z = Math.max(1, Math.min(5, g0.Z * g.d / g0.d));
+    TX = g.x - (g0.x - g0.TX) * z / g0.Z; TY = g.y - (g0.y - g0.TY) * z / g0.Z; Z = z; applyZoom();
+  }
 });
 function lift(e) {
-  if (!pts.has(e.pointerId)) return; const p = at(e); pts.delete(e.pointerId);
+  if (!pts.has(e.pointerId)) return; const p = at(e); pts.delete(e.pointerId); raw.delete(e.pointerId);
   if (mode === 'wait' && held) { clearTimeout(heldT); press(held); held = null; }
   if (mode === 'mouse') { send({ t: 'u', x: p.x, y: p.y, n: clicks }); lastUp = { t: performance.now(), x: p.x, y: p.y }; mode = ''; }
+  if (mode === 'zoom' && pts.size < 2) mode = pts.size ? 'done' : '';   // lifting one finger after a pinch doesn't click
   if (pts.size === 0) mode = '';
 }
 pad.addEventListener('pointerup', lift); pad.addEventListener('pointercancel', lift);

@@ -98,19 +98,7 @@ function Fill-Screen {   # full screen on the monitor the widget sits on
     $wnd.Left = $bnd.Left * $m.M11; $wnd.Top = $bnd.Top * $m.M22; $wnd.Width = $fw; $wnd.Height = $fh
     $wnd.Topmost = $true; [void]$wnd.Activate()
 }
-function Dock-Remote {   # iPad connected: the page is laid out at the iPad's size and shown scaled to fit the port, centred
-    $m = [Windows.PresentationSource]::FromVisual($wnd).CompositionTarget.TransformFromDevice
-    $wm = Get-WallpaperMap
-    $w = [double]$script:rW; $h = [double]$script:rH
-    $k = [math]::Min($PW * $wm.S / $w, $PH * $wm.S / $h)                  # device pixels per page pixel
-    $view.Width = $w; $view.Height = $h; $holder.Width = $w; $holder.Height = $h
-    $holder.LayoutTransform = New-Object Windows.Media.ScaleTransform(($k * $m.M11), ($k * $m.M22))
-    $wnd.Width = $w * $k * $m.M11; $wnd.Height = $h * $k * $m.M22
-    $wnd.Left = ($wm.X + ([double]$port.X0 + 2) * $wm.S + ($PW * $wm.S - $w * $k) / 2) * $m.M11
-    $wnd.Top = ($wm.Y + ([double]$port.Y0 + 2) * $wm.S + ($PH * $wm.S - $h * $k) / 2) * $m.M22
-    $wnd.Topmost = $false
-}
-function Apply-Layout { if ($script:isFull) { Fill-Screen } elseif ($script:rOn) { Dock-Remote } else { Dock-Window } }
+function Apply-Layout { if ($script:isFull) { Fill-Screen } else { Dock-Window } }   # the iPad never changes the PC layout: it mirrors whatever the PC shows
 $script:isFull = $false; $script:rOn = $false; $script:rW = 1180; $script:rH = 820
 $wnd.Add_SourceInitialized({ Dock-Window })
 
@@ -219,15 +207,16 @@ function Check-Cdp {   # report any DevTools call the browser refused (once per 
         }
     }
 }
+$NUDGE = "(()=>{let d=document.getElementById('dxNudge');if(!d){d=document.createElement('div');d.id='dxNudge';d.style.cssText='position:fixed;left:0;top:0;width:2px;height:2px;pointer-events:none;z-index:2147483647;background:#000;opacity:.01';document.body.appendChild(d)}d.style.opacity=d.style.opacity==='0.01'?'0.02':'0.01'})()"
+function Nudge-Paint { Cdp 'Runtime.evaluate' @{ expression = $NUDGE } }   # the screencast only sends a frame when something paints: make sure a still page sends one
 function Remote-Start($w, $h, $dpr) {
-    # the widget's page takes the iPad's shape (so nothing is cut off on either screen); the page itself is never bent
+    # the PC widget stays exactly as it is (in its dock, or full screen); the iPad shows the same view, fitted, and can zoom in
     $script:rW = [int][math]::Max([double]480, [math]::Min([double]2000, [double]$w)); $script:rH = [int][math]::Max([double]360, [math]::Min([double]2000, [double]$h))
     $dsf = [math]::Round([math]::Max([double]1.0, [math]::Min([double]1.5, [double]$dpr)), 2)            # sharp on the iPad, light on the network
     $script:rOn = $true
-    Apply-Layout
     Cdp 'Emulation.setDeviceMetricsOverride' @{ width = 0; height = 0; deviceScaleFactor = $dsf; mobile = $false }   # 0 = keep the real size, only render sharper
     Cdp 'Page.startScreencast' @{ format = 'jpeg'; quality = 72; maxWidth = 2400; maxHeight = 1800; everyNthFrame = 2 }
-    Reply @{ type = 'fullscreen'; on = $true }                                             # the full studio layout
+    Nudge-Paint
     $tick.Interval = [TimeSpan]::FromMilliseconds(12); Write-Log "ipad view $($script:rW)x$($script:rH) @$dsf"
 }
 function Remote-Stop {
@@ -235,8 +224,7 @@ function Remote-Stop {
     if ($script:rDown) { Cdp 'Input.dispatchMouseEvent' @{ type = 'mouseReleased'; x = 1; y = 1; button = 'left'; buttons = 0; clickCount = 1 } }
     $script:rOn = $false; $script:rDown = $false
     Cdp 'Page.stopScreencast' @{}; Cdp 'Emulation.clearDeviceMetricsOverride' @{}
-    $RM.frame = $null; Apply-Layout
-    Reply @{ type = 'fullscreen'; on = $script:isFull }
+    $RM.frame = $null
     $tick.Interval = [TimeSpan]::FromMilliseconds(250); Write-Log 'ipad view closed'
 }
 $KEYCODES = @{ Backspace = 8; Tab = 9; Enter = 13; Escape = 27; ' ' = 32; ArrowLeft = 37; ArrowUp = 38; ArrowRight = 39; ArrowDown = 40; Delete = 46 }
@@ -275,7 +263,6 @@ function On-Message($raw) {
     $msg = $raw | ConvertFrom-Json
     switch ($msg.cmd) {
         'hello' {
-            if ($script:rOn) { Reply @{ type = 'fullscreen'; on = $true } }
             $as = Join-Path $appDir '_autosave.dxtab'
             if (Test-Path $as) { Reply @{ type = 'autosave'; json = [IO.File]::ReadAllText($as, $utf8) } }
         }
@@ -308,8 +295,8 @@ function On-Message($raw) {
         'folder' { Start-Process explorer.exe "`"$here`"" }
         'fullscreen' {   # the page asks to fill the screen (full-page layout) or go back to the dock
             $script:isFull = [bool]$msg.on
-            Apply-Layout                                                       # with the iPad on, leaving full screen goes back to the iPad-shaped dock
-            Write-Log "fullscreen $($script:isFull)"; Reply @{ type = 'fullscreen'; on = ($script:isFull -or $script:rOn) }
+            Apply-Layout
+            Write-Log "fullscreen $($script:isFull)"; Reply @{ type = 'fullscreen'; on = $script:isFull }
         }
         'take' {   # chords + notes mode: keep the audio and what was detected, so a take can be checked later
             $tkDir = Join-Path $here 'Takes'; if (-not (Test-Path $tkDir)) { [void](New-Item -ItemType Directory -Path $tkDir) }
