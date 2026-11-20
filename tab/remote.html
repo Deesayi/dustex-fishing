@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tab Studio PC">
+<meta name="theme-color" content="#0e0f12">
+<link rel="apple-touch-icon" href="/icon.png">
+<title>DUSTEX Tab Studio · PC</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0e0f12; overflow: hidden; overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+  body { font: 15px -apple-system, "Segoe UI", sans-serif; color: #e2c480; }
+  #view { position: fixed; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain; touch-action: none; display: block; }
+  #pad { position: fixed; inset: 0; touch-action: none; }
+  .tools { position: fixed; left: 10px; bottom: 10px; display: flex; gap: 8px; z-index: 5; }
+  .tools button { width: 38px; height: 38px; border-radius: 19px; border: 1px solid rgba(226, 196, 128, .45); background: rgba(14, 15, 18, .55); color: #e2c480; font-size: 18px; opacity: .55; }
+  .tools button:active { opacity: 1; }
+  #kb { position: fixed; left: -1000px; top: 0; width: 10px; height: 10px; opacity: 0; font-size: 16px; }
+  #cover { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: radial-gradient(#22181a, #0e0f12 70%); z-index: 9; text-align: center; padding: 20px; }
+  #cover img { width: 96px; height: 96px; border-radius: 22px; box-shadow: 0 6px 24px #000; }
+  #cover h1 { margin: 0; font: 600 26px Georgia, serif; letter-spacing: 3px; }
+  #cover p { margin: 0; color: #a9a39a; max-width: 420px; line-height: 1.45; }
+  #code { font: 600 30px ui-monospace, Menlo, monospace; letter-spacing: 10px; text-align: center; width: 240px; padding: 10px; border-radius: 10px; border: 1px solid #b08a3c; background: #15161a; color: #f3dfaa; }
+  #go { padding: 10px 34px; border-radius: 22px; border: 0; background: linear-gradient(#e7c97f, #a8823a); color: #1a1408; font: 600 17px -apple-system, sans-serif; }
+  .hide { display: none !important; }
+</style>
+</head>
+<body>
+<img id="view" alt="">
+<div id="pad"></div>
+<div class="tools"><button id="bKb" title="Keyboard">⌨</button><button id="bRe" title="Reconnect">⟳</button></div>
+<input id="kb" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+<div id="cover">
+  <img src="/icon.png" alt="">
+  <h1>TAB CREATOR STUDIO</h1>
+  <p id="msg">Type the 6-digit code from the PC<br><small>(right-click the Tab widget › iPad link…)</small></p>
+  <input id="code" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
+  <button id="go">Connect</button>
+</div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const view = $('view'), pad = $('pad'), cover = $('cover'), msg = $('msg');
+let code = localStorage.getItem('dxcode') || '', ws = null, wait = 500, timer = 0, lock = null, live = false;
+
+function showCover(text, ask) {
+  cover.classList.remove('hide'); msg.innerHTML = text;
+  $('code').classList.toggle('hide', !ask); $('go').classList.toggle('hide', !ask);
+  if (ask) setTimeout(() => $('code').focus(), 200);
+}
+async function tryCode() {
+  const c = $('code').value.replace(/\D/g, '');
+  if (c.length !== 6) return;
+  try {
+    const r = await fetch('/check?code=' + c, { cache: 'no-store' });
+    if ((await r.text()) === 'ok') { code = c; localStorage.setItem('dxcode', c); connect(); }
+    else showCover('That code didn’t match. Check the PC and try again.', true);
+  } catch (e) { showCover('Can’t reach the PC. Is the Tab widget running?', true); }
+}
+$('go').onclick = tryCode;
+$('code').addEventListener('input', () => { if ($('code').value.replace(/\D/g, '').length === 6) tryCode(); });
+
+function send(o) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(o)); }
+let VW = innerWidth, VH = innerHeight;                                   // the size the PC page is laid out at (the PC tells us with each change)
+function hello() { send({ t: 'hello', w: VW, h: VH, dpr: devicePixelRatio || 1 }); }
+let rz = 0; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(hello, 250); });
+
+// frames: show the newest, skip any that arrive while one is still decoding
+let busy = false, next = null, url = '';
+function show(blob) {
+  if (busy) { next = blob; return; }
+  busy = true; const u = URL.createObjectURL(blob);
+  view.onload = view.onerror = () => { if (url) URL.revokeObjectURL(url); url = u; busy = false; if (next) { const b = next; next = null; show(b); } };
+  view.src = u;
+}
+
+function connect() {
+  clearTimeout(timer);
+  if (!code) return showCover('Type the 6-digit code from the PC<br><small>(right-click the Tab widget › iPad link…)</small>', true);
+  if (ws && ws.readyState <= 1) return;
+  if (!live) showCover('Connecting to the PC…', false);
+  ws = new WebSocket(`ws://${location.host}/ws?code=${code}`); ws.binaryType = 'blob';
+  ws.onopen = () => { wait = 500; live = true; cover.classList.add('hide'); hello(); keepAwake(); };
+  ws.onmessage = e => { if (typeof e.data !== 'string') return show(e.data); try { const m = JSON.parse(e.data); if (m.t === 'size') { VW = m.w; VH = m.h; } } catch (x) {} };
+  ws.onclose = () => {
+    ws = null;
+    if (!live) { fetch('/check?code=' + code, { cache: 'no-store' }).then(r => r.text()).then(t => { if (t !== 'ok') { code = ''; localStorage.removeItem('dxcode'); showCover('The code changed. Type the new one from the PC.', true); } }).catch(() => {}); }
+    live = false; showCover('Lost the PC. Reconnecting…', false);
+    timer = setTimeout(connect, wait); wait = Math.min(wait * 2, 5000);
+  };
+}
+async function keepAwake() { try { if ('wakeLock' in navigator && !lock) { lock = await navigator.wakeLock.request('screen'); lock.addEventListener('release', () => { lock = null; }); } } catch (e) {} }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { connect(); keepAwake(); } });
+$('bRe').onclick = () => { if (ws) ws.close(); else connect(); };
+
+// touch: one finger = the mouse (press, drag, release; quick second tap = double-click); two fingers = scroll
+const pts = new Map(); let mode = '', held = null, heldT = 0, lastUp = { t: 0, x: 0, y: 0 }, clicks = 1, cx = 0, cy = 0;
+const at = e => {                                                         // where the finger is on the PC page: the picture is fitted (letterboxed) into the screen
+  const r = view.getBoundingClientRect(), nw = view.naturalWidth || VW, nh = view.naturalHeight || VH;
+  const k = Math.min(r.width / nw, r.height / nh) || 1, cw = nw * k, ch = nh * k, ox = r.left + (r.width - cw) / 2, oy = r.top + (r.height - ch) / 2;
+  const x = Math.max(0, Math.min(VW - 1, (e.clientX - ox) * VW / cw)), y = Math.max(0, Math.min(VH - 1, (e.clientY - oy) * VH / ch));
+  return { x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 };
+};
+function centroid() { let x = 0, y = 0; pts.forEach(p => { x += p.x; y += p.y; }); return { x: x / pts.size, y: y / pts.size }; }
+function press(p) {
+  const near = performance.now() - lastUp.t < 350 && Math.hypot(p.x - lastUp.x, p.y - lastUp.y) < 24;
+  clicks = near ? 2 : 1; send({ t: 'm', x: p.x, y: p.y }); send({ t: 'd', x: p.x, y: p.y, n: clicks }); mode = 'mouse';
+}
+pad.addEventListener('pointerdown', e => {
+  e.preventDefault(); pad.setPointerCapture(e.pointerId); pts.set(e.pointerId, at(e));
+  if (pts.size === 1) { held = at(e); heldT = setTimeout(() => { if (held) { press(held); held = null; } }, 45); mode = 'wait'; }
+  else if (pts.size === 2) {
+    if (mode === 'wait') { clearTimeout(heldT); held = null; }
+    else if (mode === 'mouse') { const p = centroid(); send({ t: 'u', x: p.x, y: p.y, n: clicks }); }
+    mode = 'scroll'; const c = centroid(); cx = c.x; cy = c.y;
+  }
+});
+pad.addEventListener('pointermove', e => {
+  if (!pts.has(e.pointerId)) return; e.preventDefault(); pts.set(e.pointerId, at(e));
+  if (mode === 'wait' && held) { clearTimeout(heldT); press(held); held = null; }
+  if (mode === 'mouse') { const p = at(e); send({ t: 'm', x: p.x, y: p.y }); }
+  else if (mode === 'scroll' && pts.size >= 2) { const c = centroid(); send({ t: 'w', x: c.x, y: c.y, dx: (cx - c.x) * 2, dy: (cy - c.y) * 2 }); cx = c.x; cy = c.y; }
+});
+function lift(e) {
+  if (!pts.has(e.pointerId)) return; const p = at(e); pts.delete(e.pointerId);
+  if (mode === 'wait' && held) { clearTimeout(heldT); press(held); held = null; }
+  if (mode === 'mouse') { send({ t: 'u', x: p.x, y: p.y, n: clicks }); lastUp = { t: performance.now(), x: p.x, y: p.y }; mode = ''; }
+  if (pts.size === 0) mode = '';
+}
+pad.addEventListener('pointerup', lift); pad.addEventListener('pointercancel', lift);
+document.addEventListener('gesturestart', e => e.preventDefault());
+
+// keyboard: the iPad's own keyboard types into whatever is focused on the PC
+const kb = $('kb'); kb.value = ' ';
+$('bKb').onclick = () => { if (document.activeElement === kb) kb.blur(); else { kb.value = ' '; kb.focus(); } };
+kb.addEventListener('beforeinput', e => {
+  e.preventDefault();
+  if (e.inputType === 'insertText' && e.data) send({ t: 'text', s: e.data });
+  else if (e.inputType === 'deleteContentBackward') send({ t: 'key', k: 'Backspace' });
+  else if (e.inputType === 'insertLineBreak' || e.inputType === 'insertParagraph') send({ t: 'key', k: 'Enter' });
+});
+kb.addEventListener('keydown', e => {
+  const keys = ['Enter', 'Escape', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete'];
+  if (keys.includes(e.key)) { e.preventDefault(); send({ t: 'key', k: e.key }); }
+});
+kb.addEventListener('input', () => { kb.value = ' '; });
+
+connect();
+</script>
+</body>
+</html>

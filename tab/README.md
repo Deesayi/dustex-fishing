@@ -14,6 +14,18 @@ Features:
 - A mixer with room reverb, plate, tempo delay and tape echo, and an LED meter bridge for every channel.
 - Save, print or make a PDF of your tabs.
 
+## iPad link (control the PC studio from an iPad)
+
+The desktop widget (`desktop/TabWidget.ps1`) includes a small web server for your home network. The iPad shows the running
+studio live and your touches play it, while the sound, the guitar input and the listening all stay on the PC.
+
+1. On the PC, run `desktop/Set up iPad Link.cmd` once (it allows port 8790 on private networks only).
+2. On the iPad, open Safari at `http://<pc-name>.local:8790` (right-click the widget > **iPad link...** shows the address)
+   and type the 6-digit code once. Share > **Add to Home Screen** keeps it as an app.
+
+One finger works like the mouse (tap, drag knobs and faders, double-tap), two fingers scroll, and the keyboard button types.
+`remote.html` is the iPad page; it is served by the PC, not by this site.
+
 Chord and note detection uses Spotify's open-source Basic Pitch model (Apache-2.0 licence, see `vendor/LICENSE-basic-pitch.txt`).
 
 The "Creator Studio" lettering uses the Great Vibes font (SIL Open Font License, see `fonts/LICENSE-great-vibes.txt`).
