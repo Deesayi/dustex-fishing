@@ -96,9 +96,13 @@
   .grp { position:absolute; }
   .panel.full { left:0; top:0; width:100%; height:100%; }
   .phoneonly { display:none; }
-  #brand { position:absolute; left:50%; top:5px; width:200px; margin-left:-100px; text-align:center; pointer-events:none; }
-  #brand img { display:block; width:124px; height:40px; margin:0 auto; filter:drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
-  #brand div { margin-top:3px; font-size:8.5px; font-weight:700; letter-spacing:.42em; padding-left:.42em; color:var(--gold); white-space:nowrap; }
+  @font-face { font-family:'DX Script'; src:url('fonts/great-vibes-latin-400-normal.woff2') format('woff2'); font-display:block; }
+  /* the DUSTEX lockup: gold crest | app name in the gold script (same as Screen Recorder and Creator Studio) */
+  #brand { position:absolute; left:50%; top:10px; transform:translateX(-50%); display:flex; align-items:center; gap:12px; pointer-events:none; white-space:nowrap; }
+  #brand img { display:block; height:34px; width:auto; filter:drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
+  #brand i { display:block; width:1px; height:26px; background:#4a4d55; }
+  #brand span { font-family:'DX Script', 'Segoe Script', cursive; font-size:30px; line-height:1.3; padding:0 4px 0 2px; position:relative; top:2px;
+    background:linear-gradient(#f6e6bd, #d8b46a 55%, #a8853f); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 1px 0 rgba(0,0,0,.55)); }
   #hdr { left:14px; top:9px; font-size:11px; color:var(--head); font-weight:600; letter-spacing:.04em; }
   #g-now { left:12px; top:30px; width:280px; height:195px; }
   #g-tom { left:12px; top:233px; width:280px; height:195px; }
@@ -146,7 +150,7 @@
   /* ---------- layout: iPhone (420-wide column, scrolls) ---------- */
   html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
   .phone #stage { width:420px; height:2554px; }
-  .phone #brand { top:10px; } .phone #brand img { width:170px; height:55px; } .phone #brand div { font-size:10px; margin-top:4px; }
+  .phone #brand { top:12px; } .phone #brand img { height:38px; } .phone #brand span { font-size:32px; }
   .phone #hdr { left:14px; top:88px; }
   .phone #status { right:14px; top:88px; text-align:right; max-width:190px; }
   .phone #btns { left:10px; right:10px; top:110px; bottom:auto; justify-content:space-between; gap:0; }
@@ -179,7 +183,7 @@
 <body>
 <div id="stage">
   <div class="t" id="hdr">DAYTONA BEACH</div>
-  <div id="brand"><img src="dustex_logo.png" alt="DUSTEX"><div>FISHING FORECASTER</div></div>
+  <div id="brand"><img src="dustex_logo.png" alt="DUSTEX"><i></i><span>Fishing Forecaster</span></div>
   <div class="t" id="status">loading...</div>
 
   <div class="grp" id="g-now"><div class="panel full"></div>

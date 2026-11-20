@@ -1,4 +1,4 @@
-// DUSTEX iPhone + iPad app shell: a full-screen web view of the DUSTEX web app (Tab Creator Studio or Fishing Forecaster).
+// DUSTEX iPhone + iPad app shell: a full-screen web view of the DUSTEX web app (Creator Studio or Fishing Forecaster).
 // The address comes from DXStartURL in Info.plist. The site is an app-bound domain, so its service worker keeps a copy
 // for offline use after the first launch. The microphone is offered to the page (Listen) once iOS has asked the user.
 import SwiftUI

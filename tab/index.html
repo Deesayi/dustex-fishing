@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>DUSTEX Tab Creator Studio</title>
+<title>DUSTEX Creator Studio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Tab Studio">
+<meta name="apple-mobile-web-app-title" content="Creator Studio">
 <meta name="theme-color" content="#16181c">
 <meta name="description" content="Guitar tab builder: write tab by clicking or by playing, with playback, a looper, drums and a mixer.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -24,7 +24,7 @@
   .panel { position:absolute; border-radius:8px; background:#0c0d10; border:1px solid #26282d; }
   /* header */
   #hdr { position:absolute; left:18px; right:16px; top:8px; height:30px; display:flex; align-items:center; gap:14px; }
-  #logo { height:24px; opacity:.88; flex:none; }
+  #logo { height:26px; flex:none; filter:drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
   .vbar { width:1px; height:22px; background:linear-gradient(transparent, #d8b46a, transparent); opacity:.7; flex:none; }
   @font-face { font-family:'DX Script'; src:url('fonts/great-vibes-latin-400-normal.woff2') format('woff2'); font-display:block; }
   #brand { display:flex; align-items:baseline; gap:9px; flex:none; margin-right:4px; }
@@ -294,9 +294,9 @@
 <body>
 <div id="stage">
   <div id="hdr">
-    <img id="logo" src="logo.png" alt="" onerror="this.style.display='none'">
+    <img id="logo" src="dustex_logo.png" alt="DUSTEX" onerror="this.style.display='none'">
     <div class="vbar"></div>
-    <div id="brand"><span class="bt">TAB</span><span class="bs">Creator Studio</span></div>
+    <div id="brand"><span class="bs">Creator Studio</span></div>
     <input id="title" class="fld" placeholder="Song title" spellcheck="false">
     <input id="artist" class="fld" placeholder="Artist" spellcheck="false">
     <div id="status"></div>
@@ -548,16 +548,16 @@
   <p><b>Ctrl+Z</b> undo · <b>Ctrl+Y</b> redo · <b>Ctrl+S</b> save · <b>Ctrl+P</b> save PDF</p>
 
   <h4>iPhone and iPad</h4>
-  <p>Open the web app in Safari and tap <b>Share › Add to Home Screen</b>; it runs full screen and offline. On <b>iPad</b> it shows the full-page layout; on <b>iPhone</b> the panels run down the page at full size and the wide parts (the staff, the gauges, the mixer, the fretboard) swipe sideways. Knobs, faders, sliders, the EQ curve and the staff all work with a finger. Listen uses the built-in microphone, or a guitar interface plugged into the iPhone or iPad. There are also native Tab Studio and Forecaster apps in the GitHub project (folder ios) for putting them in the App Store.</p>
+  <p>Open the web app in Safari and tap <b>Share › Add to Home Screen</b>; it runs full screen and offline. On <b>iPad</b> it shows the full-page layout; on <b>iPhone</b> the panels run down the page at full size and the wide parts (the staff, the gauges, the mixer, the fretboard) swipe sideways. Knobs, faders, sliders, the EQ curve and the staff all work with a finger. Listen uses the built-in microphone, or a guitar interface plugged into the iPhone or iPad. There are also native Creator Studio and Fishing Forecaster apps in the GitHub project (folder ios) for putting them in the App Store.</p>
 
   <h4>On another PC (the web app)</h4>
-  <p>Tab Creator Studio also runs as an app on any Windows PC: open <b>deesayi.github.io/dustex-fishing/tab</b> in Microsoft Edge or Google Chrome and click the <b>Install</b> icon in the address bar. It gets its own window and Start menu icon, works offline and updates itself. There, <b>SAVE</b> keeps tabs inside the app, and <b>OPEN</b> also has <b>Open a file from this PC</b> and <b>Save a copy to this PC</b> (to Downloads). <b>SAVE PDF</b> uses the print window (choose <b>Save as PDF</b>). The web app uses the <b>full-page layout</b>: the staff, meters, fretboard and mixer all show at once, bigger, so the STAFF/METERS and Mixer/Neck switches aren't needed there. The install guide PDF walks through it step by step.</p>
+  <p>Creator Studio also runs as an app on any Windows PC: open <b>deesayi.github.io/dustex-fishing/tab</b> in Microsoft Edge or Google Chrome and click the <b>Install</b> icon in the address bar. It gets its own window and Start menu icon, works offline and updates itself. There, <b>SAVE</b> keeps tabs inside the app, and <b>OPEN</b> also has <b>Open a file from this PC</b> and <b>Save a copy to this PC</b> (to Downloads). <b>SAVE PDF</b> uses the print window (choose <b>Save as PDF</b>). The web app uses the <b>full-page layout</b>: the staff, meters, fretboard and mixer all show at once, bigger, so the STAFF/METERS and Mixer/Neck switches aren't needed there. The install guide PDF walks through it step by step.</p>
 
   <h4>On the desktop</h4>
-  <p>The widget docks into its port under the Fishing panel on the right screen. It starts by itself when you sign in to Windows (through a <i>DUSTEX Tab</i> shortcut in the Startup folder), and you can also start it from the <b>Tab Widget</b> shortcut in the Dashboard folder. Both shortcuts are made the first time the widget runs. Right-click an empty part of the widget for <b>Reload</b>, <b>Open the Tab Widget folder</b> or <b>Close</b>.</p>
+  <p>The widget docks into its port under the Fishing panel on the right screen. It starts by itself when you sign in to Windows (through a <i>DUSTEX Creator Studio</i> shortcut in the Startup folder), and you can also start it from the <b>Creator Studio</b> shortcut in the Dashboard folder. Both shortcuts are made the first time the widget runs. Right-click an empty part of the widget for <b>Reload</b>, <b>Open the Tab Widget folder</b> or <b>Close</b>.</p>
   <p><b>If something's wrong:</b> "no audio input found" means the Spark isn't connected by USB or Windows doesn't see it. "Microphone access was blocked" means the Windows microphone setting above is off. If notes come out an octave off or jump strings, lock the Fret position. For anything else, the widget keeps a log, <i>tab-widget.log</i>, in the Tab Widget folder.</p>
   </div></div>
-  <div class="foot"><div class="sub">DUSTEX Tab Creator Studio</div><div class="pill" id="helpClose">CLOSE</div></div>
+  <div class="foot"><div class="sub">DUSTEX Creator Studio</div><div class="pill" id="helpClose">CLOSE</div></div>
 </div></div>
 
   <div id="modal"><div class="box"><h4 id="mTitle">TEXT</h4><input id="mInput"><div class="row"><div class="pill" id="mCancel">CANCEL</div><div class="pill" id="mOk">OK</div></div></div></div>
@@ -1178,7 +1178,7 @@ function buildPrint() {
     song.tuning.forEach((n, s) => { const t = el('text', { x: 9, y: g.y(s) + 3.5, 'text-anchor': 'middle', 'font-size': 9, fill: '#555' }, lab); t.textContent = disp(n); });
   }
   sel = keepSel; selMark = keepMark;
-  const f = document.createElement('div'); f.className = 'foot'; f.textContent = 'DUSTEX Tab Creator Studio'; P.appendChild(f);
+  const f = document.createElement('div'); f.className = 'foot'; f.textContent = 'DUSTEX Creator Studio'; P.appendChild(f);
 }
 function savePdf() { buildPrint(); if (host) send({ cmd: 'pdf', name: safeName() + '.pdf' }); else { status('choose "Save as PDF" as the printer'); setTimeout(() => window.print(), 50); } }
 function doPrint() { buildPrint(); if (host) send({ cmd: 'print' }); else window.print(); }

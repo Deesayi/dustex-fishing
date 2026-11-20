@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key><string>en</string>
-	<key>CFBundleDisplayName</key><string>Tab Studio</string>
+	<key>CFBundleDisplayName</key><string>Creator Studio</string>
 	<key>CFBundleExecutable</key><string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key><string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
@@ -13,7 +13,7 @@
 	<key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>DXStartURL</key><string>https://deesayi.github.io/dustex-fishing/tab/</string>
 	<key>LSRequiresIPhoneOS</key><true/>
-	<key>NSMicrophoneUsageDescription</key><string>Tab Creator Studio listens to your guitar to write the tab and sheet music, and records your loops.</string>
+	<key>NSMicrophoneUsageDescription</key><string>Creator Studio listens to your guitar to write the tab and sheet music, and records your loops.</string>
 	<key>WKAppBoundDomains</key><array><string>deesayi.github.io</string></array>
 	<key>UILaunchScreen</key><dict/>
 	<key>UIStatusBarStyle</key><string>UIStatusBarStyleLightContent</string>

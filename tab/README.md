@@ -1,4 +1,4 @@
-# DUSTEX Tab Creator Studio
+# DUSTEX Creator Studio
 
 A guitar tab builder (full-page layout: staff, LED meters, fretboard and mixer all on one screen) that runs as an installable app in Microsoft Edge or Google Chrome.
 

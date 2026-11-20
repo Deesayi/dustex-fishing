@@ -22,7 +22,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dustex.tabstudio
-        PRODUCT_NAME: Tab Studio
+        PRODUCT_NAME: Creator Studio
         INFOPLIST_FILE: TabStudio/Info.plist
   FishingForecaster:
     type: application

@@ -6,10 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Tab Studio PC">
+<meta name="apple-mobile-web-app-title" content="Creator Studio PC">
 <meta name="theme-color" content="#0e0f12">
 <link rel="apple-touch-icon" href="/icon.png">
-<title>DUSTEX Tab Studio · PC</title>
+<title>DUSTEX Creator Studio · PC</title>
 <style>
   html, body { margin: 0; height: 100%; background: #0e0f12; overflow: hidden; overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   body { font: 15px -apple-system, "Segoe UI", sans-serif; color: #e2c480; }
@@ -35,8 +35,8 @@
 <input id="kb" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 <div id="cover">
   <img src="/icon.png" alt="">
-  <h1>TAB CREATOR STUDIO</h1>
-  <p id="msg">Type the 6-digit code from the PC<br><small>(right-click the Tab widget › iPad link…)</small></p>
+  <h1>CREATOR STUDIO</h1>
+  <p id="msg">Type the 6-digit code from the PC<br><small>(right-click Creator Studio › iPad link…)</small></p>
   <input id="code" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
   <button id="go">Connect</button>
 </div>
@@ -79,7 +79,7 @@ function show(blob) {
 
 function connect() {
   clearTimeout(timer);
-  if (!code) return showCover('Type the 6-digit code from the PC<br><small>(right-click the Tab widget › iPad link…)</small>', true);
+  if (!code) return showCover('Type the 6-digit code from the PC<br><small>(right-click Creator Studio › iPad link…)</small>', true);
   if (ws && ws.readyState <= 1) return;
   if (!live) showCover('Connecting to the PC…', false);
   ws = new WebSocket(`ws://${location.host}/ws?code=${code}`); ws.binaryType = 'blob';

@@ -1,6 +1,6 @@
 {
-  "name": "DUSTEX Tab Creator Studio",
-  "short_name": "Tab Creator Studio",
+  "name": "DUSTEX Creator Studio",
+  "short_name": "Creator Studio",
   "description": "Guitar tab builder: write tab by clicking or by playing, with playback, a looper, drums and a mixer.",
   "start_url": "./",
   "scope": "./",

@@ -1,5 +1,5 @@
 <#
-  DUSTEX | TAB - a guitar tablature builder docked under the Fishing panel on the right screen.
+  DUSTEX | Creator Studio - a guitar tablature builder docked under the Fishing panel on the right screen.
   Click a fret on the neck to write it at the cursor, drag notes on the tab to move them, add techniques with the
   buttons (or keys - press KEYS in the widget), then SAVE (your tab) or SAVE PDF / PRINT.
   LISTEN writes the notes as you play: plug the Spark 2 into the PC by USB and pick it under the gear button.
@@ -29,11 +29,13 @@ function Write-Log([string]$msg) { try { Add-Content $logPath ("{0}  {1}" -f (Ge
 # shortcuts: one in the Dashboard folder, and one in Windows' Startup folder so the widget opens at sign-in (like the other widgets)
 try {
     $ws = New-Object -ComObject WScript.Shell
-    foreach ($lnk in @((Join-Path (Split-Path -Parent $here) 'Tab Widget.lnk'), (Join-Path ([Environment]::GetFolderPath('Startup')) 'DUSTEX Tab.lnk'))) {
+    # the app is called Creator Studio now: retire the old shortcut names
+    foreach ($old in (Join-Path (Split-Path -Parent $here) 'Tab Widget.lnk'), (Join-Path ([Environment]::GetFolderPath('Startup')) 'DUSTEX Tab.lnk')) { if (Test-Path $old) { Remove-Item $old -Force -ErrorAction SilentlyContinue; Write-Log "removed old shortcut $old" } }
+    foreach ($lnk in @((Join-Path (Split-Path -Parent $here) 'Creator Studio.lnk'), (Join-Path ([Environment]::GetFolderPath('Startup')) 'DUSTEX Creator Studio.lnk'))) {
         if (-not (Test-Path $lnk)) {
             $sc = $ws.CreateShortcut($lnk)
             $sc.TargetPath = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe"; $sc.Arguments = "-NoProfile -STA -WindowStyle Hidden -File `"$PSCommandPath`""
-            $sc.WorkingDirectory = $here; $sc.WindowStyle = 7; $sc.IconLocation = "$env:SystemRoot\System32\imageres.dll,103"; $sc.Description = 'DUSTEX guitar tab builder'; $sc.Save()
+            $sc.WorkingDirectory = $here; $sc.WindowStyle = 7; $sc.IconLocation = "$env:SystemRoot\System32\imageres.dll,103"; $sc.Description = 'DUSTEX Creator Studio'; $sc.Save()
             Write-Log "made shortcut $lnk"
         }
     }
@@ -42,7 +44,7 @@ try {
 # ------------------------------------------------------------------ WebView2
 $wvDir = Join-Path $tools 'widget\webview2'
 if (-not (Test-Path (Join-Path $wvDir 'Microsoft.Web.WebView2.Wpf.dll'))) {
-    [System.Windows.MessageBox]::Show("The tab widget needs WebView2. Run:`n`n$tools\tools\Setup-YouTubeWidget.ps1", 'DUSTEX Tab') | Out-Null; return
+    [System.Windows.MessageBox]::Show("Creator Studio needs WebView2. Run:`n`n$tools\tools\Setup-YouTubeWidget.ps1", 'DUSTEX Creator Studio') | Out-Null; return
 }
 Add-Type -Path (Join-Path $wvDir 'Microsoft.Web.WebView2.Core.dll')
 Add-Type -Path (Join-Path $wvDir 'Microsoft.Web.WebView2.Wpf.dll')
@@ -76,7 +78,7 @@ try { $view.DefaultBackgroundColor = [System.Drawing.Color]::Transparent } catch
 $view.Width = $PW; $view.Height = $PH
 $holder = New-Object Windows.Controls.Canvas; $holder.Width = $PW; $holder.Height = $PH; [void]$holder.Children.Add($view)
 $wnd = New-Object Windows.Window
-$wnd.WindowStyle = 'None'; $wnd.ResizeMode = 'NoResize'; $wnd.ShowInTaskbar = $false; $wnd.Title = 'DUSTEX Tab'; $wnd.Content = $holder
+$wnd.WindowStyle = 'None'; $wnd.ResizeMode = 'NoResize'; $wnd.ShowInTaskbar = $false; $wnd.Title = 'DUSTEX Creator Studio'; $wnd.Content = $holder
 if ($useComp) { $wnd.AllowsTransparency = $true; $wnd.Background = [Windows.Media.Brushes]::Transparent }
 else { $wnd.Background = (New-Object Windows.Media.SolidColorBrush([Windows.Media.Color]::FromRgb(16, 17, 20))) }
 function Dock-Window {   # into the Tab port on the wallpaper
@@ -248,7 +250,7 @@ function Show-iPadLink {
     $ips = @([Net.Dns]::GetHostAddresses([Net.Dns]::GetHostName()) | Where-Object { $_.AddressFamily -eq 'InterNetwork' -and "$_" -notlike '169.254.*' } | ForEach-Object { "http://$($_):$RPORT" })
     $t = "On the iPad, open Safari and go to:`n`n    http://$($env:COMPUTERNAME.ToLower()).local:$RPORT`n    or  $($ips -join '   or   ')`n`nType this code once:   $($RM.pin)`n`nThen Share > Add to Home Screen to keep it as an app."
     if ($RM.err) { $t += "`n`nThe link isn't running yet: $($RM.err)`nRun 'Set up iPad Link.cmd' in the Tab Widget folder once, then restart the widget." }
-    [System.Windows.MessageBox]::Show($t, 'DUSTEX Tab - iPad link') | Out-Null
+    [System.Windows.MessageBox]::Show($t, 'DUSTEX Creator Studio - iPad link') | Out-Null
 }
 
 # ------------------------------------------------------------------ messages from the page: save, open, list, PDF, print

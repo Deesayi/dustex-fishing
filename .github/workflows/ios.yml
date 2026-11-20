@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Generate the Xcode project
         run: brew install xcodegen && cd ios && xcodegen generate
-      - name: Build Tab Creator Studio (iPhone + iPad simulator)
+      - name: Build Creator Studio (iPhone + iPad simulator)
         run: cd ios && xcodebuild -project DustexApps.xcodeproj -target TabCreatorStudio -sdk iphonesimulator -configuration Release CODE_SIGNING_ALLOWED=NO build | tail -20
       - name: Build Fishing Forecaster (iPhone + iPad simulator)
         run: cd ios && xcodebuild -project DustexApps.xcodeproj -target FishingForecaster -sdk iphonesimulator -configuration Release CODE_SIGNING_ALLOWED=NO build | tail -20

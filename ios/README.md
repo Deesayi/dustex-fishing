@@ -2,10 +2,10 @@
 
 Two apps from one small Xcode project:
 
-- **Tab Studio**: DUSTEX Tab Creator Studio (opens https://deesayi.github.io/dustex-fishing/tab/)
+- **Creator Studio**: DUSTEX Creator Studio (opens https://deesayi.github.io/dustex-fishing/tab/)
 - **Forecaster**: DUSTEX Fishing Forecaster (opens https://deesayi.github.io/dustex-fishing/)
 
-Each app is a full-screen, dark, native shell around the web app, so it always has the newest version. After the first launch with internet, the site's offline copy lets it open anywhere. Tab Studio asks for the microphone the first time you press Listen (or arm the looper / AUX).
+Each app is a full-screen, dark, native shell around the web app, so it always has the newest version. After the first launch with internet, the site's offline copy lets it open anywhere. Creator Studio asks for the microphone the first time you press Listen (or arm the looper / AUX).
 
 ## Built automatically
 
