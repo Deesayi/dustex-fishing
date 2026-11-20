@@ -1,6 +1,6 @@
 // DUSTEX Fishing service worker: keeps the app shell on the iPad so it opens offline.
 // Live data (weather, seas, tides) always goes to the network.
-const CACHE = 'dxfish-v9';
+const CACHE = 'dxfish-v10';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'gauge_face.png', 'gauge_glass.png', 'gauge_logo.png',
   'apple-touch-icon.png', 'icon-192.png', 'icon-512.png'];
 
@@ -8,7 +8,7 @@ self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('dxfish-') && k !== CACHE)   /* only this app's old caches: the Tab app shares the site */.map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {
   const u = new URL(e.request.url);
