@@ -82,6 +82,11 @@
   #staffScroll { position:absolute; left:30px; top:0; right:0; bottom:0; overflow-x:auto; overflow-y:hidden; }
   #staffScroll::-webkit-scrollbar { height:7px; } #staffScroll::-webkit-scrollbar-thumb { background:#3a3d44; border-radius:4px; } #staffScroll::-webkit-scrollbar-thumb:hover { background:#8a7448; } #staffScroll::-webkit-scrollbar-track { background:transparent; }
   #staff { display:block; }
+  #vNot { position:absolute; top:6px; right:10px; z-index:3; display:flex; border:1px solid #4a4e56; border-radius:11px; overflow:hidden; background:rgba(12,13,16,.88); box-shadow:0 2px 6px rgba(0,0,0,.5); cursor:pointer; }
+  #vNot span { font-size:10px; letter-spacing:.14em; padding:3px 10px; color:#8d929b; }
+  #vNot span.on { color:#1a1408; background:linear-gradient(#e6c983,#b8924a); font-weight:700; }
+  #vNot span:not(.on):hover { color:#d8b46a; }
+  body.studio #vNot { top:8px; right:12px; } body.studio #vNot span { font-size:11.5px; padding:4px 13px; }
   /* neck */
   #neckBox { left:8px; top:292px; width:1555px; height:162px; z-index:6; transition:opacity .18s ease, transform .18s ease; box-shadow:0 14px 30px rgba(0,0,0,.55); }
   #stage:not(.neck) #neckBox { opacity:0; transform:translateY(-14px); pointer-events:none; }
@@ -89,9 +94,13 @@
   #stage.neck #mixBox { opacity:.25; }
   .seg { display:flex; } .seg .tbtn { border-radius:0; } .seg .tbtn:first-child { border-radius:7px 0 0 7px; } .seg .tbtn:last-child { border-radius:0 7px 7px 0; margin-left:-1px; }
   /* mixer strips */
-  #mixStrips { position:absolute; left:6px; right:6px; top:5px; bottom:5px; display:flex; gap:7px; }
-  .strip { position:relative; width:160px; flex:none; border-radius:7px; background:linear-gradient(#17191d,#0d0e11); border:1px solid #23262b; display:flex; padding:6px 9px 6px 7px; gap:9px; }
-  .strip.fx { width:122px; background:linear-gradient(#1a1813,#0e0d0a); border-color:#2e2a20; }
+  #mixStrips { position:absolute; left:6px; right:6px; top:5px; bottom:5px; display:flex; gap:5px; }
+  #auxMenu { position:absolute; display:none; z-index:30; min-width:260px; max-width:420px; padding:8px 0; border-radius:10px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0d0e11); box-shadow:0 10px 30px rgba(0,0,0,.7); }
+  #auxMenu .mt { font-size:10px; letter-spacing:.18em; color:#d8b46a; padding:4px 14px 8px; font-weight:600; }
+  #auxMenu .it { font-size:12.5px; color:#d3d6db; padding:7px 14px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #auxMenu .it:hover { background:#24272d; color:#fff; } #auxMenu .it.on { color:#93d9b4; }
+  .strip { position:relative; width:147px; flex:none; border-radius:7px; background:linear-gradient(#17191d,#0d0e11); border:1px solid #23262b; display:flex; padding:6px 9px 6px 7px; gap:9px; }
+  .strip.fx { width:116px; background:linear-gradient(#1a1813,#0e0d0a); border-color:#2e2a20; }
   .strip.master { flex:1; width:auto; background:linear-gradient(#1c1e22,#0e0f12); border-color:#34373e; }
   .strip.dimmed .ccol .mini, .strip.dimmed .fader { opacity:.5; }
   .fcol { display:flex; gap:5px; align-self:center; }
@@ -106,7 +115,7 @@
   .fcap::after { content:''; position:absolute; left:3px; right:3px; top:5.5px; height:1.5px; background:#d8b46a; }
   .ccol { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
   .shead { display:flex; justify-content:space-between; align-items:baseline; gap:6px; }
-  .fx .sname { letter-spacing:.12em; } .fx .sval { font-size:9px; }
+  .fx .sname { letter-spacing:.08em; } .fx .sval { font-size:9px; } .fx .shead { gap:4px; }
   .sname { font-size:9.5px; letter-spacing:.17em; color:var(--gold); font-weight:700; }
   .sval { font-size:10px; color:var(--lcd); font-variant-numeric:tabular-nums; }
   .ssub { white-space:nowrap; overflow:hidden; font-size:7.5px; letter-spacing:.16em; color:#5d636e; margin-top:-1px; }
@@ -141,7 +150,7 @@
   .master .ccol .mb.wide { margin-top:auto; }
   /* transport: playback, looper, drums, click */
   #tp { top:257px; }
-  #pTone { width:84px; } #lpBars, #lpCount { width:52px; } #dPat { width:148px; }
+  #pTone { width:104px; } #lpBars, #lpCount { width:52px; } #dPat { width:148px; }
   .tbtn.rec { border-color:#e0605a; color:#ff8f80; background:linear-gradient(#2c1716,#160b0b); box-shadow:0 0 10px rgba(224,96,90,.4); }
   .tbtn.dim { opacity:.42; }
   select.sel:disabled { opacity:.45; cursor:default; }
@@ -281,13 +290,14 @@
   <div id="staffBox" class="panel">
     <svg id="strNames" class="abs"></svg>
     <div id="staffScroll"><svg id="staff"></svg><div id="playhead"></div></div>
+    <div id="vNot" title="Switch between tab and sheet music (both are written as you play)"><span data-v="tab">TAB</span><span data-v="notes">♪ NOTES</span></div>
   </div>
   <div class="tb" id="tp">
     <div class="g">
       <div class="tbtn" id="pPlay" title="Play the tab from the cursor's bar (Enter). Select notes first to play just those bars.">▶ Play</div>
       <div class="tbtn" id="pStop" title="Stop everything: tab, looper, drums and click">■</div>
       <div class="tbtn" id="pRep" title="Repeat the tab playback">⟲</div>
-      <select class="sel" id="pTone" title="Playback tone"><option>Clean</option><option>Crunch</option><option>Lead</option></select>
+      <select class="sel" id="pTone" title="Playback tone (My guitar is modeled on your own recording)"><option>My guitar</option><option>Clean</option><option>Crunch</option><option>Lead</option></select>
     </div>
     <div class="g">
       <span class="lbl">LOOPER</span>
@@ -320,6 +330,7 @@
     <div class="sub full">The looper records from the input picked in Listen ⚙ (the Spark 2). If layers come back late, move Sync right; early, move it left. Volumes, pan and effects are on the Mixer.</div>
   </div>
   <div class="menu" id="openMenu"></div>
+  <div id="auxMenu"></div>
   <div class="menu" id="listenMenu">
     <div class="c full"><label>WHAT TO LISTEN FOR</label><select class="sel" id="lMode"><option value="single">Single notes: instant</option><option value="ai">Chords and notes (AI): about 1 s behind</option></select></div>
     <div class="c full"><label>INPUT</label><select class="sel" id="lDev"><option value="">(press Listen first)</option></select><div id="lMeter"><div></div></div></div>
@@ -382,9 +393,15 @@
   <p><b>⚙ settings:</b> <b>What to listen for</b> picks <i>Single notes</i> (instant) or <i>Chords and notes (AI)</i>, explained below. <b>Input</b> picks the Spark automatically when Windows lists it; choose another input here if needed. The level meter shows the signal. <b>Fret position</b>: the same note can be played in several places, so "Automatic" picks the spot nearest to where you've been playing, or lock it to open, 3rd, 5th, 7th, 9th or 12th position. <b>Timing</b>: "Even steps" writes each note one Step apart; "Follow my timing" uses the BPM to space notes the way you played them. <b>Sensitivity</b>: raise it if soft notes are missed, lower it if noise writes notes.</p>
   <p><b>Tips:</b> use a clean or lightly driven tone (heavy gain, delay and chorus confuse pitch detection). In the default single-note mode, play single notes; for chords, switch to Chords and notes mode (below). Hammer-ons, pull-offs and slides are marked for you: a note that changes without a new pick gets h or p, one that glides there gets / or \, and both notes are kept on one string (a slide's starting note moves off an open string if needed). Bends and vibrato aren't detected; add them with the buttons. If the meter barely moves, turn up the Spark's input or its USB level.</p>
 
+  <h4>Sheet music</h4>
+  <p>The <b>TAB | ♪ NOTES</b> switch in the top right corner of the staff flips between the tab and standard <b>sheet music</b> (treble clef with a small 8 under it, the usual way guitar is written: it sounds an octave lower than it reads). Both are always written together: everything you click in, type or play while <b>Listen</b> is on goes into the tab and the sheet music at the same time, so you can switch back and forth whenever you like, even while listening.</p>
+  <p>The sheet music shows each note's pitch, sharps or flats (once per bar, with naturals to cancel them), chords stacked on one stem, ledger lines, and rhythm from the grid: whole, half, quarter, eighth and sixteenth notes, dotted notes, eighths and sixteenths beamed by the beat, triplets on the 12 and 24 grids, and rests for the gaps. Chord names, P.M. and let ring show above the staff; hammer-ons and pull-offs are marked H and P, slides sl., bends B, harmonics with diamond heads and dead notes with x heads.</p>
+  <p>Click a note on the sheet music to select it (it lights up gold on both views), or click anywhere to move the cursor there. Do your editing on the tab, or by playing, and watch the notes appear. <b>SAVE PDF</b> and <b>PRINT</b> follow the switch: with ♪ NOTES on, every line prints as a full guitar score with the sheet music over the tab.</p>
+
   <h4>Playing back the tab</h4>
   <p><b>▶ Play</b> (or <b>Enter</b>) plays the tab from the start of the cursor's bar to the last bar with notes, at the <b>BPM</b> (100 if it's blank). A green playhead runs across the tab and the sounding notes light up green on the fretboard. To play just part of the song, select some notes first: it plays the bars they're in. Press it again (it reads <b>Stop tab</b>) to stop.</p>
-  <p><b>⟲</b> repeats the playback until you stop it, handy for practising a passage. The tone menu picks <b>Clean</b>, <b>Crunch</b> or <b>Lead</b>.</p>
+  <p><b>⟲</b> repeats the playback until you stop it, handy for practising a passage. The tone menu picks <b>My guitar</b>, <b>Clean</b>, <b>Crunch</b> or <b>Lead</b>.</p>
+  <p><b>My guitar</b> (the default) is modeled on your own guitar, from a recording you played into the app: how long the strings ring, how the high harmonics fade faster than the lows, the pick attack, the thump of the body, and the full, warm, soft-topped sound coming out of the Spark. The other tones use the same strings with a brighter clean sound or overdrive.</p>
   <p>Playback follows the techniques: hammer-ons and pull-offs sound without a new pick, slides glide, bends and releases bend the pitch, vibrato wobbles, palm-muted notes are short and dark, x notes are dead thuds, harmonics chime and ghost notes are quiet. Notes in one column are strummed low to high.</p>
 
   <h4>Looper</h4>
@@ -396,7 +413,7 @@
 
   <h4>Meters</h4>
   <p>Press <b>METERS</b> (next to NEW) to swap the tab staff for a row of DUSTEX level gauges, and <b>STAFF</b> to swap back. The widget remembers which one you had showing.</p>
-  <p>There's a gauge for every channel: <b>INPUT</b>, <b>GUITAR</b>, <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>, the four effects, and <b>MASTER L</b> and <b>MASTER R</b>. Each one reads from -40 to 0 dB: the <b>green</b> zone is a healthy level (up to -18 dB), <b>gold</b> is getting loud (-18 to -6 dB) and <b>red</b> is close to the top (-6 to 0 dB). The orange needle shows the level as it moves. The thin red needle holds the latest <b>peak</b> for a moment, and the number under the gauge shows that peak in dB. The small lamp near the bottom of the face lights red if the channel <b>clips</b> (hits full scale), and stays lit until you reset it.</p>
+  <p>There's a gauge for every channel: <b>INPUT</b>, <b>AUX</b>, <b>GUITAR</b>, <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>, the four effects, and <b>MASTER L</b> and <b>MASTER R</b>. Each one reads from -40 to 0 dB: the <b>green</b> zone is a healthy level (up to -18 dB), <b>gold</b> is getting loud (-18 to -6 dB) and <b>red</b> is close to the top (-6 to 0 dB). The orange needle shows the level as it moves. The thin red needle holds the latest <b>peak</b> for a moment, and the number under the gauge shows that peak in dB. The small lamp near the bottom of the face lights red if the channel <b>clips</b> (hits full scale), and stays lit until you reset it.</p>
   <p>Click anywhere on the gauges to reset the peak needles and clip lamps. Aim for most of the action in the green and gold, with the master peaking in the gold. If something keeps clipping, pull its fader down on the Mixer (or turn on <b>LIMIT</b> on the master).</p>
 
   <h4>Full screen</h4>
@@ -404,8 +421,9 @@
 
   <h4>Mixer</h4>
   <p>The panel under the transport strip is a mixer. Press <b>Neck</b> (next to Click) to drop the fretboard down over it, and <b>Mixer</b> to bring the mixer back. The widget remembers which one you had open.</p>
-  <p><b>Channel strips:</b> <b>INPUT</b> (your guitar from the Spark 2), <b>GUITAR</b> (tab playback), <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>. Each one has a volume fader with a level meter, <b>IN</b> (input trim, ±12 dB), <b>PAN</b>, four effect knobs, <b>REV</b>, <b>PLT</b>, <b>DLY</b> and <b>ECH</b> (how much goes to the room reverb, the plate, the delay and the echo), plus <b>M</b> mute and <b>S</b> solo (solo plays only the soloed strips).</p>
+  <p><b>Channel strips:</b> <b>INPUT</b> (your guitar from the Spark 2), <b>AUX</b> (a line in), <b>GUITAR</b> (tab playback), <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>. Each one has a volume fader with a level meter, <b>IN</b> (input trim, ±12 dB), <b>PAN</b>, four effect knobs, <b>REV</b>, <b>PLT</b>, <b>DLY</b> and <b>ECH</b> (how much goes to the room reverb, the plate, the delay and the echo), plus <b>M</b> mute and <b>S</b> solo (solo plays only the soloed strips).</p>
   <p><b>INPUT strip:</b> <b>● IN</b> opens the guitar input so its meter shows your level; the looper opens it too. Its <b>IN</b> trim also sets how loud the looper records. <b>MON</b> plays your guitar through the PC with the mixer's effects. It starts off, because the Spark already plays your guitar and you'd hear it twice, slightly late.</p>
+  <p><b>AUX strip:</b> a second input for anything else you want to play along with or through the mixer: a keyboard, a phone or MP3 player with a backing track, a drum machine, a second guitar or a microphone. Plug it into the PC's line in (or a USB audio interface), press <b>● IN</b> and pick the input from the list; click the name under AUX to choose a different one later. It's in stereo, and <b>MON</b> starts on so you hear it straight away, with the same trim, pan, effect sends and fader as the other strips. AUX has its own gauge on the meter row too. It plays alongside the looper but isn't recorded into it.</p>
   <p><b>Effects</b> (the four gold strips; each fader sets how loud that effect comes back):</p>
   <p><b>REVERB</b>, a room: <b>SIZE</b> (how long it lasts), <b>PRE</b> (a short gap before it starts), <b>TONE</b> and <b>PAN</b>.</p>
   <p><b>PLATE</b>, the bright, smooth reverb of a studio steel plate: <b>DECAY</b>, <b>PRE</b>, <b>DAMP</b> (brightness) and <b>PAN</b>.</p>
@@ -430,7 +448,7 @@
 
   <h4>Saving, opening and printing</h4>
   <p><b>SAVE</b> (Ctrl+S) stores the tab as <i>Song Title.dxtab</i>. <b>OPEN</b> lists your saved tabs, newest first. <b>NEW</b> starts a blank tab (it asks if there are unsaved changes).</p>
-  <p><b>SAVE PDF</b> (Ctrl+P) writes <i>Song Title.pdf</i>: a clean black-on-white Letter page with the title, artist, tuning, capo and tempo, four bars per line, ready to print or share. <b>PRINT</b> opens the Windows print dialog directly.</p>
+  <p><b>SAVE PDF</b> (Ctrl+P) writes <i>Song Title.pdf</i>: a clean black-on-white Letter page with the title, artist, tuning, capo and tempo, four bars per line, ready to print or share. With <b>♪ NOTES</b> switched on, each line is a guitar score: sheet music above, tab below. <b>PRINT</b> opens the Windows print dialog directly.</p>
   <p><b>FOLDER</b> opens the Tab Widget folder, where everything is kept: your .dxtab files, the PDFs and the widget itself.</p>
   <p><b>Autosave:</b> your work is kept as you go, so closing the widget or restarting the PC never loses it. It comes back the next time the widget opens.</p>
 
@@ -526,7 +544,7 @@ function drawStaff(svg, g, m0, m1, theme) {
     }
   }
   // marks: palm mute, let ring, chord names, text
-  for (const mk of song.marks) {
+  if (!g.noMarks) for (const mk of song.marks) {
     if (mk.c >= c1 || (mk.e != null ? mk.e : mk.c) < c0) continue;
     const isSel = selMark === mk.id, col = isSel ? theme.sel : theme.mark, ly = g.top - g.lane + 12;
     if (mk.type === 'pm' || mk.type === 'lr') {
@@ -565,18 +583,188 @@ function drawStaff(svg, g, m0, m1, theme) {
   return X;
 }
 
+// ------------------------------------------------------------------ sheet music: standard notation drawn from the same notes as the tab (guitar treble clef, sounds an octave lower)
+const NOTE_LET = 'CDEFGAB', LET_PC = [0, 2, 4, 5, 7, 9, 11];
+function spell(midi) {                                                       // written pitch (an octave up) -> step on the staff + accidental
+  const w = midi + 12, pc = ((w % 12) + 12) % 12, oct = Math.floor(w / 12) - 1;
+  let name = NOTES[pc]; const flat = FLATS[name] && song.tuningName && /C#|Half step/.test(song.tuningName);
+  if (flat) name = FLATS[name];
+  const li = NOTE_LET.indexOf(name[0]), acc = name.length > 1 ? (name[1] === '#' ? 1 : -1) : 0;
+  let o = oct; if (name === 'Cb') o++; if (name === 'B#') o--;
+  return { d: li + 7 * o, acc, key: name[0] + o };
+}
+const NV = [                                                                 // note values in quarters: [quarters, flags, dots, open head, no stem, triplet]
+  [4, 0, 0, 1, 1, 0], [3, 0, 1, 1, 0, 0], [2, 0, 0, 1, 0, 0], [1.5, 0, 1, 0, 0, 0], [1, 0, 0, 0, 0, 0], [0.75, 1, 1, 0, 0, 0], [2 / 3, 0, 0, 0, 0, 1],
+  [0.5, 1, 0, 0, 0, 0], [0.375, 2, 1, 0, 0, 0], [1 / 3, 1, 0, 0, 0, 1], [0.25, 2, 0, 0, 0, 0], [1 / 6, 2, 0, 0, 0, 1], [0.125, 3, 0, 0, 0, 0]];
+function splitDur(q, trip) {                                                 // a length in quarters -> list of note values (largest first)
+  const out = []; let r = q;
+  for (let guard = 0; r > 1e-6 && guard < 12; guard++) {
+    const v = NV.find(v => v[0] <= r + 1e-6 && (trip || !v[5]) && (!v[5] || Math.abs((r / v[0]) - Math.round(r / v[0])) < 1e-6 || v[0] <= r)) || NV[NV.length - 1];
+    out.push(v); r -= v[0];
+  }
+  return out;
+}
+function notationModel(m0, m1) {                                             // per measure: events (chords / rests) with value, columns and pitches
+  const cpm = song.cpm, q = cpm / 4, trip = cpm % 4 !== 0 || cpm === 12 || cpm === 24, bars = [];
+  for (let m = m0; m < m1; m++) {
+    const c0 = m * cpm, c1 = c0 + cpm, cols = [...new Set(song.notes.filter(n => n.c >= c0 && n.c < c1).map(n => n.c))].sort((a, b) => a - b), ev = [];
+    let at = c0;
+    const pushRest = (from, to) => { let c = from; for (const v of splitDur((to - from) / q, trip)) { ev.push({ rest: true, c, v }); c += v[0] * q; } };
+    if (!cols.length) { bars.push([{ rest: true, c: c0, v: NV[0], whole: true }]); continue; }
+    if (cols[0] > c0) pushRest(c0, cols[0]);
+    cols.forEach((c, i) => {
+      const end = i + 1 < cols.length ? cols[i + 1] : c1, parts = splitDur((end - c) / q, trip);
+      const notes = song.notes.filter(n => n.c === c).map(n => {
+        let midi = n.f === 'x' ? openMidi(n.s) + 5 : openMidi(n.s) + (n.m === 'harm' ? (HARM[n.f] || n.f + 12) : n.f);
+        return Object.assign({ n, x: n.f === 'x', harm: n.m === 'harm' }, spell(midi));
+      }).sort((a, b) => a.d - b.d);
+      ev.push({ c, v: parts[0], notes });
+      let cc = c + parts[0][0] * q; for (const v of parts.slice(1)) { ev.push({ rest: true, c: cc, v }); cc += v[0] * q; }
+    });
+    bars.push(ev);
+  }
+  return bars;
+}
+function drawNotation(svg, g, m0, m1, theme, N) {
+  // N: { top: y of the top staff line, L: line spacing, clear: set the svg size and wipe it first, marks: draw chord names and marks above }
+  const L = N.L, yTop = N.top, cpm = song.cpm, q = cpm / 4, hw = L * 0.62, stemLen = L * 3.4;
+  const W = g.left + (m1 - m0) * g.mW + 8, H = N.height || (yTop + L * 12);
+  if (N.clear) { svg.setAttribute('width', W); svg.setAttribute('height', H); svg.innerHTML = ''; if (theme.bg) el('rect', { x: 0, y: 0, width: W, height: H, fill: theme.bg }, svg); }
+  const X = c => g.left + (Math.floor(c / cpm) - m0) * g.mW + g.pad + (c % cpm) * g.colW + g.colW / 2;
+  const Y = d => yTop + (38 - d) * L / 2;                                     // d 38 = F5, the top line
+  const root = el('g', {}, svg), ink = theme.note, line = theme.line;
+  for (let i = 0; i < 5; i++) el('line', { x1: g.left, x2: g.left + (m1 - m0) * g.mW, y1: yTop + i * L, y2: yTop + i * L, stroke: line, 'stroke-width': 1 }, root);
+  for (let m = m0; m <= m1; m++) {
+    const bx = g.left + (m - m0) * g.mW;
+    el('line', { x1: bx, x2: bx, y1: yTop, y2: yTop + 4 * L, stroke: theme.bar, 'stroke-width': m === m1 && m1 === song.measures ? 2.5 : 1.2 }, root);
+    if (g.mnum && m < m1 && N.mnumY) { const t = el('text', { x: bx + 3, y: N.mnumY, 'font-size': g.font * 0.72, fill: theme.mnum || theme.mark }, root); t.textContent = m + 1; }
+  }
+  if (theme.cur && cursor.c >= m0 * cpm && cursor.c < m1 * cpm)
+    el('rect', { x: X(cursor.c) - g.colW / 2 + 1, y: yTop - L * 3.2, width: g.colW - 2, height: L * 10.6, rx: 4, fill: 'rgba(147,217,180,.08)', stroke: 'rgba(147,217,180,.35)' }, root);
+  if (N.marks) for (const mk of song.marks) {
+    if (mk.c >= m1 * cpm || (mk.e != null ? mk.e : mk.c) < m0 * cpm) continue;
+    const ly = N.marksY, col = mk.type === 'chord' ? (theme.chord || theme.mark) : theme.mark;
+    const t = el('text', { x: X(Math.max(mk.c, m0 * cpm)) - 6, y: ly, 'font-size': mk.type === 'chord' ? g.font * 0.95 : g.font * 0.75, 'font-weight': mk.type === 'chord' ? 700 : 400,
+      'font-style': mk.type === 'chord' ? 'normal' : 'italic', fill: col }, root);
+    t.textContent = mk.type === 'pm' ? 'P.M.' : mk.type === 'lr' ? 'let ring' : mk.text;
+  }
+  const bars = notationModel(m0, m1), sym = (txt, x, y, size, anchor) => { const t = el('text', { x, y, 'font-size': size, fill: ink, 'text-anchor': anchor || 'middle', 'font-family': '"Segoe UI Symbol","Noto Music","Apple Symbols",serif' }, root); t.textContent = txt; return t; };
+  bars.forEach((ev, bi) => {
+    const m = m0 + bi, accState = {};
+    // rests
+    for (const e of ev) if (e.rest) {
+      const v = e.v, x = e.whole ? g.left + (m - m0) * g.mW + g.mW / 2 : X(e.c), mid = yTop + 2 * L;
+      if (v[0] >= 4) el('rect', { x: x - L * 0.6, y: yTop + L, width: L * 1.2, height: L * 0.5, fill: ink }, root);
+      else if (v[0] >= 2) el('rect', { x: x - L * 0.6, y: mid - L * 0.5, width: L * 1.2, height: L * 0.5, fill: ink }, root);
+      else if (v[0] >= 1 || (v[5] && v[1] === 0)) el('path', { d: `M${x - L * 0.25},${mid - L * 1.5} l${L * 0.55},${L * 0.75} l${-L * 0.5},${L * 0.6} l${L * 0.55},${L * 0.75} q${-L * 0.9},${-L * 0.35} ${-L * 0.3},${L * 0.9}`, stroke: ink, 'stroke-width': L * 0.22, fill: 'none', 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, root);
+      else { for (let k = 0; k < v[1]; k++) el('circle', { cx: x - L * 0.3 - k * L * 0.25, cy: mid - L * 0.6 + k * L, r: L * 0.22, fill: ink }, root);
+        el('line', { x1: x + L * 0.25, y1: mid - L * 0.75, x2: x - L * 0.2 - (v[1] - 1) * L * 0.25, y2: mid + L * 0.9 + (v[1] - 1) * L, stroke: ink, 'stroke-width': L * 0.14 }, root); }
+      if (v[2]) el('circle', { cx: x + L * 0.75, cy: mid - L * 0.5, r: L * 0.14, fill: ink }, root);
+    }
+    // chords: head placement, stems, flags or beams
+    const chords = ev.filter(e => !e.rest);
+    for (const e of chords) {
+      const lo = e.notes[0].d, hi = e.notes[e.notes.length - 1].d;
+      e.up = (lo + hi) / 2 < 34; e.x = X(e.c);
+      e.notes.forEach(nt => { nt.side = 0; });
+      if (e.up) { for (let i = 1; i < e.notes.length; i++) if (e.notes[i].d - e.notes[i - 1].d === 1 && !e.notes[i - 1].side) e.notes[i].side = 1; }
+      else { for (let i = e.notes.length - 2; i >= 0; i--) if (e.notes[i + 1].d - e.notes[i].d === 1 && !e.notes[i + 1].side) e.notes[i].side = -1; }
+      e.stemX = e.up ? e.x + hw - 0.6 : e.x - hw + 0.6;
+      e.stemFrom = e.up ? Y(lo) : Y(hi); e.stemTo = e.up ? Y(hi) - stemLen : Y(lo) + stemLen;
+      if (e.up && e.stemTo > yTop + 2 * L) e.stemTo = yTop + 2 * L; if (!e.up && e.stemTo < yTop + 2 * L) e.stemTo = yTop + 2 * L;   // reach the middle line
+    }
+    // beam groups: consecutive flagged notes in the same beat, no rest between
+    const groups = []; let cur = null;
+    for (const e of ev) {
+      const flagged = !e.rest && e.v[1] > 0, beat = Math.floor(((e.c % cpm) + 1e-6) / q);
+      if (flagged && cur && cur.beat === beat) cur.items.push(e); else { cur = flagged ? { beat, items: [e] } : null; if (cur) groups.push(cur); }
+    }
+    for (const gr of groups) if (gr.items.length > 1) {
+      const it = gr.items, up = it.reduce((s, e) => s + (e.notes[0].d + e.notes[e.notes.length - 1].d) / 2, 0) / it.length < 34;
+      for (const e of it) { e.up = up; e.stemX = up ? e.x + hw - 0.6 : e.x - hw + 0.6; e.stemFrom = up ? Y(e.notes[0].d) : Y(e.notes[e.notes.length - 1].d);
+        e.notes.forEach(nt => nt.side = 0); }
+      const x0 = it[0].stemX, x1 = it[it.length - 1].stemX, nat = e => up ? Y(e.notes[e.notes.length - 1].d) - stemLen : Y(e.notes[0].d) + stemLen;
+      let slope = (nat(it[it.length - 1]) - nat(it[0])) / Math.max(1, x1 - x0); slope = Math.max(-0.18, Math.min(0.18, slope));
+      let y0 = up ? Math.min(...it.map(e => nat(e) - slope * (e.stemX - x0))) : Math.max(...it.map(e => nat(e) - slope * (e.stemX - x0)));
+      const by = x => y0 + slope * (x - x0), th = L * 0.48, dir = up ? 1 : -1;
+      for (const e of it) { e.stemTo = by(e.stemX); e.beamed = true; }
+      el('polygon', { points: `${x0},${by(x0)} ${x1},${by(x1)} ${x1},${by(x1) + dir * th} ${x0},${by(x0) + dir * th}`, fill: ink }, root);
+      for (let lvl = 2; lvl <= 3; lvl++) {
+        const off = dir * (lvl - 1) * L * 0.78;
+        it.forEach((e, i) => {
+          if (e.v[1] < lvl) return;
+          const nb = it[i + 1] && it[i + 1].v[1] >= lvl ? it[i + 1] : null, pv = it[i - 1] && it[i - 1].v[1] >= lvl;
+          let xa = e.stemX, xb = nb ? nb.stemX : null;
+          if (!nb && !pv) xb = i + 1 < it.length ? xa + L * 1.1 : xa - L * 1.1;
+          if (xb == null) return;
+          el('polygon', { points: `${xa},${by(xa) + off} ${xb},${by(xb) + off} ${xb},${by(xb) + off + dir * th} ${xa},${by(xa) + off + dir * th}`, fill: ink }, root);
+        });
+      }
+      if (it.some(e => e.v[5])) sym('3', (x0 + x1) / 2, up ? by((x0 + x1) / 2) - L * 0.7 : by((x0 + x1) / 2) + L * 1.5, L * 1.05).setAttribute('font-style', 'italic');
+    }
+    // draw heads, ledger lines, accidentals, stems, flags, dots
+    for (const e of chords) {
+      const v = e.v, placed = [];
+      for (const nt of e.notes) {
+        const hx = e.x + nt.side * hw * 1.92, y = Y(nt.d), isSel = sel.has(nt.n.id), col = isSel ? theme.sel : ink;
+        for (let d = 40; d <= nt.d; d += 2) el('line', { x1: hx - hw * 1.55, x2: hx + hw * 1.55, y1: Y(d), y2: Y(d), stroke: theme.bar, 'stroke-width': 1 }, root);
+        for (let d = 28; d >= nt.d; d -= 2) el('line', { x1: hx - hw * 1.55, x2: hx + hw * 1.55, y1: Y(d), y2: Y(d), stroke: theme.bar, 'stroke-width': 1 }, root);
+        if (nt.x) { const k = hw * 0.75; el('path', { d: `M${hx - k},${y - k} L${hx + k},${y + k} M${hx + k},${y - k} L${hx - k},${y + k}`, stroke: col, 'stroke-width': L * 0.2, 'data-note': nt.n.id }, root); }
+        else if (nt.harm) el('polygon', { points: `${hx - hw},${y} ${hx},${y - L * 0.5} ${hx + hw},${y} ${hx},${y + L * 0.5}`, fill: v[3] ? 'none' : col, stroke: col, 'stroke-width': 1.2, 'data-note': nt.n.id }, root);
+        else el('ellipse', { cx: hx, cy: y, rx: hw, ry: L * 0.42, transform: `rotate(-22 ${hx} ${y})`, fill: v[3] ? (theme.noteBg || 'none') : col, stroke: col, 'stroke-width': v[3] ? L * 0.16 : 0.6, 'data-note': nt.n.id, style: 'cursor:pointer' }, root);
+        if (isSel) el('ellipse', { cx: hx, cy: y, rx: hw * 1.7, ry: L * 0.8, fill: theme.selBg || 'none', stroke: 'none', 'pointer-events': 'none' }, root);
+        // accidental (once per measure, cancelled with a natural)
+        if (!nt.x) {
+          const st = accState[nt.key] || 0;
+          if (nt.acc !== st) {
+            let colN = 0; while (placed.some(p => p.col === colN && Math.abs(p.d - nt.d) < 6)) colN++;
+            placed.push({ col: colN, d: nt.d });
+            const ax = e.x - hw * (1 + (e.notes.some(o => o.side < 0) ? 2 : 0)) - L * 0.75 - colN * L * 0.95;
+            sym(nt.acc === 1 ? '♯' : nt.acc === -1 ? '♭' : '♮', ax, y + L * (nt.acc === -1 ? 0.3 : 0.5), L * 1.9);
+            accState[nt.key] = nt.acc;
+          }
+        }
+        if (v[2]) el('circle', { cx: e.x + hw * (e.notes.some(o => o.side > 0) ? 3.3 : 1.6), cy: (nt.d % 2 === 0 ? y - L / 2 : y), r: L * 0.15, fill: col }, root);
+      }
+      if (!v[4]) {
+        el('line', { x1: e.stemX, x2: e.stemX, y1: e.stemFrom, y2: e.stemTo, stroke: ink, 'stroke-width': Math.max(1, L * 0.11) }, root);
+        if (!e.beamed && v[1]) for (let k = 0; k < v[1]; k++) {
+          const y0 = e.stemTo + (e.up ? 1 : -1) * k * L * 0.8, s = e.up ? 1 : -1;
+          el('path', { d: `M${e.stemX},${y0} c${L * 0.2},${s * L * 1.0} ${L * 1.3},${s * L * 1.1} ${L * 0.85},${s * L * 2.6} c${L * 0.15},${-s * L * 1.0} ${-L * 0.4},${-s * L * 1.4} ${-L * 0.85},${-s * L * 1.85}z`, fill: ink }, root);
+        }
+        if (!e.beamed && v[5]) sym('3', e.x, e.up ? e.stemTo - L * 0.6 : e.stemTo + L * 1.4, L * 1.05).setAttribute('font-style', 'italic');
+      }
+      const t = e.notes.find(nt => nt.n.t && nt.n.t !== '~') ;
+      if (t) { const tt = el('text', { x: e.x, y: (e.up ? Math.max(e.stemFrom + L * 2.2, yTop + L * 5.6) : Math.min(e.stemFrom - L * 1.4, yTop - L * 0.9)), 'text-anchor': 'middle', 'font-size': L * 1.15, 'font-style': 'italic', fill: theme.tech }, root);
+        tt.textContent = { h: 'H', p: 'P', '/': 'sl.', '\\': 'sl.', b: 'B', r: 'R', t: 'T' }[t.n.t] || t.n.t; }
+      if (e.notes.some(nt => nt.n.t === '~')) sym('~', e.x + hw * 2.6, Y(e.notes[e.notes.length - 1].d) - L * 0.6, L * 1.6);
+    }
+  });
+  return { X, Y, H };
+}
+function drawClef(svg, x, yTop, L, col) {                                   // treble clef with the small 8 below (guitar sounds an octave lower)
+  const t = el('text', { x, y: yTop + L * 3.55, 'text-anchor': 'middle', 'font-size': L * 6.6, fill: col, 'font-family': '"Segoe UI Symbol","Noto Music","Apple Symbols",serif' }, svg); t.textContent = '𝄞';
+  const e = el('text', { x: x - L * 0.05, y: yTop + L * 6.3, 'text-anchor': 'middle', 'font-size': L * 1.1, 'font-weight': 600, fill: col }, svg); e.textContent = '8';
+}
+
 // ------------------------------------------------------------------ screen render
 const SCREEN = { line: '#363a42', bar: '#545962', mnum: '#575d68', note: '#dfe2e7', noteBg: '#0c0d10', sel: '#d8b46a', selBg: 'rgba(216,180,106,.14)', tech: '#8d929b', mark: '#9a9fa8', chord: '#d8b46a', cur: '#93d9b4', weight: 500 };
-let SG = null, Xs = null;
+let SG = null, Xs = null, NOTEVIEW = (() => { try { return localStorage.getItem('dxtabView') === 'notes'; } catch (e) { return false; } })();
 function render() {
   SG = geo(STUDIO ? { top: 50, gap: 27, colW: 30, font: 16.5, lane: 36, pad: 14 } : { top: 36 });
-  if (STUDIO) { const ph = $('playhead'); ph.style.top = (SG.y(0) - 14) + 'px'; ph.style.height = (SG.gap * 5 + 28) + 'px'; }
-  Xs = drawStaff($('staff'), SG, 0, song.measures, SCREEN);
+  { const ph = $('playhead'); ph.style.top = (SG.y(0) - 14) + 'px'; ph.style.height = (SG.gap * 5 + 28) + 'px'; }
+  if (NOTEVIEW) {
+    const NL = STUDIO ? { top: 80, L: 12.5, marksY: 24, mnumY: 212, height: 219 } : { top: 58, L: 9, marksY: 17, mnumY: 154, height: 160 };
+    const r = drawNotation($('staff'), SG, 0, song.measures, SCREEN, Object.assign({ clear: true, marks: true }, NL)); Xs = r.X;
+    if (STUDIO || true) { const ph = $('playhead'); ph.style.top = (NL.top - NL.L * 3) + 'px'; ph.style.height = (NL.L * 10.5) + 'px'; }
+  } else Xs = drawStaff($('staff'), SG, 0, song.measures, SCREEN);
+  $('vNot').querySelectorAll('span').forEach(b => b.classList.toggle('on', (b.dataset.v === 'notes') === NOTEVIEW));
   if (rubber) el('rect', { x: Math.min(rubber.x0, rubber.x1), y: Math.min(rubber.y0, rubber.y1), width: Math.abs(rubber.x1 - rubber.x0), height: Math.abs(rubber.y1 - rubber.y0),
     fill: 'rgba(216,180,106,.08)', stroke: '#d8b46a', 'stroke-dasharray': '4 3' }, $('staff'));
   // string names column
   const sn = $('strNames'); sn.setAttribute('width', 30); sn.setAttribute('height', STUDIO ? 226 : 172); sn.innerHTML = '';
-  song.tuning.forEach((n, s) => { const t = el('text', { x: 15, y: SG.y(s) + (STUDIO ? 5 : 4), 'text-anchor': 'middle', 'font-size': STUDIO ? 14 : 11.5, 'font-weight': 500, fill: '#c7a76c' }, sn); t.textContent = disp(n); });
+  if (NOTEVIEW) drawClef(sn, 15, STUDIO ? 80 : 58, STUDIO ? 12.5 : 9, '#c7a76c');
+  else song.tuning.forEach((n, s) => { const t = el('text', { x: 15, y: SG.y(s) + (STUDIO ? 5 : 4), 'text-anchor': 'middle', 'font-size': STUDIO ? 14 : 11.5, 'font-weight': 500, fill: '#c7a76c' }, sn); t.textContent = disp(n); });
   drawNeck();
   $('title').value = song.title; $('artist').value = song.artist; $('tuning').value = song.tuningName; $('capo').value = song.capo; $('tempo').value = song.tempo; $('cpm').value = song.cpm;
   $('tChord').classList.toggle('on', stack);
@@ -672,9 +860,16 @@ function cellAt(p) {
   const s = Math.max(0, Math.min(5, Math.round((p.y - SG.top) / SG.gap)));
   return { c, s, lane: p.y < SG.top - SG.gap * 0.55 };
 }
+$('vNot').onclick = ev => { const v = ev.target.dataset && ev.target.dataset.v; NOTEVIEW = v ? v === 'notes' : !NOTEVIEW; try { localStorage.setItem('dxtabView', NOTEVIEW ? 'notes' : 'tab'); } catch (e) {} render(); };
 $('staff').addEventListener('mousedown', ev => {
   if (ev.button !== 0) return;
   const p = staffPt(ev), cell = cellAt(p), tgt = ev.target;
+  if (NOTEVIEW) {                                                    // sheet music: click a note to select it, or a spot to move the cursor (edit on the tab or by playing)
+    const nid = tgt.getAttribute && tgt.getAttribute('data-note');
+    if (nid) { const id = +nid; if (ev.shiftKey || ev.ctrlKey) { sel.has(id) ? sel.delete(id) : sel.add(id); } else sel = new Set([id]); const n = song.notes.find(x => x.id === id); cursor = { c: n.c, s: n.s }; }
+    else { if (!ev.shiftKey) sel.clear(); cursor = { c: cell.c, s: cursor.s }; }
+    selMark = null; render(); return;
+  }
   const nid = tgt.getAttribute && tgt.getAttribute('data-note'), mid = tgt.getAttribute && tgt.getAttribute('data-mark');
   if (mid) { selMark = +mid; sel.clear(); render(); return; }
   selMark = null;
@@ -864,7 +1059,8 @@ function buildPrint() {
   const keepSel = sel, keepMark = selMark; sel = new Set(); selMark = null;
   for (let m = 0; m < bars; m += per) {
     const svg = document.createElementNS(NS, 'svg'); P.appendChild(svg);
-    const g = geo(PG); drawStaff(svg, g, m, Math.min(bars, m + per), theme);
+    const g = geo(NOTEVIEW ? Object.assign({}, PG, { top: PG.top + 84, noMarks: true }) : PG); drawStaff(svg, g, m, Math.min(bars, m + per), theme);
+    if (NOTEVIEW) { drawNotation(svg, g, m, Math.min(bars, m + per), theme, { top: 46, L: 6.4, marks: true, marksY: 12 }); drawClef(svg, 10, 46, 6.4, '#333'); }
     const lab = el('g', {}, svg);
     song.tuning.forEach((n, s) => { const t = el('text', { x: 9, y: g.y(s) + 3.5, 'text-anchor': 'middle', 'font-size': 9, fill: '#555' }, lab); t.textContent = disp(n); });
   }
@@ -1054,8 +1250,9 @@ $('lDev').onchange = () => { localStorage.setItem('dxtabdev', $('lDev').value); 
 for (const id of ['lPos', 'lTime', 'lSens', 'lMode', 'lNames']) { const v = localStorage.getItem('dxtab_' + id); if (v) $(id).value = v; $(id).addEventListener('change', () => localStorage.setItem('dxtab_' + id, $(id).value)); }
 
 // ------------------------------------------------------------------ audio: tab playback, looper, drums and click, all on one clock
-const AUD = Object.assign({ gtr: 0.8, loop: 0.9, drums: 0.7, click: 0.6, sync: 0, tone: 'Clean', pat: 'Rock', bars: 4, count: 1, rep: false },
+const AUD = Object.assign({ gtr: 0.8, loop: 0.9, drums: 0.7, click: 0.6, sync: 0, tone: 'My guitar', pat: 'Rock', bars: 4, count: 1, rep: false },
   (() => { try { return JSON.parse(localStorage.getItem('dxtab_audio') || '{}'); } catch (e) { return {}; } })());
+if (AUD.toneV !== 2) { AUD.tone = 'My guitar'; AUD.toneV = 2; }          // playback now modeled on your own guitar
 function saveAud() { try { localStorage.setItem('dxtab_audio', JSON.stringify(AUD)); } catch (e) {} }
 const E = { ctx: null, running: false, T0: 0, bpm: 100, bar: 2.4, timer: null, nextBeat: 0, nextStep: 0, stepN: 0, tab: null, count: null,
   drums: false, click: false, crash: false, raf: 0, ks: new Map(), lastOpen: null, dotKey: '' };
@@ -1087,7 +1284,8 @@ function eng() {
     E.gBus = c.createGain(); E.hp = filt('highpass', 75); E.shaper = c.createWaveShaper(); E.lp = filt('lowpass', 7000, 0.6);
     E.body = c.createBiquadFilter(); E.body.type = 'peaking'; E.body.frequency.value = 220; E.body.gain.value = 3; E.body.Q.value = 1;
     E.post = c.createGain(); E.gVol = c.createGain();
-    E.gBus.connect(E.hp); E.hp.connect(E.shaper); E.shaper.connect(E.lp); E.lp.connect(E.body); E.body.connect(E.post); E.post.connect(E.gVol);
+    E.lshelf = c.createBiquadFilter(); E.lshelf.type = 'lowshelf'; E.hshelf = c.createBiquadFilter(); E.hshelf.type = 'highshelf';
+    E.gBus.connect(E.hp); E.hp.connect(E.shaper); E.shaper.connect(E.lp); E.lp.connect(E.body); E.body.connect(E.lshelf); E.lshelf.connect(E.hshelf); E.hshelf.connect(E.post); E.post.connect(E.gVol);
     E.dVol = c.createGain(); E.cVol = c.createGain(); E.lVol = c.createGain();
     const nb = E.noise = c.createBuffer(1, c.sampleRate, c.sampleRate), nd = nb.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
     setTone(AUD.tone); setVols(); mixInit(c);
@@ -1102,7 +1300,11 @@ function setTone(t) {
   const drive = { Clean: 0, Crunch: 5, Lead: 16 }[t] || 0;
   if (!drive) E.shaper.curve = null;
   else { const n = 2048, cv = new Float32Array(n); for (let i = 0; i < n; i++) { const x = i / (n - 1) * 2 - 1; cv[i] = Math.tanh(x * (1 + drive)) / Math.tanh(1 + drive); } E.shaper.curve = cv; E.shaper.oversample = '4x'; }
-  E.lp.frequency.value = { Clean: 7000, Crunch: 4300, Lead: 3700 }[t] || 7000; E.post.gain.value = { Clean: 1, Crunch: 0.5, Lead: 0.42 }[t] || 1;
+  const mine = t === 'My guitar';                        // EQ fitted to your recording: full lows, soft rolled-off highs (the Spark's clean voice)
+  E.lp.frequency.value = mine ? 2190 : ({ Clean: 7000, Crunch: 4300, Lead: 3700 }[t] || 7000); E.lp.Q.value = mine ? 0.707 : 0.6;
+  E.body.frequency.value = mine ? 134 : 220; E.body.gain.value = mine ? -1.3 : 3; E.body.Q.value = mine ? 0.75 : 1;
+  E.lshelf.frequency.value = 435; E.lshelf.gain.value = mine ? 12.9 : 0; E.hshelf.frequency.value = 4710; E.hshelf.gain.value = mine ? -20.6 : 0;
+  E.post.gain.value = mine ? 0.9 : ({ Clean: 1, Crunch: 0.5, Lead: 0.42 }[t] || 1);
 }
 
 // ---- the clock
@@ -1177,16 +1379,17 @@ function drumStep(P, i, t) {
 // ---- guitar voice: Karplus-Strong plucked string, cached per pitch
 function ksBuf(midi, bright) {
   const key = midi + ':' + bright; let k = E.ks.get(key); if (k) return k;
-  const c = E.ctx, sr = c.sampleRate, f = 440 * Math.pow(2, (midi - 69) / 12), N = Math.max(4, Math.floor(sr / f - 0.5)), len = Math.floor(sr * 3);
+  const c = E.ctx, sr = c.sampleRate, f = 440 * Math.pow(2, (midi - 69) / 12), N = Math.max(4, Math.floor(sr / f - 0.0234)), len = Math.floor(sr * Math.min(4.5, Math.max(2, (9.74 - (midi - 40) * 0.203) * 0.8)));
   const buf = c.createBuffer(1, len, sr), y = buf.getChannelData(0);
-  const T60 = Math.max(0.8, Math.min(4.2, 4.4 - (midi - 40) * 0.075)), rho = Math.pow(0.001, 1 / (f * T60));
-  const a = 0.22 + 0.6 * bright, pick = Math.max(1, Math.round(N * 0.13)), ex = new Float32Array(N + 1); let lp = 0;
+  // string model fitted to your guitar (Takes 2026-11-20 03-47-39): long sustain, highs fading a little faster than lows
+  const S = 0.0234, T60 = Math.max(0.8, 9.74 - (midi - 40) * 0.203), rho = Math.pow(0.001, 1 / (f * T60));
+  const a = Math.min(1, 0.45 + 0.47 * bright), pick = Math.max(1, Math.round(N * 0.167)), ex = new Float32Array(N + 1); let lp = 0;
   for (let i = 0; i <= N; i++) { lp += a * ((Math.random() * 2 - 1) - lp); ex[i] = lp; }
   let dc = 0, mx = 1e-9; for (let i = 0; i <= N; i++) { y[i] = ex[i] - (i >= pick ? ex[i - pick] : 0); dc += y[i]; } dc /= N + 1;
   for (let i = 0; i <= N; i++) { y[i] -= dc; mx = Math.max(mx, Math.abs(y[i])); } for (let i = 0; i <= N; i++) y[i] /= mx;
-  for (let n = N + 1; n < len; n++) y[n] = rho * 0.5 * (y[n - N] + y[n - N - 1]);
-  k = { buf, rate: f / (sr / (N + 0.5)) }; E.ks.set(key, k);
-  if (E.ks.size > 90) E.ks.delete(E.ks.keys().next().value);
+  for (let n = N + 1; n < len; n++) y[n] = rho * ((1 - S) * y[n - N] + S * y[n - N - 1]);
+  k = { buf, rate: f / (sr / (N + S)) }; E.ks.set(key, k);
+  if (E.ks.size > 48) E.ks.delete(E.ks.keys().next().value);
   return k;
 }
 const HARM = { 12: 12, 24: 24, 7: 19, 19: 19, 5: 24, 4: 28, 9: 28, 16: 28, 3: 31 };
@@ -1253,6 +1456,8 @@ function playVoice(v, tab, T) {
     lfo.connect(d).connect(s.detune); lfo.start(t); lfo.stop(end + 0.2);
   }
   s.start(t); s.stop(end + 0.15); tab.nodes.push({ g, s, end: end + 0.15 });
+  if (v.bright) { const o = c.createOscillator(), kg = c.createGain(); o.frequency.value = 101; kg.gain.setValueAtTime(0.39 * v.amp, t); kg.gain.setTargetAtTime(0, t, 0.03);   // body knock, as on your recording
+    o.connect(kg).connect(E.gBus); o.start(t); o.stop(t + 0.22); }
 }
 function tabRange() {
   const cpm = song.cpm, s = selNotes();
@@ -1337,6 +1542,39 @@ async function looperReady() {
     LP.inLat = st.getAudioTracks()[0].getSettings().latency || 0.01;
   }
 }
+// ---- AUX: a second input for a line in (keyboard, phone, drum machine, backing track), with its own device
+const AUX = { src: null, stream: null, an: null, label: '' };
+async function auxDevices() {
+  try { const t = await navigator.mediaDevices.getUserMedia({ audio: true }); t.getTracks().forEach(x => x.stop()); } catch (e) {}   // labels need permission once
+  return (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'audioinput');
+}
+function auxMenu(anchor) {
+  return new Promise(async res => {
+    const m = $('auxMenu'), devs = await auxDevices(), want = localStorage.getItem('dxtabaux') || '';
+    m.innerHTML = '<div class="mt">AUX LINE IN: CHOOSE THE INPUT</div>' + (devs.length ? devs.map(d => `<div class="it${d.deviceId === want ? ' on' : ''}" data-id="${d.deviceId}">${(d.label || 'Input').replace(/</g, '&lt;')}</div>`).join('') : '<div class="it">no inputs found</div>');
+    const r = anchor.getBoundingClientRect(), sr = $('stage').getBoundingClientRect(), sc = sr.width / 1571;
+    m.style.left = ((r.left - sr.left) / sc) + 'px'; m.style.bottom = ((sr.bottom - r.top) / sc + 6) + 'px'; m.style.display = 'block';
+    const close = id => { m.style.display = 'none'; removeEventListener('mousedown', out, true); res(id); };
+    const out = ev => { if (!m.contains(ev.target)) close(null); };
+    setTimeout(() => addEventListener('mousedown', out, true), 0);
+    m.querySelectorAll('.it[data-id]').forEach(it => it.onclick = () => close(it.dataset.id));
+  });
+}
+async function auxOpen(pick) {
+  const c = eng(); let id = localStorage.getItem('dxtabaux') || '';
+  const strip = document.querySelector('.strip[data-ch=aux]');
+  if (pick || !id) { const chosen = await auxMenu(strip.querySelector('.ssub')); if (!chosen) return; id = chosen; localStorage.setItem('dxtabaux', id); }
+  auxClose();
+  try {
+    const st = await navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: id }, echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: 2 } });
+    AUX.stream = st; AUX.src = c.createMediaStreamSource(st); AUX.an = c.createAnalyser(); AUX.an.fftSize = 512;
+    AUX.src.connect(E.ch.aux.trim); AUX.src.connect(AUX.an);
+    AUX.label = (st.getAudioTracks()[0].label || 'line in').replace(/\s*\(.*\)\s*$/, '').slice(0, 18).toUpperCase();
+    status(`AUX line in open: ${st.getAudioTracks()[0].label || 'input'}${MIX.aux.mon ? '' : ' (MON is off, so it is metered but not heard)'}`);
+  } catch (e) { status(e.name === 'NotAllowedError' ? 'microphone access was blocked (see HELP)' : 'AUX line in failed: ' + (e.message || e.name)); }
+  mixPaintAll();
+}
+function auxClose() { if (AUX.src) { try { AUX.src.disconnect(); } catch (e) {} AUX.stream.getTracks().forEach(t => t.stop()); AUX.src = null; AUX.stream = null; } mixPaintAll(); }
 function looperInputReset() { if (LP.src) { try { LP.src.disconnect(); } catch (e) {} LP.stream.getTracks().forEach(t => t.stop()); LP.src = null; LP.stream = null; } }
 const latF = () => { const c = E.ctx; return Math.max(0, Math.round(((c.outputLatency || c.baseLatency || 0) + LP.inLat + AUD.sync / 1000) * c.sampleRate)); };
 function sendBufs(k) { for (let i = 0; i < k; i++) { const b = new Float32Array(LP.lenF); LP.node.port.postMessage({ cmd: 'buf', b }, [b.buffer]); } }
@@ -1440,6 +1678,7 @@ function toggleClick() { E.click = !E.click; if (E.click && !E.running) startTra
 // ------------------------------------------------------------------ mixer: channel strips (in trim, pan, 4 effect sends, fader, mute/solo), 4 effect returns, master
 const MIX_CH = [
   { id: 'in', name: 'INPUT', sub: 'GUITAR IN', rows: ['trim', 'pan'], knobs: ['rev', 'plt', 'dly', 'ech'], btns: ['arm', 'mon'] },
+  { id: 'aux', name: 'AUX', sub: 'LINE IN', rows: ['trim', 'pan'], knobs: ['rev', 'plt', 'dly', 'ech'], btns: ['arm', 'mon'] },
   { id: 'gtr', name: 'GUITAR', sub: 'TAB PLAYBACK', rows: ['trim', 'pan'], knobs: ['rev', 'plt', 'dly', 'ech'], btns: ['mute', 'solo'] },
   { id: 'loop', name: 'LOOPER', sub: 'LAYERS', rows: ['trim', 'pan'], knobs: ['rev', 'plt', 'dly', 'ech'], btns: ['mute', 'solo'] },
   { id: 'drums', name: 'DRUMS', sub: 'BEATS', rows: ['trim', 'pan'], knobs: ['rev', 'plt', 'dly', 'ech'], btns: ['mute', 'solo'] },
@@ -1476,14 +1715,15 @@ const toneHz = v => 1200 * Math.pow(10, v * 1.05);                          // 1
 const faderGain = p => 2 * p * p, faderDb = p => { if (p <= 0.001) return '-∞'; const d = 20 * Math.log10(faderGain(p)); return Math.abs(d) < 0.05 ? '0.0' : (d > 0 ? '+' : '') + d.toFixed(1); };
 const MIX = (() => {                                                         // saved mixer state; first time, start from the old volume sliders
   const old = AUD.mix || {}, m = {}, pFromVol = v => Math.sqrt(Math.max(0, v) / 2);
-  const defP = { in: 0.707, gtr: pFromVol(AUD.gtr || 0.8), loop: pFromVol(AUD.loop || 0.9), drums: pFromVol(AUD.drums || 0.7), click: pFromVol(AUD.click || 0.6), fxrev: 0.6, fxplt: 0.58, fxdly: 0.55, fxech: 0.55, master: 0.67 };
+  const defP = { in: 0.707, aux: 0.707, gtr: pFromVol(AUD.gtr || 0.8), loop: pFromVol(AUD.loop || 0.9), drums: pFromVol(AUD.drums || 0.7), click: pFromVol(AUD.click || 0.6), fxrev: 0.6, fxplt: 0.58, fxdly: 0.55, fxech: 0.55, master: 0.67 };
   const defSend = { in: { rev: 0.2 }, gtr: { rev: 0.18 }, loop: { rev: 0.1 }, drums: { rev: 0.08 }, click: {} };
   const carry = { fxrev: old.rev, fxdly: old.dly };                          // settings from the first mixer version
   for (const ch of MIX_CH) {
     const o = m[ch.id] = Object.assign({ p: defP[ch.id], mute: false, solo: false }, carry[ch.id] || {}, old[ch.id] && !carry[ch.id] ? old[ch.id] : {});
     for (const r of [...ch.rows, ...ch.knobs]) if (o[r] == null) o[r] = (defSend[ch.id] && defSend[ch.id][r] != null) ? defSend[ch.id][r] : MIX_ROWS[r].def;
   }
-  if (m.in.mon == null) m.in.mon = false;                                    // hear the guitar through the PC: off (the amp already plays it)
+  if (m.in.mon == null) m.in.mon = false;
+  if (m.aux.mon == null) m.aux.mon = true;                                   // a line in (phone, keyboard, backing track) is heard through the PC                                    // hear the guitar through the PC: off (the amp already plays it)
   if (m.master.limit == null) m.master.limit = true;
   AUD.mix = m; return m;
 })();
@@ -1543,7 +1783,7 @@ function mixApply() {                                                        // 
   for (const ch of MIX_CH) {
     if (ch.master) continue; const o = MIX[ch.id], s = E.ch[ch.id];
     sm(s.fader.gain, faderGain(o.p)); sm(s.pan.pan, o.pan || 0); sm(s.trim.gain, o.trim != null ? Math.pow(10, o.trim / 20) : 1);
-    let on = !o.mute; if (ch.id === 'in') on = o.mon && !soloOn; else if (!ch.fx && soloOn) on = !o.mute && o.solo;
+    let on = !o.mute; if (ch.id === 'in' || ch.id === 'aux') on = o.mon && !soloOn; else if (!ch.fx && soloOn) on = !o.mute && o.solo;
     sm(s.mute.gain, on ? 1 : 0);
     if (s.send) for (const k in s.send) sm(s.send[k].gain, o[k] * o[k] * (k === 'rev' || k === 'plt' ? 1.2 : 1));
   }
@@ -1577,6 +1817,7 @@ function mixBuildUI() {
       ${ch.knobs.length ? `<div class="knobs${ch.fx ? ' grid' : ''}">${ch.knobs.map(k => `<div class="knob" data-k="${k}" title="${MIX_ROWS[k].tip || MIX_ROWS[k].lbl}: drag up/down, wheel, double-click to reset"><div class="kd"><i></i></div><div class="kl">${MIX_ROWS[k].lbl}</div></div>`).join('')}</div>` : ''}
       ${ch.master ? '<div class="mb wide" data-b="reset" title="Put every mixer control back to its starting value">RESET</div>' : ''}</div>`;
     box.appendChild(st);
+    if (ch.id === 'aux') st.querySelector('.ssub').onclick = () => auxOpen(true);
     const fad = st.querySelector('.fader');
     const setP = p => { o.p = Math.max(0, Math.min(1, p)); mixApply(); mixPaint(st, ch); mixSave(); };
     const fromY = ev => { const r = fad.getBoundingClientRect(); return 1 - (ev.clientY - r.top - 7) / (r.height - 14); };
@@ -1601,6 +1842,7 @@ function mixBuildUI() {
     });
     st.querySelectorAll('.mb').forEach(b => b.onclick = async () => {
       const k = b.dataset.b;
+      if (k === 'arm' && ch.id === 'aux') { if (AUX.src) auxClose(); else await auxOpen(); mixPaint(st, ch); return; }
       if (k === 'arm') { if (LP.src) { looperInputReset(); mixPaint(st, ch); return; } try { await looperReady(); status('guitar input open: the meter shows your level'); } catch (e) { status(micErr(e)); } mixPaint(st, ch); return; }
       if (k === 'reset') { if (!confirm('Reset every mixer control to its starting value?')) return; delete AUD.mix; saveAud(); location.reload(); return; }
       o[k] = !o[k]; mixApply(); mixPaintAll(); mixSave();
@@ -1626,11 +1868,12 @@ function mixPaint(st, ch) {
   });
   st.querySelectorAll('.mb').forEach(b => {
     const k = b.dataset.b;
-    b.classList.toggle('on', k === 'arm' ? !!LP.src : !!o[k]);
+    b.classList.toggle('on', k === 'arm' ? !!(ch.id === 'aux' ? AUX.src : LP.src) : !!o[k]);
     if (k === 'mute') b.classList.toggle('red', !!o.mute);
   });
   const soloOn = MIX_CH.some(c2 => !c2.fx && !c2.master && c2.id !== 'in' && MIX[c2.id].solo);
-  st.classList.toggle('dimmed', !ch.fx && !ch.master && ch.id !== 'in' && soloOn && !o.solo || !!o.mute || (ch.id === 'in' && !o.mon));
+  st.classList.toggle('dimmed', !ch.fx && !ch.master && ch.id !== 'in' && ch.id !== 'aux' && soloOn && !o.solo || !!o.mute || ((ch.id === 'in' || ch.id === 'aux') && !o.mon));
+  if (ch.id === 'aux') { const sub = st.querySelector('.ssub'); sub.textContent = AUX.src ? (AUX.label || 'LINE IN') : 'LINE IN ▾'; sub.title = 'Choose the line-in device'; sub.style.cursor = 'pointer'; }
 }
 function mixPaintAll() { document.querySelectorAll('.strip').forEach(st => mixPaint(st, MIX_CH.find(c => c.id === st.dataset.ch))); }
 
@@ -1646,6 +1889,7 @@ function mixFrame() {
       if (id === 'master') { [['L', E.mL], ['R', E.mR]].forEach(([k, an]) => { st.querySelector(`[data-m="${k}"]`).style.height = (meterH(peakDb(an)) * 100) + '%'; }); return; }
       let db = peakDb(E.ch[id].an);
       if (id === 'in' && LP.src && !MIX.in.mon) db = LP.lvl > 1e-5 ? 20 * Math.log10(LP.lvl) : -90;   // show the input level even while not monitored
+      if (id === 'aux' && AUX.src && !MIX.aux.mon) db = peakDb(AUX.an);
       const h = MTR.hold[id] = Math.max(meterH(db), (MTR.hold[id] || 0) - 0.025);
       st.querySelector('.mfill').style.height = (h * 100) + '%';
     });
@@ -1662,7 +1906,7 @@ function setView(v) {
 
 // ------------------------------------------------------------------ meters: a row of DUSTEX gauges (same faces as the fishing gauges), in place of the staff
 const MB_CH = [
-  { id: 'in', name: 'INPUT' }, { id: 'gtr', name: 'GUITAR' }, { id: 'loop', name: 'LOOPER' }, { id: 'drums', name: 'DRUMS' }, { id: 'click', name: 'CLICK' },
+  { id: 'in', name: 'INPUT' }, { id: 'aux', name: 'AUX' }, { id: 'gtr', name: 'GUITAR' }, { id: 'loop', name: 'LOOPER' }, { id: 'drums', name: 'DRUMS' }, { id: 'click', name: 'CLICK' },
   { id: 'fxrev', name: 'REVERB', fx: true }, { id: 'fxplt', name: 'PLATE', fx: true }, { id: 'fxdly', name: 'DELAY', fx: true }, { id: 'fxech', name: 'ECHO', fx: true },
   { id: 'master', ch: 0, name: 'MASTER L', master: true }, { id: 'master', ch: 1, name: 'MASTER R', master: true },
 ];
@@ -1697,10 +1941,10 @@ function gauge(host, size, label, id) {
 }
 function mbInit() {
   const box = $('meterBox'); box.querySelectorAll('.gw').forEach(n => n.remove()); MB.g = [];
-  const size = 130, n = MB_CH.length, extra = 22, gap = (1555 - 16 - n * size - extra * 2) / (n - 1);
+  const size = 120, n = MB_CH.length, extra = 20, gap = (1555 - 16 - n * size - extra * 2) / (n - 1);
   let x = 8;
   MB_CH.forEach((c, i) => {
-    if (i === 5 || i === 9) x += extra;
+    if (i && ((c.fx && !MB_CH[i - 1].fx) || (c.master && !MB_CH[i - 1].master))) x += extra;
     const w = document.createElement('div'); w.className = 'gw'; w.style.left = x + 'px'; box.appendChild(w);
     MB.g.push(Object.assign(gauge(w, size, c.name, 'm' + i), { c, disp: -90, hold: -90, hT: 0, clip: false, shown: -90, shownT: 0 }));
     x += size + gap;
@@ -1714,6 +1958,7 @@ function mbLevels(id) {                                                       //
   if (id === 'master') return [peakDb(E.mL), peakDb(E.mR)];
   const s = E.ch[id]; if (!s || !s.anL) return [-90, -90];
   if (id === 'in' && LP.src && !MIX.in.mon) { const d = LP.lvl > 1e-5 ? 20 * Math.log10(LP.lvl) : -90; return [d, d]; }
+  if (id === 'aux' && AUX.src && !MIX.aux.mon) { const d = peakDb(AUX.an); return [d, d]; }
   return [peakDb(s.anL), peakDb(s.anR)];
 }
 function mbDraw() {
