@@ -1,10 +1,13 @@
-# DUSTEX Fishing
+# DUSTEX Fishing Forecaster
 
 Tides, weather, seas, moon and feeding times, a bite forecast, alerts and local fishing reports on one screen, for iPhone, iPad and the DUSTEX desktop.
 
 **Open the app:** https://deesayi.github.io/dustex-fishing/
 
 ## The screen at a glance
+
+The DUSTEX crest and the app name sit at the top centre, with your spot's name on the left and the last update time on the right. HELP, REPORTS and SETTINGS are centred under the panel (top right on the desktop widget, a row under the header on iPhone).
+
 
 **NOW** shows the current weather, feels-like temperature and humidity, sunrise and sunset, plus water temperature and swell direction on the coast (water temperature and lake level in lake mode).
 
@@ -40,7 +43,7 @@ Tap **REPORTS** for recent local fishing reports from newspapers, magazines and 
 
 **Search:** type a town, beach, inlet or lake and tap **SEARCH**, then tap the right place in the list. **HERE** uses your device's location (allow it when asked).
 
-**Name shown in the header:** what appears at the top left. Change it to anything you like.
+**Name shown in the header:** what appears at the top left (your spot). Change it to anything you like.
 
 **Tide stations:** the app picks the nearest NOAA stations for you: a river, bay or intracoastal station for **Inshore** and a beach, pier or inlet station for **Offshore**. The lists show the 15 closest with their distances, so you can choose others. Offshore seas come from the offshore station's position.
 

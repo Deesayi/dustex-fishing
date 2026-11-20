@@ -6,11 +6,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="DUSTEX Fishing">
+<meta name="apple-mobile-web-app-title" content="Fishing Forecaster">
 <meta name="theme-color" content="#0b0b0d">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
-<title>DUSTEX Fishing</title>
+<title>DUSTEX Fishing Forecaster</title>
 <style>
   :root { --val:#d3d6db; --lab:#7d838e; --lcd:#93d9b4; --dim:#9a9da6; --head:#b8bcc6; --gold:#d8b46a; --ink:#ededea; --list:#b9b9b5; --dial:#2a3b55; }
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
@@ -39,17 +39,18 @@
   .kvc { display:grid; grid-template-columns:auto auto; column-gap:14px; justify-content:center; margin-top:12px; }
   .why div { position:relative; padding-left:15px; margin-bottom:2px; }
   .why div::before { content:''; position:absolute; left:3px; top:.62em; width:5px; height:5px; border-radius:50%; background:#5b6170; }
-  .best { display:grid; grid-template-columns:36px auto 1fr; column-gap:9px; row-gap:2px; white-space:nowrap; }
+  .best { display:grid; grid-template-columns:46px auto 1fr; column-gap:9px; row-gap:2px; white-space:nowrap; }
   #g-best .best { font-size:11.5px; }
   .best .st { color:var(--gold); letter-spacing:1px; }
   .vdiv { position:absolute; top:14px; bottom:14px; width:1px; background:#1d2025; }
   .t { position:absolute; white-space:nowrap; }
   .t.mono { white-space:pre; }
   #status { right:14px; top:9px; font-size:10px; color:var(--dim); text-align:right; max-width:640px; overflow:hidden; text-overflow:ellipsis; }
-  #gear { position:absolute; right:14px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
-  #repBtn { position:absolute; right:150px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
+  #btns { position:absolute; left:0; right:0; bottom:-40px; display:flex; justify-content:center; gap:18px; }
+  #gear { font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125);  cursor:pointer; min-width:96px; text-align:center; }
+  #repBtn { font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125);  cursor:pointer; min-width:96px; text-align:center; }
   #repBtn b { color:#1a1408; background:var(--gold); border-radius:8px; padding:0 6px; margin-left:6px; letter-spacing:0; font-size:11px; }
-  #helpBtn { position:absolute; right:298px; bottom:-34px; font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); }
+  #helpBtn { font-size:12px; color:var(--dim); letter-spacing:.25em; padding:6px 12px; border-radius:12px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125);  cursor:pointer; min-width:96px; text-align:center; }
   #help { position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:10; }
   #help .box { width:720px; max-height:90vh; display:flex; flex-direction:column; border-radius:16px; border:1px solid #3a3d44; background:linear-gradient(#1c1e23,#0a0b0d); padding:20px 24px; }
   #help h3 { margin:0; color:var(--gold); font-size:12px; letter-spacing:.3em; }
@@ -95,19 +96,23 @@
   .grp { position:absolute; }
   .panel.full { left:0; top:0; width:100%; height:100%; }
   .phoneonly { display:none; }
-  #g-now { left:12px; top:30px; width:284px; height:195px; }
-  #g-tom { left:12px; top:233px; width:284px; height:195px; }
-  #g-g { left:309px; top:34px; width:590px; height:162px; }
-  #gBaro { left:0; top:0; } #gWind { left:150px; top:0; } #gSea { left:300px; top:0; } #gDir { left:450px; top:0; }
-  #g-icw { left:304px; top:202px; width:296px; height:226px; }
-  #g-oce { left:608px; top:202px; width:296px; height:226px; }
-  .tinfo { left:12px; top:141px; } .tlist { left:12px; top:161px; width:272px; }
-  #g-moon { left:912px; top:30px; width:256px; height:398px; }
+  #brand { position:absolute; left:50%; top:5px; width:200px; margin-left:-100px; text-align:center; pointer-events:none; }
+  #brand img { display:block; width:124px; height:40px; margin:0 auto; filter:drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
+  #brand div { margin-top:3px; font-size:8.5px; font-weight:700; letter-spacing:.42em; padding-left:.42em; color:var(--gold); white-space:nowrap; }
+  #hdr { left:14px; top:9px; font-size:11px; color:var(--head); font-weight:600; letter-spacing:.04em; }
+  #g-now { left:12px; top:30px; width:280px; height:195px; }
+  #g-tom { left:12px; top:233px; width:280px; height:195px; }
+  #g-g { left:300px; top:64px; width:580px; height:134px; }
+  #gBaro { left:16px; top:0; } #gWind { left:161px; top:0; } #gSea { left:306px; top:0; } #gDir { left:451px; top:0; }
+  #g-icw { left:300px; top:202px; width:286px; height:226px; }
+  #g-oce { left:594px; top:202px; width:286px; height:226px; }
+  .tinfo { left:12px; top:139px; } .tlist { left:12px; top:159px; width:262px; }
+  #g-moon { left:888px; top:30px; width:280px; height:398px; }
   #g-fc { left:12px; top:436px; width:1156px; height:152px; }
-  #gIn { left:26px; top:24px; } #gOff { left:150px; top:24px; }
-  #anaHead { left:304px; top:10px; width:278px; overflow:hidden; } #anaWhy { left:304px; top:38px; width:278px; font-size:11.5px; line-height:1.45; }
+  #gIn { left:16px; top:24px; } #gOff { left:156px; top:24px; }
+  #anaHead { left:298px; top:10px; width:268px; overflow:hidden; } #anaWhy { left:298px; top:38px; width:268px; font-size:11.5px; line-height:1.45; }
   /* FORECAST FOR: day + time picker (balanced against the reasons column) */
-  #when { left:606px; top:0; width:278px; height:152px; }
+  #when { left:586px; top:0; width:278px; height:152px; }
   #whenRead { position:absolute; left:0; top:24px; width:100%; text-align:center; font-size:16px; color:var(--lcd); font-variant-numeric:tabular-nums; letter-spacing:.04em; white-space:nowrap; }
   #whenRead b { color:var(--gold); font-weight:600; letter-spacing:.12em; font-size:11px; margin-right:8px; vertical-align:2px; }
   .wrow { position:absolute; left:0; top:52px; width:100%; display:flex; justify-content:center; gap:10px; }
@@ -123,10 +128,10 @@
   #whenTicks { position:absolute; left:0; top:124px; width:278px; display:flex; justify-content:space-between; font-size:9.5px; color:var(--lab); letter-spacing:.04em; }
   #whenTicks span { width:30px; text-align:center; }
   .best .on { color:var(--lcd); }
-  #g-best { left:912px; top:436px; width:256px; height:152px; }
+  #g-best { left:888px; top:436px; width:280px; height:152px; }
   #sizer { width:1px; height:0; }
-  #gWtr { left:300px; top:0; } .phone #gWtr { left:40px; top:178px; }
-  #gLake { left:88px; top:24px; } .phone #gLake { left:146px; top:30px; }
+  #gWtr { left:306px; top:0; } .phone #gWtr { left:40px; top:178px; }
+  #gLake { left:86px; top:24px; } .phone #gLake { left:146px; top:30px; }
   #gWtr, #gLake { display:none; }
   .lake #gWtr, .lake #gLake { display:block; } .lake #gSea, .lake #gIn, .lake #gOff { display:none; }
 
@@ -134,37 +139,37 @@
   html.embed, html.embed body { background:transparent !important; }
   html.embed body::before { display:none; }
   .embed #stage { box-shadow:none; }
-  .embed #repBtn, .embed #gear { top:4px; bottom:auto; font-size:10px; padding:3px 10px; }
-  .embed #helpBtn { top:4px; bottom:auto; font-size:10px; padding:3px 10px; right:240px; }
-  .embed #gear { right:12px; } .embed #repBtn { right:118px; }
-  .embed #status { right:318px; max-width:460px; }
+  .embed #btns { left:auto; right:12px; top:4px; bottom:auto; gap:10px; }
+  .embed #btns > div { font-size:10px; padding:3px 10px; min-width:84px; }
+  .embed #status { right:310px; max-width:200px; }
 
   /* ---------- layout: iPhone (420-wide column, scrolls) ---------- */
   html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
-  .phone #stage { width:420px; height:2464px; }
-  .phone #status { left:14px; right:auto; top:26px; text-align:left; max-width:392px; }
-  .phone #repBtn { left:10px; right:auto; top:46px; bottom:auto; }
-  .phone #gear { right:10px; top:46px; bottom:auto; }
-  .phone #helpBtn { right:auto; left:calc(50% - 36px); top:46px; bottom:auto; }
+  .phone #stage { width:420px; height:2554px; }
+  .phone #brand { top:10px; } .phone #brand img { width:170px; height:55px; } .phone #brand div { font-size:10px; margin-top:4px; }
+  .phone #hdr { left:14px; top:88px; }
+  .phone #status { right:14px; top:88px; text-align:right; max-width:190px; }
+  .phone #btns { left:10px; right:10px; top:110px; bottom:auto; justify-content:space-between; gap:0; }
+  .phone #btns > div { min-width:110px; }
   .phone #help .box { width:94vw; padding:16px; } .phone #help h3 { letter-spacing:.12em; } .phone #helpBody p { font-size:14px; }
-  .phone #banner { white-space:normal; width:390px; text-align:center; top:84px; }
+  .phone #banner { white-space:normal; width:390px; text-align:center; top:150px; }
   .phone .phoneonly { display:block; }
-  .phone #g-now { left:10px; top:84px; width:400px; }
-  .phone #g-fc { left:10px; top:290px; width:400px; height:470px; }
+  .phone #g-now { left:10px; top:150px; width:400px; }
+  .phone #g-fc { left:10px; top:356px; width:400px; height:470px; }
   .phone #gIn { left:60px; top:30px; } .phone #gOff { left:232px; top:30px; }
   .phone #anaHead { left:14px; top:172px; font-size:14px !important; }
   .phone #anaWhy { left:14px; top:198px; width:374px; font-size:12px; } .phone #anaHead { width:374px; }
   .phone #when { left:61px; top:312px; } .phone #whenDiv { display:none; } .phone #when > .lbl { width:100%; text-align:center; }
-  .phone #g-best { left:10px; top:770px; width:400px; height:110px; }
-  .phone #g-g { left:10px; top:890px; width:400px; height:350px; }
+  .phone #g-best { left:10px; top:836px; width:400px; height:110px; }
+  .phone #g-g { left:10px; top:956px; width:400px; height:350px; }
   .phone #gBaro { left:40px; top:0; } .phone #gWind { left:220px; top:0; } .phone #gSea { left:40px; top:178px; } .phone #gDir { left:220px; top:178px; }
-  .phone #g-icw { left:10px; top:1250px; width:400px; height:300px; }
-  .phone #g-oce { left:10px; top:1560px; width:400px; height:300px; }
+  .phone #g-icw { left:10px; top:1316px; width:400px; height:300px; }
+  .phone #g-oce { left:10px; top:1626px; width:400px; height:300px; }
   .phone .plot { width:380px; height:154px; }
   .phone .tinfo { left:12px; top:190px; } .phone .tlist { left:12px; top:212px; width:376px; }
   .phone .vdiv { display:none; }
-  .phone #g-moon { left:10px; top:1870px; width:400px; height:380px; }
-  .phone #g-tom { left:10px; top:2260px; width:400px; }
+  .phone #g-moon { left:10px; top:1936px; width:400px; height:404px; }
+  .phone #g-tom { left:10px; top:2350px; width:400px; }
   .phone #settings .box, .phone #reports .box { width:94vw; padding:16px; }
   .phone #settings .row { flex-wrap:wrap; } .phone #settings .row > div { min-width:140px; }
   .phone #settings .row .pill { padding:7px 10px; letter-spacing:.12em; }
@@ -173,7 +178,8 @@
 </head>
 <body>
 <div id="stage">
-  <div class="t" style="left:14px;top:8px;font-size:11px;color:var(--head);font-weight:600" id="hdr">DAYTONA BEACH &nbsp;|&nbsp; FISHING CONDITIONS</div>
+  <div class="t" id="hdr">DAYTONA BEACH</div>
+  <div id="brand"><img src="dustex_logo.png" alt="DUSTEX"><div>FISHING FORECASTER</div></div>
   <div class="t" id="status">loading...</div>
 
   <div class="grp" id="g-now"><div class="panel full"></div>
@@ -200,13 +206,13 @@
 
   <div class="grp" id="g-icw"><div class="panel full"></div>
     <div class="lbl" id="icwTitle" style="left:10px;top:7px;font-size:9.5px"></div>
-    <svg class="abs plot" id="plotIcw" style="left:10px;top:28px" width="276" height="112" viewBox="0 0 276 112"></svg>
+    <svg class="abs plot" id="plotIcw" style="left:10px;top:28px" width="266" height="108" viewBox="0 0 276 112"></svg>
     <div class="t ro tinfo" id="infoIcw"></div>
     <div class="t ro tlist" id="listIcw"></div>
   </div>
   <div class="grp" id="g-oce"><div class="panel full"></div>
     <div class="lbl" id="oceTitle" style="left:10px;top:7px;font-size:9.5px"></div>
-    <svg class="abs plot" id="plotOce" style="left:10px;top:28px" width="276" height="112" viewBox="0 0 276 112"></svg>
+    <svg class="abs plot" id="plotOce" style="left:10px;top:28px" width="266" height="108" viewBox="0 0 276 112"></svg>
     <div class="t ro tinfo" id="infoOce"></div>
     <div class="t ro tlist" id="listOce"></div>
   </div>
@@ -225,7 +231,7 @@
     <div class="abs" id="gIn"></div><div class="abs" id="gOff"></div><div class="abs" id="gLake"></div>
     <div class="t" id="anaHead" style="font-size:15px"></div>
     <div class="t ro why" id="anaWhy"></div>
-    <div class="vdiv" style="left:288px"></div><div class="vdiv" id="whenDiv" style="left:594px"></div><div class="vdiv" style="left:896px"></div>
+    <div class="vdiv" style="left:284px"></div><div class="vdiv" id="whenDiv" style="left:578px"></div><div class="vdiv" style="left:872px"></div>
     <div class="abs" id="when">
       <div class="lbl" style="left:0;top:8px">FORECAST FOR</div>
       <div id="whenRead">LIVE</div>
@@ -236,20 +242,19 @@
   </div>
   <div class="grp" id="g-best"><div class="panel full phoneonly"></div>
     <div class="lbl" id="bestLbl" style="left:12px;top:8px">BEST TIMES TODAY</div>
-    <div class="t ro best" id="anaBest" style="left:12px;top:32px;width:232px"></div>
+    <div class="t ro best" id="anaBest" style="left:12px;top:32px;width:256px"></div>
   </div>
 
-  <div id="gear">SETTINGS</div>
-  <div id="repBtn">REPORTS</div>
-  <div id="helpBtn">HELP</div>
+  <div id="btns"><div id="helpBtn">HELP</div><div id="repBtn">REPORTS</div><div id="gear">SETTINGS</div></div>
   <div id="banner"></div>
 </div>
 <div id="sizer"></div>
 
 <div id="help"><div class="box">
-  <h3>H O W &nbsp; T O &nbsp; U S E &nbsp; D U S T E X &nbsp; F I S H I N G</h3>
+  <h3>H O W &nbsp; T O &nbsp; U S E &nbsp; F I S H I N G &nbsp; F O R E C A S T E R</h3>
   <div id="helpBody">
   <h4>The screen at a glance</h4>
+  <p>The DUSTEX crest and the app name sit at the top centre, with your spot's name on the left and the last update time on the right.</p>
   <p><b>NOW</b> shows the current weather, feels-like temperature and humidity, sunrise and sunset, plus water temperature and swell direction on the coast (water temperature and lake level in lake mode).</p>
   <p><b>TOMORROW</b> shows the high and low, sky, strongest wind and gusts, chance of rain, and the biggest seas offshore (or the latest water temperature in lake mode).</p>
   <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Wind</b> in mph; the thin red needle marks the gusts. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). The <b>compass</b> points to where the wind is coming from. Green on a dial is good fishing, orange is fair, red is tough.</p>
@@ -274,7 +279,7 @@
 
   <h4>Settings</h4>
   <p><b>Search:</b> type a town, beach, inlet or lake and tap <b>SEARCH</b>, then tap the right place in the list. <b>HERE</b> uses your device's location (allow it when asked).</p>
-  <p><b>Name shown in the header:</b> what appears at the top left. Change it to anything you like.</p>
+  <p><b>Name shown in the header:</b> what appears at the top left (your spot). Change it to anything you like.</p>
   <p><b>Tide stations:</b> the app picks the nearest NOAA stations for you: a river, bay or intracoastal station for <b>Inshore</b> and a beach, pier or inlet station for <b>Offshore</b>. The lists show the 15 closest with their distances, so you can choose others. Offshore seas come from the offshore station's position.</p>
   <p><b>Water type:</b> <i>Automatic</i> (lake mode when far from the coast), <i>Saltwater</i> or <i>Freshwater lake</i>.</p>
   <p><b>Alerts:</b> tick <b>Alert me before good fishing windows</b>, choose <b>how early</b> (15, 30 or 60 minutes) and <b>which windows</b> (all, good and up, or best only). A gold banner pops up while the app is open. <b>ADD NEXT 3 DAYS TO CALENDAR</b> adds the windows to your calendar with reminders, which alert you even when the app is closed. <b>TEST ALERT</b> shows a sample.</p>
@@ -290,7 +295,7 @@
   <h4>Where the data comes from</h4>
   <p>Weather and seas: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0). Tides and stations: NOAA Tides &amp; Currents. Lake level and water temperature: U.S. Geological Survey. Places: Open-Meteo geocoding. Fishing reports: Google News and Bing News search of local outlets. Moon, solunar times and sunrise are calculated on your device. Fishing scores are a guide, not a guarantee; always check official marine forecasts and local regulations before heading out.</p>
   </div>
-  <div class="foot"><div class="sub">DUSTEX Fishing</div><button class="pill" id="helpClose">CLOSE</button></div>
+  <div class="foot"><div class="sub">DUSTEX Fishing Forecaster</div><button class="pill" id="helpClose">CLOSE</button></div>
 </div></div>
 
 <div id="reports"><div class="box">
@@ -345,7 +350,7 @@ function fit() {
     const s = Math.min(innerWidth / 420, 1.5);
     st.style.transform = `translate(${(innerWidth - 420 * s) / 2}px, env(safe-area-inset-top)) scale(${s})`;
     st.style.top = 'env(safe-area-inset-top)'; st.style.transform = `translateX(${(innerWidth - 420 * s) / 2}px) scale(${s})`;
-    $('sizer').style.height = (2314 * s + 30) + 'px';
+    $('sizer').style.height = (2404 * s + 30) + 'px';
   } else {
     const s = Math.min((innerWidth - 24) / 1180, (innerHeight - 70) / 600);
     st.style.transform = `translate(${(innerWidth - 1180 * s) / 2}px, ${(innerHeight - 634 * s) / 2}px) scale(${s})`;
@@ -409,15 +414,16 @@ function compass(host, size) {
 (() => { const s = el('svg', { width: 0, height: 0, style: 'position:absolute' }, document.body); const d = el('defs', {}, s);
   const r = el('radialGradient', { id: 'cap', cx: .4, cy: .35, r: .7 }, d); el('stop', { offset: 0, 'stop-color': '#fff' }, r); el('stop', { offset: 1, 'stop-color': '#5e636b' }, r); })();
 
-const dBaro = dial($('gBaro'), { label: 'BAROMETER', min: 29.2, max: 30.8, majors: 4, dec: 1, size: 140, zones: [[29.2, 29.6, '#c8202a'], [29.6, 29.9, '#e08a00'], [29.9, 30.8, '#1f9d57']] });
-const dWind = dial($('gWind'), { label: 'WIND', min: 0, max: 40, majors: 4, size: 140, zones: [[0, 12, '#1f9d57'], [12, 20, '#e08a00'], [20, 40, '#c8202a']] });
-const dSea = dial($('gSea'), { label: 'SEAS', min: 0, max: 10, majors: 5, size: 140, zones: [[0, 3, '#1f9d57'], [3, 5, '#e08a00'], [5, 10, '#c8202a']] });
-const dDir = compass($('gDir'), 140);
+const GS = document.documentElement.classList.contains('phone') ? 140 : 112;
+const dBaro = dial($('gBaro'), { label: 'BAROMETER', min: 29.2, max: 30.8, majors: 4, dec: 1, size: GS, zones: [[29.2, 29.6, '#c8202a'], [29.6, 29.9, '#e08a00'], [29.9, 30.8, '#1f9d57']] });
+const dWind = dial($('gWind'), { label: 'WIND', min: 0, max: 40, majors: 4, size: GS, zones: [[0, 12, '#1f9d57'], [12, 20, '#e08a00'], [20, 40, '#c8202a']] });
+const dSea = dial($('gSea'), { label: 'SEAS', min: 0, max: 10, majors: 5, size: GS, zones: [[0, 3, '#1f9d57'], [3, 5, '#e08a00'], [5, 10, '#c8202a']] });
+const dDir = compass($('gDir'), GS);
 const bz = [[0, 3, '#c8202a'], [3, 5, '#e08a00'], [5, 10, '#1f9d57']];
 const dIn = dial($('gIn'), { label: 'INSHORE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
 const dOff = dial($('gOff'), { label: 'OFFSHORE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
 const dLake = dial($('gLake'), { label: 'LAKE BITE', min: 0, max: 10, majors: 5, size: 108, zones: bz, logo: false });
-const dWtr = dial($('gWtr'), { label: 'WATER °F', min: 30, max: 90, majors: 6, size: 140, zones: [[30, 45, '#c8202a'], [45, 55, '#e08a00'], [55, 80, '#1f9d57'], [80, 90, '#e08a00']] });
+const dWtr = dial($('gWtr'), { label: 'WATER °F', min: 30, max: 90, majors: 6, size: GS, zones: [[30, 45, '#c8202a'], [45, 55, '#e08a00'], [55, 80, '#1f9d57'], [80, 90, '#e08a00']] });
 
 // ------------------------------------------------------------------ small helpers
 const C16 = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
@@ -775,7 +781,7 @@ function fireAlert(w, test) {
   const body = `${hmt(w.a)}-${hmt(w.b)}  |  inshore bite ${rate(a.score)} ${a.score.toFixed(1)}  |  ${cfg.name}`;
   showBanner((test ? 'TEST  ' : '') + title + '   ' + body);
   if ('Notification' in window && Notification.permission === 'granted' && navigator.serviceWorker)
-    navigator.serviceWorker.ready.then(r => r.showNotification('DUSTEX Fishing', { body: title + '\n' + body, icon: 'icon-192.png', tag: 'dx' + w.a.getTime() })).catch(() => {});
+    navigator.serviceWorker.ready.then(r => r.showNotification('Fishing Forecaster', { body: title + '\n' + body, icon: 'icon-192.png', tag: 'dx' + w.a.getTime() })).catch(() => {});
 }
 function checkAlerts() {
   if (!cfg.alertOn) return;
@@ -794,7 +800,7 @@ function exportCalendar() {
   for (let k = 0; k < 3; k++) for (const w of windowsFor(addMin(now, k * 1440))) {
     if (w.stars < +cfg.alertStars || w.b < now) continue; n++;
     out.push('BEGIN:VEVENT', `UID:${w.a.getTime()}-${cfg.lat}-${cfg.lon}@dustex-fishing`, `DTSTAMP:${z(now)}`, `DTSTART:${z(w.a)}`, `DTEND:${z(w.b)}`,
-      `SUMMARY:Fishing ${'*'.repeat(w.stars)} ${w.l}`, `LOCATION:${cfg.name}`, `DESCRIPTION:DUSTEX Fishing window (${w.l})`,
+      `SUMMARY:Fishing ${'*'.repeat(w.stars)} ${w.l}`, `LOCATION:${cfg.name}`, `DESCRIPTION:Fishing Forecaster window (${w.l})`,
       'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:Fishing window', `TRIGGER:-PT${+cfg.alertLead}M`, 'END:VALARM', 'END:VEVENT');
   }
   out.push('END:VCALENDAR');
@@ -864,7 +870,7 @@ function updateMoon() {
 }
 function updateView() {
   const wx = S.wx, mar = S.mar;
-  $('hdr').innerHTML = `${cfg.name.toUpperCase()} &nbsp;|&nbsp; FISHING CONDITIONS`;
+  $('hdr').textContent = cfg.name.toUpperCase();
   $('icwTitle').textContent = cfg.icwName; $('oceTitle').textContent = cfg.oceName;
   if (wx && wx.current) {
     const cur = wx.current;

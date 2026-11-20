@@ -1,8 +1,8 @@
-// DUSTEX Fishing service worker: keeps the app shell on the iPad so it opens offline.
+// DUSTEX Fishing Forecaster service worker: keeps the app shell on the iPad so it opens offline.
 // Live data (weather, seas, tides) always goes to the network.
-const CACHE = 'dxfish-v12';
+const CACHE = 'dxfish-v13';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'gauge_face.png', 'gauge_glass.png', 'gauge_logo.png',
-  'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'knob.png'];
+  'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'knob.png', 'dustex_logo.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));

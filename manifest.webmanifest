@@ -1,6 +1,6 @@
 {
-  "name": "DUSTEX Fishing",
-  "short_name": "Fishing",
+  "name": "DUSTEX Fishing Forecaster",
+  "short_name": "Forecaster",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
