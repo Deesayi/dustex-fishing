@@ -528,7 +528,7 @@
 
   <h4>Chords and notes mode (AI)</h4>
   <p>Open Listen <b>⚙</b> and set <b>What to listen for</b> to <b>Chords and notes (AI)</b>. Listen then hears several strings at once, so strummed chords, double-stops and riffs all get written. It runs Spotify's open-source Basic Pitch note model, stored in the widget folder, so it works offline and your audio never leaves the PC. The first time, it takes a few seconds to load.</p>
-  <p><b>Four judges check every note.</b> 1. <b>The neural model</b> reads a picture of the sound (a spectrogram), on the graphics card. When you stop, it makes a <b>deep pass</b>: it hears the whole take four times, each copy shifted by a quarter of its 11.6 ms frame, and averages them, which steadies the note starts and brings quiet notes out of the noise. 2. <b>The spectrum judge</b> looks only at the new sound each pick adds and explains it with your guitar's own harmonic fingerprint, learned from the clean single notes of the same take. A note survives only if it really adds energy, so an overtone (an octave or twelfth above a note you played) or a string that was just ringing when you picked another one is not written as a new note. 3. <b>The frequency judge</b> measures each note's exact pitch and corrects for a guitar that is a little sharp or flat. 4. <b>The pick judge</b> asks of every note whether it was really picked: its own harmonics must jump at that moment. On a scale where the last note keeps ringing on the next string, that string is not written again each time you pick the next note. Then the tab is laid out with a real fretting hand: if a phrase needs the 7th to 10th frets, the whole phrase is written in that box, the way a position exercise is read, while a phrase that fits the open position stays there. Each take saved in Takes also records what the judges decided.</p>
+  <p><b>Four judges check every note.</b> 1. <b>The neural model</b> reads a picture of the sound (a spectrogram), on the graphics card. When you stop, it makes a <b>deep pass</b>: it hears the whole take four times, each copy shifted by a quarter of its 11.6 ms frame, and averages them, which steadies the note starts and brings quiet notes out of the noise. 2. <b>The spectrum judge</b> looks only at the new sound each pick adds and explains it with your guitar's own harmonic fingerprint, learned from the clean single notes of the same take. A note survives only if it really adds energy, so an overtone (an octave or twelfth above a note you played) or a string that was just ringing when you picked another one is not written as a new note. 3. <b>The frequency judge</b> measures each note's exact pitch and corrects for a guitar that is a little sharp or flat. 4. <b>The pick judge</b> asks of every note whether it was really picked: its own harmonics must jump at that moment. On a scale where the last note keeps ringing on the next string, that string is not written again each time you pick the next note. Then the tab is laid out with a real fretting hand: if a phrase needs the 7th to 10th frets, the whole phrase is written in that box, the way a position exercise is read, while a phrase that fits the open position stays there. Chord names come from what sounds across each stretch of the take, heard in the audio itself (every string, even ones the note finder missed), so picked chords (arpeggios) are named as well as strummed ones, the way a songbook writes them. A scale or a melody gets no chord names. Each take saved in Takes also records what the judges decided.</p>
   <p><b>While you play</b> the tab fills in about a second behind you. <b>When you stop</b>, it goes over the whole take once more and rewrites it neatly: one fingering for the whole phrase, with as little hand movement as possible, and chord shapes your hand can actually make. One <b>↶ Undo</b> removes the whole take.</p>
   <p><b>Write tab from the loop</b> (in the same menu) transcribes whatever the looper has recorded and writes it from the start of the cursor's bar, in time with the BPM. Record one part per loop for the cleanest result.</p>
   <p><b>Chord names:</b> chords it recognises (major, minor, 7ths, power chords, sus, dim and more, including slash chords like D/F#) are named above the tab. Turn this off with <b>Chord names</b>. Bends and vibrato are picked up from the pitch and marked <b>b</b> and <b>~</b>; quick, softer notes on the same string are marked <b>h</b> or <b>p</b>.</p>
@@ -2842,6 +2842,66 @@ function bendMark(pb) {
   return null;
 }
 
+// ---- chord names over time, for picked (arpeggiated) chords as well as strums: what is sounding across each stretch of the
+// take, heard from the audio itself (every string, even ones the note finder missed) and confirmed by the notes found
+const HM = { N: 8192, HOP: 1024, win: null,
+  Q: [['', [0, 4, 7], 0], ['m', [0, 3, 7], 0], ['7', [0, 4, 7, 10], 0.04], ['m7', [0, 3, 7, 10], 0.05], ['maj7', [0, 4, 7, 11], 0.05], ['sus4', [0, 5, 7], 0.12], ['sus2', [0, 2, 7], 0.14]] };
+function harmony(x, notes, o = {}) {
+  const SR = 22050, N = HM.N, H = HM.HOP, bw = SR / N; if (!HM.win) { HM.win = new Float32Array(N); for (let i = 0; i < N; i++) HM.win[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / (N - 1)); }
+  const F = Math.max(0, Math.floor((x.length - N) / H) + 1); if (F < 10) return [];
+  const band = []; for (let p = 40; p < 80; p++) { const f0 = 440 * Math.pow(2, (p - 69) / 12); band.push([p, Math.ceil(f0 * Math.pow(2, -0.4 / 12) / bw), Math.floor(f0 * Math.pow(2, 0.4 / 12) / bw)]); }
+  const C = [], E = new Float32Array(F);
+  for (let f = 0; f < F; f++) {
+    const re = new Float32Array(N), im = new Float32Array(N), a = f * H; let e = 0;
+    for (let i = 0; i < N; i++) { const v = x[a + i] * HM.win[i]; re[i] = v; e += v * v; }
+    const S = fftMag(re, im), c = new Float32Array(12);
+    for (const [p, lo, hi] of band) { let s = 0; for (let k = lo; k <= hi; k++) s += S[k] * S[k]; c[p % 12] += Math.sqrt(s) * (p < 64 ? 1 : 0.7); }
+    C.push(c); E[f] = e;
+  }
+  const w = Math.max(1, Math.round(0.5 * SR / H)), Cs = C.map((_, f) => { const c = new Float32Array(12); for (let g = Math.max(0, f - (w >> 1)); g <= Math.min(F - 1, f + (w >> 1)); g++) for (let k = 0; k < 12; k++) c[k] += C[g][k]; let n = 0; for (const v of c) n += v * v; n = Math.sqrt(n) + 1e-9; return c.map(v => v / n); });
+  // key: the chords that belong to it are a little more likely
+  const tot = new Float32Array(12); Cs.forEach(c => c.forEach((v, k) => tot[k] += v));
+  const MAJ = [6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88], corr = (prof, r) => { let s = 0; for (let k = 0; k < 12; k++) s += prof[k] * tot[(k + r) % 12]; return s; };
+  let key = 0, kb = -1e9; for (let r = 0; r < 12; r++) { const v = corr(MAJ, r); if (v > kb) { kb = v; key = r; } }
+  const dia = new Set([[0, ''], [2, 'm'], [4, 'm'], [5, ''], [7, ''], [9, 'm'], [7, '7'], [4, '7'], [9, '7'], [2, '7']].map(([d, q]) => ((key + d) % 12) + q));
+  const T = [];
+  for (let r = 0; r < 12; r++) for (const [q, iv, pen] of HM.Q) { const v = new Float32Array(12); iv.forEach(i => v[(r + i) % 12] = 1); v[r] += 0.5; let n = 0; for (const z of v) n += z * z; n = Math.sqrt(n); T.push({ r, q, v: v.map(z => z / n), pen: pen - (dia.has(r + q) ? 0.05 : 0) }); }
+  const pen = o.pen || 0.25, M = T.length; let D = new Float64Array(M); const B = [];
+  const sc = (j, f) => { const t = T[j]; let s = 0; for (let k = 0; k < 12; k++) s += t.v[k] * Cs[f][k]; return s - t.pen; };
+  for (let j = 0; j < M; j++) D[j] = sc(j, 0);
+  for (let f = 1; f < F; f++) {
+    let bj = 0; for (let j = 1; j < M; j++) if (D[j] > D[bj]) bj = j;
+    const Dn = new Float64Array(M), b = new Int16Array(M);
+    for (let j = 0; j < M; j++) { const st = D[j], sw = D[bj] - pen; if (st >= sw) { Dn[j] = st + sc(j, f); b[j] = j; } else { Dn[j] = sw + sc(j, f); b[j] = bj; } }
+    B.push(b); D = Dn;
+  }
+  let j = 0; for (let k = 1; k < M; k++) if (D[k] > D[j]) j = k;
+  const path = new Int16Array(F); path[F - 1] = j; for (let f = F - 1; f > 0; f--) { j = B[f - 1][j]; path[f - 1] = j; }
+  const tf = f => (f * H + N / 2) / SR, eMax = Math.max(...E), segs = [];
+  for (let s = 0, f = 1; f <= F; f++) if (f === F || path[f] !== path[s]) { { let q = 0; for (let k = s; k < f; k++) q += sc(path[s], k) + T[path[s]].pen; segs.push({ t0: tf(s), t1: tf(f - 1), j: path[s], e: E.slice(s, f).reduce((a, b) => a + b, 0) / (f - s), fit: q / (f - s) }); } s = f; }
+  const cand = [];
+  for (const g of segs) {
+    if (g.t1 - g.t0 < (o.minDur || 0.8) || g.e < eMax * 0.002) continue;
+    const t = T[g.j], tones = new Set(HM.Q.find(z => z[0] === t.q)[1].map(i => (t.r + i) % 12));
+    const ns = notes.filter(n => n.t >= g.t0 - 0.1 && n.t < g.t1 - Math.max(0.12, 0.25 * (g.t1 - g.t0))); if (ns.length < 2) continue;
+    const pc = n => ((n.p % 12) + 12) % 12, inC = ns.filter(n => tones.has(pc(n))).length / ns.length;
+    const cover = new Set(ns.map(pc).filter(v => tones.has(v))).size, outPc = new Set(ns.map(pc).filter(v => !tones.has(v))).size;
+    cand.push({ g, name: disp(NOTES[t.r]) + t.q, strict: ns.length >= 3 && cover >= 3 && inC >= 0.8 && outPc <= 1, loose: inC >= 0.99 && outPc === 0 && g.t1 - g.t0 >= 1.0 });
+  }
+  // a chord take (most stretches show a whole chord) may name a stretch where the note finder only caught part of it;
+  // a scale or melody take, where two notes a third apart only look like part of a chord, names nothing
+  const dur = c => c.g.t1 - c.g.t0, all = cand.reduce((s, c) => s + dur(c), 0), strictDur = cand.filter(c => c.strict).reduce((s, c) => s + dur(c), 0);
+  const chordy = all > 0 && strictDur / all >= 0.5, out = [];
+  for (const c of cand) {
+    if (!(c.strict || (chordy && c.loose))) continue;
+    const last = out[out.length - 1];
+    if (last && last.name === c.name && c.g.t0 - last.t1 < 0.6) { last.t1 = c.g.t1; continue; }
+    out.push({ t0: c.g.t0, t1: c.g.t1, name: c.name });
+  }
+  harmony.last = { key: disp(NOTES[key]), n: out.length, chordy };
+  return out;
+}
+
 // ---- write solved columns into the song
 function dropLateOv(rows, ns, ft, t0) {                                      // a lone note an octave / 12th / two octaves above a string that is still ringing, with no new pick: an overtone, not a note
   return rows.filter(r => { if (r.notes.length !== 1) return true; const p = r.notes[0].p;
@@ -2865,13 +2925,20 @@ function writeSolved(rows, o) {                                             // o
       const a = prevRow.notes[0], b = r.notes[0], pn = song.notes.find(n => n.c === prevCol && n.s === a.s);
       if (pn && !pn.t && a.s === b.s && b.f !== a.f && Math.abs(b.f - a.f) <= 5 && r.t - prevRow.t < 0.3 && b.a < a.a * 0.75) pn.t = b.f > a.f ? 'h' : 'p';
     }
-    if (o.names && r.notes.length >= 2) {
+    if (o.names && !(o.harm && o.harm.length) && r.notes.length >= 2) {
       const nm = chordName(r.notes.map(x => x.p));
       if (nm && !song.marks.some(m => m.type === 'chord' && m.c === c) && !(o.lastName && o.lastName.replace(/\/.*$/, '').replace(/5$/, '') === nm.replace(/\/.*$/, '').replace(/5$/, '') && c - o.lastNameC < song.cpm * 4)) {
         const mk = { id: uid++, type: 'chord', c, text: nm }; if (follow && o.tk) { mk.tm = r.t - o.t0; mk.tk = o.tk; } song.marks.push(mk); if (o.mids) o.mids.push(mk.id); o.lastName = nm; o.lastNameC = c;
       }
     }
     last = c; prevRow = r; prevCol = c;
+  }
+  if (o.names && o.harm && o.harm.length) {                                  // chord names from what sounded across each stretch (picked or strummed)
+    for (const g of o.harm) {
+      const r = rows.find(q => q.col != null && q.t >= g.t0 - 0.2 && q.t < g.t1); if (!r) continue;
+      if (song.marks.some(m => m.type === 'chord' && m.c === r.col)) continue;
+      const mk = { id: uid++, type: 'chord', c: r.col, text: g.name }; if (follow && o.tk) { mk.tm = r.t - o.t0; mk.tk = o.tk; } song.marks.push(mk); if (o.mids) o.mids.push(mk.id);
+    }
   }
   return last;
 }
@@ -2893,7 +2960,7 @@ function saveTake(source, x22, raw, kept, rows, o) {
       tuningOffsetCents: Math.round((o.off || 0) * 100), settings: { sensitivity: +$('lSens').value, position: $('lPos').value, timing: o.timing, names: $('lNames').value, tuning: song.tuningName, strings: song.tuning, capo: song.capo, bpm: o.bpm, cpm: song.cpm, step: +$('step').value, startCol: o.c0, t0: r3(o.t0) },
       raw: raw.map(n => ({ p: n.p, t: r3(n.t), d: r3(n.d), a: r3(n.a), pb: n.pb })), kept: kept.map(n => ({ p: n.p, p0: n.p0, t: r3(n.t), d: r3(n.d) })),
       written: rows.map(r => ({ t: r3(r.t), col: r.col, notes: r.notes.map(x => ({ s: x.s, f: x.f, p: x.p, a: r3(x.a) })) })),
-      chords: song.marks.filter(m => m.type === 'chord' && m.c >= o.c0).map(m => ({ c: m.c, text: m.text })), engine: { deep: DEEP_SHIFTS.length, judge: Object.assign({}, spectralJudge.last || {}, reattackJudge.last || {}), backend: window.DXBP ? window.DXBP.tf.getBackend() : '' } });
+      chords: song.marks.filter(m => m.type === 'chord' && m.c >= o.c0).map(m => ({ c: m.c, text: m.text })), engine: { deep: DEEP_SHIFTS.length, judge: Object.assign({}, spectralJudge.last || {}, reattackJudge.last || {}), harmony: harmony.last || null, backend: window.DXBP ? window.DXBP.tf.getBackend() : '' } });
     const msg = { cmd: 'take', name, wav: wavB64(x22, 22050), json };
     if (host) host.postMessage(msg); else window.__lastTake = msg;
   } catch (e) { console.warn('take not saved', e); }
@@ -2908,7 +2975,7 @@ async function aiFromLoop() {
     const bp = await aiModel(), x22 = await resample(audio, E.ctx.sampleRate);
     const raw = await aiRun(x22, bp, p => status(`writing tab from the loop (deep pass)… ${Math.round(p * 100)}%`), true), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22), feat = audioFeat(x22), ns = reattackJudge(spectralJudge(cleanNotes(fixed, feat), x22), x22);
     const rows = dropLateOv(solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null), ns, feat);
-    const o = { c0: Math.floor(cursor.c / song.cpm) * song.cpm, timing: 'follow', t0: 0, bpm: LP.lock || bpmNow(), names: $('lNames').value === 'on', off };
+    const o = { c0: Math.floor(cursor.c / song.cpm) * song.cpm, timing: 'follow', t0: 0, bpm: LP.lock || bpmNow(), names: $('lNames').value === 'on', off, harm: $('lNames').value === 'on' ? harmony(x22, ns) : null };
     if (!rows.length) { saveTake('loop', x22, raw, ns, [], o); return status('no notes found in the loop: try raising Sensitivity'); }
     snapshot(); writeSolved(rows, o); saveTake('loop', x22, raw, ns, rows, o);
     sel.clear(); changed(); scrollToCursor();
@@ -2985,7 +3052,7 @@ async function aiStop() {                                                    // 
         const drop = new Set(AI.ids), dropM = new Set(AI.mids);
         song.notes = song.notes.filter(n => !drop.has(n.id)); song.marks = song.marks.filter(m => !dropM.has(m.id));
         const timing = $('lTime').value === 'follow' ? 'follow' : 'even';
-        const last = writeSolved(rows, { c0: AI.startCol, timing, t0: rows[0].t, bpm: +song.tempo || 100, names: $('lNames').value === 'on', tk: AI.tk }); saveTake('live', x22, raw, ns, rows, tOpt);
+        const last = writeSolved(rows, { c0: AI.startCol, timing, t0: rows[0].t, bpm: +song.tempo || 100, names: $('lNames').value === 'on', tk: AI.tk, harm: $('lNames').value === 'on' ? harmony(x22, ns) : null }); saveTake('live', x22, raw, ns, rows, tOpt);
         cursor.c = last + +$('step').value; ensureCols(cursor.c); sel.clear(); changed(); scrollToCursor();
         status(`wrote ${rows.reduce((k, r) => k + r.notes.length, 0)} notes (${rows.filter(r => r.notes.length > 1).length} chords)${tuneNote(off)}`);
       } else status('no notes found: try raising Sensitivity');
