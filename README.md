@@ -24,6 +24,10 @@ What goes into the score: a slowly falling barometer (fish feed) versus a fast r
 
 **Best times today** lists the strongest windows left today. Each solunar period, dawn and dusk is a window; it earns an extra star when it overlaps another window and another when the tide is moving. More stars, better odds.
 
+## Forecast for a future time
+
+**FORECAST FOR**, in the middle of the bottom panel, shows the fishing at another time, up to three days ahead. Pick a **day** from the menu and drag the **time slider**. The bite dials, the reasons and **Best times** then show that day and time, using the hourly forecast for barometer trend, wind, storms and seas, plus the predicted tide, solunar periods, moon phase, and dawn and dusk. The slider track maps the day: the light band is daylight, bright gold marks are major solunar periods and paler marks are minor ones (with a red line for right now on today's track). Press **NOW** to go back to live conditions; a picked time that arrives returns to live by itself.
+
 ## Lake mode (freshwater)
 
 When your spot is more than 50 miles from the nearest ocean tide station, the app switches to lake mode by itself. The tide charts become a 3-day **lake level** chart and a 3-day **water temperature** chart from the nearest US Geological Survey gauge within about 25 miles. Small lakes may not have a gauge; the panel says so. You can force either mode in Settings (Water type).

@@ -39,7 +39,8 @@
   .kvc { display:grid; grid-template-columns:auto auto; column-gap:14px; justify-content:center; margin-top:12px; }
   .why div { position:relative; padding-left:15px; margin-bottom:2px; }
   .why div::before { content:''; position:absolute; left:3px; top:.62em; width:5px; height:5px; border-radius:50%; background:#5b6170; }
-  .best { display:grid; grid-template-columns:40px auto 1fr; column-gap:10px; row-gap:2px; }
+  .best { display:grid; grid-template-columns:36px auto 1fr; column-gap:9px; row-gap:2px; white-space:nowrap; }
+  #g-best .best { font-size:11.5px; }
   .best .st { color:var(--gold); letter-spacing:1px; }
   .vdiv { position:absolute; top:14px; bottom:14px; width:1px; background:#1d2025; }
   .t { position:absolute; white-space:nowrap; }
@@ -104,7 +105,25 @@
   #g-moon { left:912px; top:30px; width:256px; height:398px; }
   #g-fc { left:12px; top:436px; width:1156px; height:152px; }
   #gIn { left:26px; top:24px; } #gOff { left:150px; top:24px; }
-  #anaHead { left:304px; top:10px; } #anaWhy { left:304px; top:40px; width:572px; }
+  #anaHead { left:304px; top:10px; width:278px; overflow:hidden; } #anaWhy { left:304px; top:38px; width:278px; font-size:11.5px; line-height:1.45; }
+  /* FORECAST FOR: day + time picker (balanced against the reasons column) */
+  #when { left:606px; top:0; width:278px; height:152px; }
+  #whenRead { position:absolute; left:0; top:24px; width:100%; text-align:center; font-size:16px; color:var(--lcd); font-variant-numeric:tabular-nums; letter-spacing:.04em; white-space:nowrap; }
+  #whenRead b { color:var(--gold); font-weight:600; letter-spacing:.12em; font-size:11px; margin-right:8px; vertical-align:2px; }
+  .wrow { position:absolute; left:0; top:52px; width:100%; display:flex; justify-content:center; gap:10px; }
+  #whenDay { height:26px; width:168px; border-radius:13px; border:1px solid #5a5f68; background:#1e2125 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='6'><path d='M0 0l4.5 6 4.5-6z' fill='%23d8b46a'/></svg>") no-repeat right 12px center;
+    color:var(--val); font:12.5px -apple-system, 'Segoe UI', sans-serif; padding:0 30px 0 14px; outline:none; -webkit-appearance:none; appearance:none; cursor:pointer; letter-spacing:.02em; }
+  #whenDay option { background:#16181c; color:var(--val); }
+  .wbtn { height:26px; line-height:24px; padding:0 14px; border-radius:13px; border:1px solid #5a5f68; background:linear-gradient(#4c5058,#1e2125); color:var(--dim); font-size:11px; letter-spacing:.22em; cursor:pointer; }
+  .wbtn.on { border-color:var(--gold); color:var(--gold); box-shadow:0 0 8px rgba(216,180,106,.3); }
+  #whenTrack { position:absolute; left:5px; top:88px; width:268px; height:30px; cursor:pointer; touch-action:none; }
+  #whenBand { position:absolute; left:0; top:0; }
+  #whenGroove { position:absolute; left:0; right:0; top:15px; height:6px; border-radius:3px; background:#050607; box-shadow:inset 0 1px 2px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.06); overflow:hidden; }
+  #whenFill { position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg, rgba(147,217,180,.15), rgba(147,217,180,.55)); }
+  #whenKnob { position:absolute; top:3px; width:30px; height:30px; margin-left:-15px; background:url(knob.png) center/contain no-repeat; filter:drop-shadow(0 2px 3px rgba(0,0,0,.6)); pointer-events:none; }
+  #whenTicks { position:absolute; left:0; top:124px; width:278px; display:flex; justify-content:space-between; font-size:9.5px; color:var(--lab); letter-spacing:.04em; }
+  #whenTicks span { width:30px; text-align:center; }
+  .best .on { color:var(--lcd); }
   #g-best { left:912px; top:436px; width:256px; height:152px; }
   #sizer { width:1px; height:0; }
   #gWtr { left:300px; top:0; } .phone #gWtr { left:40px; top:178px; }
@@ -123,7 +142,7 @@
 
   /* ---------- layout: iPhone (420-wide column, scrolls) ---------- */
   html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
-  .phone #stage { width:420px; height:2314px; }
+  .phone #stage { width:420px; height:2464px; }
   .phone #status { left:14px; right:auto; top:26px; text-align:left; max-width:392px; }
   .phone #repBtn { left:10px; right:auto; top:46px; bottom:auto; }
   .phone #gear { right:10px; top:46px; bottom:auto; }
@@ -132,20 +151,21 @@
   .phone #banner { white-space:normal; width:390px; text-align:center; top:84px; }
   .phone .phoneonly { display:block; }
   .phone #g-now { left:10px; top:84px; width:400px; }
-  .phone #g-fc { left:10px; top:290px; width:400px; height:320px; }
+  .phone #g-fc { left:10px; top:290px; width:400px; height:470px; }
   .phone #gIn { left:60px; top:30px; } .phone #gOff { left:232px; top:30px; }
   .phone #anaHead { left:14px; top:172px; font-size:14px !important; }
-  .phone #anaWhy { left:14px; top:198px; width:374px; }
-  .phone #g-best { left:10px; top:620px; width:400px; height:110px; }
-  .phone #g-g { left:10px; top:740px; width:400px; height:350px; }
+  .phone #anaWhy { left:14px; top:198px; width:374px; font-size:12px; } .phone #anaHead { width:374px; }
+  .phone #when { left:61px; top:312px; } .phone #whenDiv { display:none; } .phone #when > .lbl { width:100%; text-align:center; }
+  .phone #g-best { left:10px; top:770px; width:400px; height:110px; }
+  .phone #g-g { left:10px; top:890px; width:400px; height:350px; }
   .phone #gBaro { left:40px; top:0; } .phone #gWind { left:220px; top:0; } .phone #gSea { left:40px; top:178px; } .phone #gDir { left:220px; top:178px; }
-  .phone #g-icw { left:10px; top:1100px; width:400px; height:300px; }
-  .phone #g-oce { left:10px; top:1410px; width:400px; height:300px; }
+  .phone #g-icw { left:10px; top:1250px; width:400px; height:300px; }
+  .phone #g-oce { left:10px; top:1560px; width:400px; height:300px; }
   .phone .plot { width:380px; height:154px; }
   .phone .tinfo { left:12px; top:190px; } .phone .tlist { left:12px; top:212px; width:376px; }
   .phone .vdiv { display:none; }
-  .phone #g-moon { left:10px; top:1720px; width:400px; height:380px; }
-  .phone #g-tom { left:10px; top:2110px; width:400px; }
+  .phone #g-moon { left:10px; top:1870px; width:400px; height:380px; }
+  .phone #g-tom { left:10px; top:2260px; width:400px; }
   .phone #settings .box, .phone #reports .box { width:94vw; padding:16px; }
   .phone #settings .row { flex-wrap:wrap; } .phone #settings .row > div { min-width:140px; }
   .phone #settings .row .pill { padding:7px 10px; letter-spacing:.12em; }
@@ -202,14 +222,21 @@
   </div>
 
   <div class="grp" id="g-fc"><div class="panel full"></div>
-    <div class="lbl" style="left:12px;top:8px">FISHING FORECAST</div>
+    <div class="lbl" id="fcLbl" style="left:12px;top:8px">FISHING FORECAST</div>
     <div class="abs" id="gIn"></div><div class="abs" id="gOff"></div><div class="abs" id="gLake"></div>
     <div class="t" id="anaHead" style="font-size:15px"></div>
     <div class="t ro why" id="anaWhy"></div>
-    <div class="vdiv" style="left:288px"></div><div class="vdiv" style="left:896px"></div>
+    <div class="vdiv" style="left:288px"></div><div class="vdiv" id="whenDiv" style="left:594px"></div><div class="vdiv" style="left:896px"></div>
+    <div class="abs" id="when">
+      <div class="lbl" style="left:0;top:8px">FORECAST FOR</div>
+      <div id="whenRead">LIVE</div>
+      <div class="wrow"><select id="whenDay" title="Pick a day (up to 3 days ahead)"></select><div id="whenNow" class="wbtn" title="Back to right now">NOW</div></div>
+      <div id="whenTrack" title="Drag to pick a time: gold bands are solunar periods, the light band is daylight"><svg id="whenBand" width="268" height="10"></svg><div id="whenGroove"><div id="whenFill"></div></div><div id="whenKnob"></div></div>
+      <div id="whenTicks"><span>12a</span><span>6a</span><span>12p</span><span>6p</span><span>12a</span></div>
+    </div>
   </div>
   <div class="grp" id="g-best"><div class="panel full phoneonly"></div>
-    <div class="lbl" style="left:12px;top:8px">BEST TIMES TODAY</div>
+    <div class="lbl" id="bestLbl" style="left:12px;top:8px">BEST TIMES TODAY</div>
     <div class="t ro best" id="anaBest" style="left:12px;top:32px;width:232px"></div>
   </div>
 
@@ -229,6 +256,11 @@
   <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Wind</b> in mph; the thin red needle marks the gusts. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). The <b>compass</b> points to where the wind is coming from. Green on a dial is good fishing, orange is fair, red is tough.</p>
   <p><b>Tide charts</b> cover the next 24 hours for your inshore station (river, bay or intracoastal) and your offshore station (beach, pier or inlet). The red dashed line is now, green dots are high tides and gold dots are low tides. Below each chart: whether the tide is rising or falling, the next high or low, and the next four tides with their heights.</p>
   <p><b>Moon &amp; Solunar</b> shows the moon's phase, how much of it is lit and days to the next full or new moon. <b>Feeding times</b> are the solunar periods: <b>Major</b> periods (2 hours, centered on the moon overhead or underfoot) and <b>Minor</b> periods (1 hour, centered on moonrise and moonset). The period you are in now is shown in green.</p>
+
+  <h4>Forecast for a future time</h4>
+  <p><b>FORECAST FOR</b> (in the middle of the bottom panel) lets you see how the fishing looks at another time, up to three days ahead. Pick a <b>day</b> from the menu and drag the <b>time slider</b> (or use the mouse wheel over it). The <b>Fishing Forecast</b> gauges, the reasons and <b>Best Times</b> then show that day and time, and their titles show the date you picked.</p>
+  <p>The slider track is a small map of the day: the light band is <b>daylight</b>, the bright gold marks are <b>major solunar</b> periods and the paler ones are <b>minor</b> periods. On today's track a red line marks right now. If the time you pick falls inside a fishing window, that window is highlighted in green in Best Times.</p>
+  <p>The future scores use the hourly forecast for that hour: barometer trend, wind, storms, sea height offshore, the predicted tide, the solunar periods, the moon phase, and dawn and dusk. Press <b>NOW</b> to go back to live conditions. A picked time that arrives goes back to live by itself. The rest of the screen (Now, the four gauges, tides, moon) always shows the present. In lake mode, the lake level and water temperature can't be forecast, so the latest readings are used.</p>
 
   <h4>Fishing forecast</h4>
   <p>The bite dials score the fishing right now from 0 to 10: <b>Poor</b> below 3, <b>Fair</b> 3 to 5, <b>Good</b> 5 to 7, <b>Very good</b> 7 to 8.5 and <b>Excellent</b> above 8.5. There is one dial for <b>Inshore</b> and one for <b>Offshore</b> (a single <b>Lake bite</b> dial in lake mode). The list beside the dials explains the score.</p>
@@ -522,18 +554,18 @@ function drawTide(svgId, infoId, listId, preds) {
 }
 
 // ------------------------------------------------------------------ data
-const S = { wx: null, mar: null, icw: null, oce: null, err: [], baroTrend: null, sunR: null, sunS: null, solWin: [], moonEl: null };
+const S = { wx: null, mar: null, icw: null, oce: null, err: [], baroTrend: null, sunR: null, sunS: null, solWin: [], moonEl: null, at: null };
 async function J(u) { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok) throw new Error(r.status); return r.json(); }
 async function loadWeather() {
-  try { S.wx = await J(`https://api.open-meteo.com/v1/forecast?latitude=${cfg.lat}&longitude=${cfg.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl&hourly=pressure_msl&past_hours=3&forecast_hours=1&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=2`); }
+  try { S.wx = await J(`https://api.open-meteo.com/v1/forecast?latitude=${cfg.lat}&longitude=${cfg.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl&hourly=pressure_msl,wind_speed_10m,wind_gusts_10m,wind_direction_10m,weather_code&past_hours=3&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=auto&forecast_days=4`); }
   catch (e) { S.err.push('weather: ' + e.message); }
-  if (!isLake()) try { S.mar = await J(`https://marine-api.open-meteo.com/v1/marine?latitude=${cfg.mlat}&longitude=${cfg.mlon}&current=wave_height,wave_period,wave_direction,sea_surface_temperature&daily=wave_height_max&length_unit=imperial&timezone=auto&forecast_days=2`); }
+  if (!isLake()) try { S.mar = await J(`https://marine-api.open-meteo.com/v1/marine?latitude=${cfg.mlat}&longitude=${cfg.mlon}&current=wave_height,wave_period,wave_direction,sea_surface_temperature&hourly=wave_height,wave_period&daily=wave_height_max&length_unit=imperial&timezone=auto&forecast_days=4`); }
   catch (e) { S.err.push('seas: ' + e.message); }
 }
 async function loadTides() {
   const d = new Date(Date.now() - 86400000), b = `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}${String(d.getUTCDate()).padStart(2, '0')}`;
   for (const [key, st] of [['icw', cfg.icw], ['oce', cfg.oce]]) {
-    try { const r = await J(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=DUSTEX_Fishing&begin_date=${b}&range=72&datum=MLLW&station=${st}&time_zone=gmt&units=english&interval=hilo&format=json`);
+    try { const r = await J(`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=DUSTEX_Fishing&begin_date=${b}&range=120&datum=MLLW&station=${st}&time_zone=gmt&units=english&interval=hilo&format=json`);
       if (r.predictions) { S[key] = r.predictions; localStorage.setItem('dxtide2_' + key, JSON.stringify(r.predictions)); } else S.err.push(`tides ${st}: no data`); }
     catch (e) { S.err.push(`tides ${st}: ${e.message}`); }
   }
@@ -621,15 +653,34 @@ function updateLakeView() {
 
 // ------------------------------------------------------------------ analysis (same rules as the desktop widget)
 const rate = v => v >= 8.5 ? 'EXCELLENT' : v >= 7 ? 'VERY GOOD' : v >= 5 ? 'GOOD' : v >= 3 ? 'FAIR' : 'POOR';
+// forecast values at any time in the next 4 days (hourly, interpolated)
+function hourlyAt(t) {
+  const h = S.wx && S.wx.hourly; if (!h || !h.time) return null;
+  const off = S.wx.utc_offset_seconds, T = h._t || (h._t = h.time.map(x => parseAt(x, off).getTime()));
+  const at = v => { const x = t.getTime ? t.getTime() : t; let i = T.findIndex(q => q > x) - 1; if (i < 0) return null; if (i >= T.length - 1) i = T.length - 2; const f = (x - T[i]) / (T[i + 1] - T[i]);
+    return { i, v: k => h[k] && h[k][i] != null ? (h[k][i + 1] != null ? h[k][i] + (h[k][i + 1] - h[k][i]) * f : h[k][i]) : null, near: k => h[k] ? h[k][f < 0.5 ? i : i + 1] : null }; };
+  const a = at(t); if (!a) return null; const b = at(addMin(t, -180));
+  const p = a.v('pressure_msl'), p3 = b ? b.v('pressure_msl') : null;
+  return { wind: a.v('wind_speed_10m'), gust: a.v('wind_gusts_10m'), dir: a.near('wind_direction_10m'), code: a.near('weather_code'), pres: p, dp: p != null && p3 != null ? (p - p3) * 0.0295300 : null };
+}
+function marineAt(t) {
+  const h = S.mar && S.mar.hourly; if (!h || !h.time) return null;
+  const off = S.mar.utc_offset_seconds, T = h._t || (h._t = h.time.map(x => parseAt(x, off).getTime())), x = t.getTime();
+  let i = T.findIndex(q => q > x) - 1; if (i < 0 || i >= T.length - 1) return null; const f = (x - T[i]) / (T[i + 1] - T[i]);
+  const L = k => h[k][i] != null && h[k][i + 1] != null ? h[k][i] + (h[k][i + 1] - h[k][i]) * f : h[k][i];
+  return { wave: L('wave_height'), period: L('wave_period') };
+}
 function scoreBite(offshore) {
-  const now = new Date(); let sc = 0; const why = []; const cur = S.wx && S.wx.current;
-  const dp = S.baroTrend;
+  const at = S.at, now = at || new Date(); let sc = 0; const why = []; let cur = S.wx && S.wx.current;
+  let dp = S.baroTrend, seaNow = S.mar && S.mar.current ? +S.mar.current.wave_height : null;
+  if (at) { const h = hourlyAt(at); cur = h ? { wind_speed_10m: h.wind, wind_gusts_10m: h.gust, weather_code: h.code } : null; dp = h ? h.dp : null; const m = marineAt(at); seaNow = m && m.wave != null ? m.wave : null; }
+  const solWin = at ? solWinFor(at) : S.solWin, moonEl = at ? moonPos(at).elong : S.moonEl, sun = at ? sunTimes(at, +cfg.lat, +cfg.lon) : { rise: S.sunR, set: S.sunS };
   if (dp !== null) {
-    if (dp < -0.08) { sc += 1.0; why.push('Barometer dropping fast: bite can spike, then shut off'); }
+    if (dp < -0.08) { sc += 1.0; why.push('Barometer dropping fast: short feeding burst'); }
     else if (dp < -0.02) { sc += 2.5; why.push('Barometer falling slowly: fish tend to feed'); }
     else if (dp <= 0.02) { sc += 1.6; why.push('Barometer steady: normal activity'); }
     else if (dp <= 0.06) { sc += 1.0; why.push('Barometer rising: bite may slow'); }
-    else { sc += 0.4; why.push('Barometer rising fast (post-front): tough bite'); }
+    else { sc += 0.4; why.push('Barometer rising fast: tough post-front bite'); }
   }
   if (cur) { const w = +cur.wind_speed_10m;
     if (w <= 8) { sc += 2.0; why.push(`Light wind ${w.toFixed(0)} mph: easy boat control`); }
@@ -650,19 +701,19 @@ function scoreBite(offshore) {
   const ts = lake ? null : tideState(offshore ? S.oce : S.icw, now);
   if (ts) { if (ts.since < 40 || ts.until < 40) { sc += 0.5; why.push('Tide near slack: current is weak'); }
     else { sc += offshore ? 1.0 : 2.0; why.push(`${ts.rising ? 'Incoming' : 'Outgoing'} tide moving: ${ts.rising ? 'high' : 'low'} at ${hm(ts.next.t)}`); } }
-  if (!lake && offshore && S.mar && S.mar.current) { const sea = +S.mar.current.wave_height;
+  if (!lake && offshore && seaNow != null) { const sea = seaNow;
     if (sea <= 2) { sc += 1.5; why.push(`Seas ${sea.toFixed(1)} ft: calm offshore`); }
     else if (sea <= 3) { sc += 1.0; why.push(`Seas ${sea.toFixed(1)} ft: comfortable`); }
     else if (sea <= 4) { sc += 0.4; why.push(`Seas ${sea.toFixed(1)} ft: sporty`); }
     else why.push(`Seas ${sea.toFixed(1)} ft: rough offshore`); }
-  const inWin = S.solWin.find(w => now >= w.a && now <= w.b), soon = S.solWin.find(w => w.a > now && (w.a - now) / 60000 <= 60);
+  const inWin = solWin.find(w => now >= w.a && now <= w.b), soon = solWin.find(w => w.a > now && (w.a - now) / 60000 <= 60);
   if (inWin) { sc += inWin.k === 'MAJOR' ? 2.0 : 1.2; why.push(`In a ${inWin.k.toLowerCase()} solunar period until ${hm(inWin.b)}`); }
   else if (soon) { sc += 0.6; why.push(`${soon.k} solunar period starts ${hm(soon.a)}`); }
-  if (S.moonEl !== null) { const e = S.moonEl; if (e < 36 || e > 324 || (e > 144 && e < 216)) { sc += 1.0; why.push('Near new/full moon: strong tides, active fish'); } else sc += 0.5; }
-  if (S.sunR && S.sunS) { if (Math.abs(now - S.sunR) / 60000 <= 75 || Math.abs(now - S.sunS) / 60000 <= 75) { sc += 1.0; why.push('Dawn/dusk low light: prime feeding'); }
-    else if (now > S.sunR && now < S.sunS) sc += 0.3; else sc += 0.5; }
+  if (moonEl !== null) { const e = moonEl; if (e < 36 || e > 324 || (e > 144 && e < 216)) { sc += 1.0; why.push('Near new/full moon: strong tides, active fish'); } else sc += 0.5; }
+  if (sun && sun.rise && sun.set) { if (Math.abs(now - sun.rise) / 60000 <= 75 || Math.abs(now - sun.set) / 60000 <= 75) { sc += 1.0; why.push('Dawn/dusk low light: prime feeding'); }
+    else if (now > sun.rise && now < sun.set) sc += 0.3; else sc += 0.5; }
   if (cur && +cur.weather_code >= 95) { sc -= 3; why.push('THUNDERSTORMS: get off the water'); }
-  if (!lake && offshore && S.mar && S.mar.current && +S.mar.current.wave_height > 5) { sc = Math.min(sc, 2.5); why.push('Seas over 5 ft: small craft caution'); }
+  if (!lake && offshore && seaNow != null && seaNow > 5) { sc = Math.min(sc, 2.5); why.push('Seas over 5 ft: small craft caution'); }
   return { score: Math.max(0, Math.min(10, Math.round(sc * 10) / 10)), why };
 }
 function updateAnalysis() {
@@ -676,9 +727,15 @@ function updateAnalysis() {
   const lines = a.why.slice(0, 5); const so = o.why.filter(w => w.startsWith('Seas')); if (so.length) lines.push('Offshore: ' + so[0]);
   $('anaWhy').innerHTML = lines.slice(0, 6).map(w => `<div>${H(w)}</div>`).join('');
   }
-  const now = new Date();
-  const top = windowsFor(now).filter(c => c.b > now).sort((x, y) => y.q - x.q).slice(0, 4).sort((x, y) => x.a - y.a);
-  $('anaBest').innerHTML = top.length ? top.map(c => `<span class="st">${'★'.repeat(c.stars)}</span><span>${hmt(c.a)} – ${hmt(c.b)}</span><i>${c.l}</i>`).join('') : '<i style="grid-column:1/4">No more windows today</i>';
+  const now = new Date(), at = S.at, day = at || now;
+  const all = windowsFor(day).filter(c => at || c.b > now), pick = all.slice().sort((x, y) => y.q - x.q).slice(0, 4), hit = at && all.find(c => at >= c.a && at <= c.b);
+  if (hit && !pick.includes(hit)) pick[pick.length - 1 < 3 ? pick.length : 3] = hit;                 // the window you picked always shows
+  const top = pick.sort((x, y) => x.a - y.a);
+  $('anaBest').innerHTML = top.length ? top.map(c => { const on = at && at >= c.a && at <= c.b ? ' class="on"' : '';
+    return `<span class="st">${'★'.repeat(c.stars)}</span><span${on}>${hmt(c.a)} – ${hmt(c.b)}</span><i${on}>${c.l}</i>`; }).join('') : '<i style="grid-column:1/4">No more windows today</i>';
+  $('fcLbl').textContent = at ? `FISHING FORECAST  ·  ${dayName(at).toUpperCase()} ${hm(at)}` : 'FISHING FORECAST';
+  $('bestLbl').textContent = at && at.toDateString() !== now.toDateString() ? `BEST TIMES ${dayName(at).toUpperCase()}` : 'BEST TIMES TODAY';
+  const hd = $('anaHead'); hd.style.fontSize = '15px'; if (hd.scrollWidth > hd.clientWidth + 1) hd.style.fontSize = '13px';
 }
 // sunrise / sunset for any day (standard sunrise equation, ~1 min accuracy)
 function sunTimes(date, lat, lon) {
@@ -747,17 +804,64 @@ function exportCalendar() {
   const a = document.createElement('a'); a.href = url; a.download = 'dustex-fishing.ics'; document.body.appendChild(a); a.click(); a.remove();
   return n;
 }
+function solWinFor(day) {                                   // major / minor solunar periods for a day
+  const ev = moonDay(day, +cfg.lat, +cfg.lon), win = [];
+  if (ev.transit) win.push({ k: 'MAJOR', a: addMin(ev.transit, -60), b: addMin(ev.transit, 60) });
+  if (ev.under) win.push({ k: 'MAJOR', a: addMin(ev.under, -60), b: addMin(ev.under, 60) });
+  if (ev.rise) win.push({ k: 'minor', a: addMin(ev.rise, -30), b: addMin(ev.rise, 30) });
+  if (ev.set) win.push({ k: 'minor', a: addMin(ev.set, -30), b: addMin(ev.set, 30) });
+  return win.sort((x, y) => x.a - y.a);
+}
+const dayName = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+// ------------------------------------------------------------------ FORECAST FOR: pick a day (today + 3) and a time; the forecast panel scores that moment
+const W = { day: 0, min: 0, drag: false };
+const dayStart = i => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + i); return d; };
+const nowMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
+function whenFill() {
+  const sel = $('whenDay'), keep = sel.value; sel.innerHTML = '';
+  for (let i = 0; i < 4; i++) { const o = document.createElement('option'); o.value = i; o.textContent = i ? dayName(dayStart(i)) : `Today, ${dayName(dayStart(0))}`; sel.appendChild(o); }
+  sel.value = keep !== '' && keep != null ? keep : W.day;
+}
+function whenSet(day, min, live) {
+  W.day = day; W.min = Math.max(0, Math.min(1439, min));
+  if (day === 0 && W.min <= nowMin() + 7) { W.min = nowMin(); live = true; }    // earlier today = right now
+  S.at = live ? null : addMin(dayStart(day), W.min);
+  whenPaint(); updateAnalysis();
+}
+function whenPaint() {
+  const tr = $('whenTrack'), w = 268, x = W.min / 1440 * w, d0 = dayStart(W.day);
+  $('whenKnob').style.left = (5 + x) + 'px'; $('whenFill').style.width = x + 'px'; $('whenDay').value = W.day;
+  $('whenNow').classList.toggle('on', !S.at);
+  $('whenRead').innerHTML = S.at ? `${W.day ? dayName(S.at) : 'Today'}  ·  ${hm(S.at)}` : `<b>LIVE</b>Right now  ·  ${hm(new Date())}`;
+  const svg = $('whenBand'); svg.innerHTML = ''; const X = t => Math.max(0, Math.min(w, (t - d0) / 86400000 * w));
+  const st = sunTimes(d0, +cfg.lat, +cfg.lon);
+  if (st) el('rect', { x: X(st.rise), y: 3, width: X(st.set) - X(st.rise), height: 4, rx: 2, fill: 'rgba(240,226,190,.16)' }, svg);
+  for (const s2 of solWinFor(d0)) el('rect', { x: X(s2.a), y: 2, width: Math.max(2, X(s2.b) - X(s2.a)), height: 6, rx: 2, fill: s2.k === 'MAJOR' ? 'rgba(216,180,106,.85)' : 'rgba(216,180,106,.42)' }, svg);
+  if (W.day === 0) el('rect', { x: X(new Date()) - 0.75, y: 0, width: 1.5, height: 10, fill: '#e0605a' }, svg);
+}
+function whenInit() {
+  whenFill(); W.min = nowMin();
+  $('whenDay').onchange = () => { const d = +$('whenDay').value; whenSet(d, d && !S.at && W.day === 0 ? 7 * 60 : W.min, false); $('whenDay').blur(); };
+  $('whenNow').onclick = () => whenSet(0, nowMin(), true);
+  const tr = $('whenTrack'), fromX = ev => { const r = tr.getBoundingClientRect(); return Math.round(Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width)) * 96) * 15; };
+  tr.addEventListener('pointerdown', ev => { ev.preventDefault(); tr.setPointerCapture(ev.pointerId); W.drag = true; whenSet(W.day, fromX(ev), false); });
+  tr.addEventListener('pointermove', ev => { if (W.drag) whenSet(W.day, fromX(ev), false); });
+  tr.addEventListener('pointerup', () => { W.drag = false; }); tr.addEventListener('pointercancel', () => { W.drag = false; });
+  tr.addEventListener('wheel', ev => { ev.preventDefault(); whenSet(W.day, W.min - Math.sign(ev.deltaY) * 15, false); }, { passive: false });
+  whenPaint();
+}
+function whenTick() {                                         // keep the live readout current; a chosen time that has arrived goes back to live
+  if (S.at && S.at <= new Date()) { whenSet(0, nowMin(), true); return; }
+  if (dayStart(0).getTime() !== W.today) { W.today = dayStart(0).getTime(); whenFill(); }
+  if (!S.at) W.min = nowMin(); whenPaint();
+}
 function updateMoon() {
   const now = new Date(), p = moonPos(now), illum = (1 - cosd(p.elong)) / 2 * 100;
   drawMoon(p.elong); $('moonName').textContent = phaseName(p.elong);
   const toFull = ((180 - p.elong) + 360) % 360, toNew = 360 - p.elong;
   $('moonInfo').textContent = `${illum.toFixed(0)}% lit  |  ` + (p.elong < 180 ? `full in ${(toFull / 360 * 29.53).toFixed(1)} days` : `new in ${(toNew / 360 * 29.53).toFixed(1)} days`);
-  const ev = moonDay(now, +cfg.lat, +cfg.lon), win = [];
-  if (ev.transit) win.push({ k: 'MAJOR', a: addMin(ev.transit, -60), b: addMin(ev.transit, 60) });
-  if (ev.under) win.push({ k: 'MAJOR', a: addMin(ev.under, -60), b: addMin(ev.under, 60) });
-  if (ev.rise) win.push({ k: 'minor', a: addMin(ev.rise, -30), b: addMin(ev.rise, 30) });
-  if (ev.set) win.push({ k: 'minor', a: addMin(ev.set, -30), b: addMin(ev.set, 30) });
-  win.sort((x, y) => x.a - y.a);
+  const ev = moonDay(now, +cfg.lat, +cfg.lon), win = solWinFor(now);
   const f = t => t ? hm(t) : '--';
   const rows = win.map(w => { const on = now >= w.a && now <= w.b ? ' class="on"' : '';
     return `<i${on}>${w.k === 'MAJOR' ? 'Major' : 'Minor'}</i><span${on}>${hm(w.a)}</span><i>–</i><span${on}>${hm(w.b)}</span>`; }).join('');
@@ -813,8 +917,8 @@ async function cycle(force) {
   try { checkAlerts(); } catch (e) {}
 }
 S.icw = JSON.parse(localStorage.getItem('dxtide2_icw') || 'null'); S.oce = JSON.parse(localStorage.getItem('dxtide2_oce') || 'null');
-updateMoon(); updateView(); cycle(true);
-setInterval(() => cycle(false), 60000);
+whenInit(); updateMoon(); updateView(); cycle(true);
+setInterval(() => { cycle(false); whenTick(); }, 60000);
 setInterval(() => { if (!isLake()) drawTide('plotIcw', 'infoIcw', 'listIcw', S.icw); if (!isLake()) drawTide('plotOce', 'infoOce', 'listOce', S.oce); }, 60000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) cycle(Date.now() - lastWx > 5 * 60000); });
 $('status').addEventListener('click', () => cycle(true));
