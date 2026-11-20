@@ -1,5 +1,5 @@
 // DUSTEX Tab offline cache: the app works without internet once installed; updates arrive the next time it opens online.
-const CACHE = 'dxtab-v6';
+const CACHE = 'dxtab-v7';
 const FILES = ['./', 'index.html', 'logo.png', 'dustex_logo.png', 'looper-worklet.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png', 'favicon.ico', 'gauge_face.png', 'gauge_glass.png', 'gauge_logo.png', 'knob_rot.png', 'fader_cap.png', 'fonts/great-vibes-latin-400-normal.woff2',
   'vendor/basic-pitch.bundle.js', 'vendor/model/model.json', 'vendor/model/group1-shard1of1.bin'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });

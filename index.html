@@ -98,10 +98,10 @@
   .phoneonly { display:none; }
   @font-face { font-family:'DX Script'; src:url('fonts/great-vibes-latin-400-normal.woff2') format('woff2'); font-display:block; }
   /* the DUSTEX lockup: gold crest | app name in the gold script (same as Screen Recorder and Creator Studio) */
-  #brand { position:absolute; left:50%; top:10px; transform:translateX(-50%); display:flex; align-items:center; gap:12px; pointer-events:none; white-space:nowrap; }
+  #brand { position:absolute; left:50%; top:10px; transform:translateX(-50%); display:flex; align-items:baseline; gap:12px; pointer-events:none; white-space:nowrap; }   /* the script sits on the line of the DUSTEX letters */
   #brand img { display:block; height:34px; width:auto; filter:drop-shadow(0 2px 3px rgba(0,0,0,.7)); }
-  #brand i { display:block; width:1px; height:26px; background:#4a4d55; }
-  #brand span { font-family:'DX Script', 'Segoe Script', cursive; font-size:30px; line-height:1.3; padding:0 4px 0 2px; position:relative; top:2px;
+  #brand i { display:block; width:1px; height:26px; background:#4a4d55; align-self:center; }
+  #brand span { font-family:'DX Script', 'Segoe Script', cursive; font-size:30px; line-height:1.1; padding:0 4px 0 2px;
     background:linear-gradient(#f6e6bd, #d8b46a 55%, #a8853f); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 1px 0 rgba(0,0,0,.55)); }
   #hdr { left:14px; top:9px; font-size:11px; color:var(--head); font-weight:600; letter-spacing:.04em; }
   #g-now { left:12px; top:30px; width:280px; height:195px; }
