@@ -528,6 +528,7 @@
 
   <h4>Chords and notes mode (AI)</h4>
   <p>Open Listen <b>⚙</b> and set <b>What to listen for</b> to <b>Chords and notes (AI)</b>. Listen then hears several strings at once, so strummed chords, double-stops and riffs all get written. It runs Spotify's open-source Basic Pitch note model, stored in the widget folder, so it works offline and your audio never leaves the PC. The first time, it takes a few seconds to load.</p>
+  <p><b>Three judges check every note.</b> 1. <b>The neural model</b> reads a picture of the sound (a spectrogram), on the graphics card. When you stop, it makes a <b>deep pass</b>: it hears the whole take four times, each copy shifted by a quarter of its 11.6 ms frame, and averages them, which steadies the note starts and brings quiet notes out of the noise. 2. <b>The spectrum judge</b> looks only at the new sound each pick adds and explains it with your guitar's own harmonic fingerprint, learned from the clean single notes of the same take. A note survives only if it really adds energy, so an overtone (an octave or twelfth above a note you played) or a string that was just ringing when you picked another one is not written as a new note. 3. <b>The frequency judge</b> measures each note's exact pitch and corrects for a guitar that is a little sharp or flat. Each take saved in Takes also records what the judges decided.</p>
   <p><b>While you play</b> the tab fills in about a second behind you. <b>When you stop</b>, it goes over the whole take once more and rewrites it neatly: one fingering for the whole phrase, with as little hand movement as possible, and chord shapes your hand can actually make. One <b>↶ Undo</b> removes the whole take.</p>
   <p><b>Write tab from the loop</b> (in the same menu) transcribes whatever the looper has recorded and writes it from the start of the cursor's bar, in time with the BPM. Record one part per loop for the cleanest result.</p>
   <p><b>Chord names:</b> chords it recognises (major, minor, 7ths, power chords, sus, dim and more, including slash chords like D/F#) are named above the tab. Turn this off with <b>Chord names</b>. Bends and vibrato are picked up from the pitch and marked <b>b</b> and <b>~</b>; quick, softer notes on the same string are marked <b>h</b> or <b>p</b>.</p>
@@ -2429,13 +2430,31 @@ async function resample(x, srIn) {                                           // 
   const n = Math.max(1, Math.round(x.length * 22050 / srIn)), oc = new OfflineAudioContext(1, n, 22050), b = oc.createBuffer(1, x.length, srIn);
   b.getChannelData(0).set(x); const s = oc.createBufferSource(); s.buffer = b; s.connect(oc.destination); s.start(); return (await oc.startRendering()).getChannelData(0);
 }
-async function aiRun(x22, bp, onPct) {
-  const { tf, outputToNotesPoly, addPitchBendsToNoteEvents, noteFramesToTime } = window.DXBP, F = [], O = [], C = [];
-  const sens = +$('lSens').value, onset = 0.62 - sens * 0.025, frame = 0.34 - sens * 0.008;
-  tf.engine().startScope();
-  try { await (bp || AI.bp).evaluateModel(x22, (f, o, c) => { F.push(...f); O.push(...o); C.push(...c); }, p => onPct && onPct(p)); }
-  finally { tf.engine().endScope(); }
-  if (!F.length) return [];
+const DEEP_SHIFTS = [0, 64, 128, 192];                                     // the deep pass: four copies, each a quarter of a model frame (2.9 ms) later
+async function aiRun(x22, bp, onPct, deep) {
+  const { tf, outputToNotesPoly, addPitchBendsToNoteEvents, noteFramesToTime } = window.DXBP, HOP = 256;
+  const sens = +$('lSens').value, onset = 0.62 - sens * 0.025, frame = 0.34 - sens * 0.008, shifts = deep ? (x22.length > 120 * 22050 ? [0, 128] : DEEP_SHIFTS) : [0], maps = [];   // very long takes: two copies
+  // first judge, the neural model, run on the graphics card (WebGL); the deep pass runs it on time-shifted copies and averages
+  // what they hear, which steadies the note starts and lifts quiet notes out of the noise
+  for (let k = 0; k < shifts.length; k++) {
+    const sh = shifts[k], xs = sh ? new Float32Array(x22.length + sh) : x22; if (sh) xs.set(x22, sh);
+    const F = [], O = [], C = [];
+    tf.engine().startScope();
+    try { await (bp || AI.bp).evaluateModel(xs, (f, o, c) => { F.push(...f); O.push(...o); C.push(...c); }, p => onPct && onPct((k + p) / shifts.length)); }
+    finally { tf.engine().endScope(); }
+    if (!F.length) return [];
+    maps.push({ sh, F, O, C });
+  }
+  let F = maps[0].F, O = maps[0].O, C = maps[0].C;
+  if (maps.length > 1) {
+    const n = Math.min(...maps.map(m => m.F.length));
+    const avg = key => { const W = maps[0][key][0].length, out = Array.from({ length: n }, () => new Float32Array(W));
+      for (const m of maps) { const d = m.sh / HOP, A = m[key];                 // shifted frame j shows original time (j*HOP - sh): resample onto the original grid
+        for (let i = 0; i < n; i++) { const j = i + d, j0 = Math.floor(j), a = j - j0, r0 = A[Math.min(A.length - 1, j0)], r1 = A[Math.min(A.length - 1, j0 + 1)], o = out[i];
+          for (let q = 0; q < W; q++) o[q] += (r0[q] * (1 - a) + r1[q] * a) / maps.length; } }
+      return out.map(r => Array.from(r)); };
+    F = avg('F'); O = avg('O'); C = avg('C');
+  }
   return noteFramesToTime(addPitchBendsToNoteEvents(C, outputToNotesPoly(F, O, onset, frame, 5)))
     .map(n => ({ p: n.pitchMidi, t: n.startTimeSeconds, d: n.durationSeconds, a: n.amplitude, pb: n.pitchBends || [] }));
 }
@@ -2493,6 +2512,87 @@ function tuneFix(ns, x, prevOff) {                                           // 
   return off;
 }
 function tuneNote(off) { const c = Math.round(off * 100); return Math.abs(c) >= 15 ? ` · guitar is about ${c > 0 ? '+' : ''}${c} cents ${c > 0 ? 'sharp' : 'flat'}: worth tuning` : ''; }
+
+// ---- second and third judges: the spectrum and the exact frequencies (the neural model is the first)
+// For every group of notes that start together, look at the NEW sound energy (just after the pick minus just before),
+// and explain it with this guitar's own harmonic fingerprint (learned from the clean single notes of the same take).
+// A note survives if it accounts for a real share of the new energy; an overtone or a string that was only ringing does not.
+const JG = { N: 2048, SR: 22050, HI: 5000, LO: 60, HARM: [12, 19, 24, 28, 31, 34, 36] };
+JG.win = new Float32Array(JG.N).map((_, i) => 0.5 - 0.5 * Math.cos(2 * Math.PI * i / JG.N));
+JG.bw = JG.SR / JG.N; JG.k0 = Math.ceil(JG.LO / JG.bw); JG.k1 = Math.floor(JG.HI / JG.bw);
+function jgSpec(x, a) {
+  a = Math.floor(a); const re = new Float32Array(JG.N), im = new Float32Array(JG.N);
+  for (let i = 0; i < JG.N; i++) { const j = a + i; re[i] = j >= 0 && j < x.length ? x[j] * JG.win[i] : 0; }
+  return fftMag(re, im);
+}
+function jgHf(p, h) { return h * 440 * Math.pow(2, (p - 69) / 12) * Math.sqrt(1 + 0.00012 * h * h); }   // with a guitar string's slight stretch
+function jgPeak(S, f) { const k = Math.round(f / JG.bw), w = Math.max(1, Math.round(f * 0.015 / JG.bw)); let m = 0; for (let i = Math.max(0, k - w); i <= Math.min(S.length - 1, k + w); i++) m = Math.max(m, S[i]); return m; }
+function jgTmpl(p, prof) {
+  const t = new Float64Array(JG.k1 - JG.k0 + 1); let nn = 0;
+  for (let h = 1; h <= 12; h++) {
+    const f = jgHf(p, h); if (f > JG.HI) break; const sd = Math.max(6, f * 0.006), g = prof[h - 1];
+    const a = Math.max(JG.k0, Math.floor((f - 3 * sd) / JG.bw)), b = Math.min(JG.k1, Math.ceil((f + 3 * sd) / JG.bw));
+    for (let k = a; k <= b; k++) { const d = (k * JG.bw - f) / sd; t[k - JG.k0] += g * Math.exp(-0.5 * d * d); }
+  }
+  for (const v of t) nn += v * v; nn = Math.sqrt(nn) || 1; for (let i = 0; i < t.length; i++) t[i] /= nn;
+  return t;
+}
+function jgNnls(A, b) {                                                      // Lawson-Hanson on the small normal equations
+  const n = A.length, G = A.map(u => A.map(v => { let s = 0; for (let i = 0; i < u.length; i++) s += u[i] * v[i]; return s; })), h = A.map(u => { let s = 0; for (let i = 0; i < u.length; i++) s += u[i] * b[i]; return s; });
+  const x = new Float64Array(n), P = new Set();
+  const solve = idx => { const m = idx.length, M = idx.map(i => idx.map(j => G[i][j] + (i === j ? 1e-9 : 0))), r = idx.map(i => h[i]);
+    for (let c = 0; c < m; c++) { let p = c; for (let q = c + 1; q < m; q++) if (Math.abs(M[q][c]) > Math.abs(M[p][c])) p = q; [M[c], M[p]] = [M[p], M[c]]; [r[c], r[p]] = [r[p], r[c]];
+      for (let q = 0; q < m; q++) if (q !== c) { const f = M[q][c] / M[c][c]; for (let k = c; k < m; k++) M[q][k] -= f * M[c][k]; r[q] -= f * r[c]; } }
+    return r.map((v, i) => v / M[i][i]); };
+  for (let it = 0; it < 3 * n + 3; it++) {
+    const w = h.map((hv, i) => hv - G[i].reduce((s, g, j) => s + g * x[j], 0));
+    let j = -1, best = 1e-10; for (let i = 0; i < n; i++) if (!P.has(i) && w[i] > best) { best = w[i]; j = i; }
+    if (j < 0) break; P.add(j);
+    for (let guard = 0; guard < 2 * n + 2; guard++) {
+      const idx = [...P], z = solve(idx);
+      if (z.every(v => v > 0)) { idx.forEach((i, k) => x[i] = z[k]); break; }
+      let al = 1; idx.forEach((i, k) => { if (z[k] <= 0) al = Math.min(al, x[i] / (x[i] - z[k] || 1e-12)); });
+      idx.forEach((i, k) => { x[i] += al * (z[k] - x[i]); if (x[i] <= 1e-12) { x[i] = 0; P.delete(i); } });
+      if (!P.size) break;
+    }
+  }
+  return x;
+}
+function spectralJudge(ns, x, o = {}) {
+  const thr = o.thr || 0.12, thrSt = o.thrSt || 0.03, octThr = o.octThr || 0.4, uniq = o.uniq || 0.25, SR = JG.SR, N = JG.N;
+  const est = ns.slice().sort((a, b) => a.t - b.t), G = [];
+  for (const n of est) { const g = G[G.length - 1]; if (g && n.t - g[g.length - 1].t < 0.035 && n.t - g[0].t < 0.12) g.push(n); else G.push([n]); }
+  const DS = G.map(g => { const t = g[0].t, pre = jgSpec(x, (t - 0.008) * SR - N), post = jgSpec(x, (t + 0.012) * SR), D = new Float32Array(post.length); for (let i = 0; i < D.length; i++) D[i] = Math.max(0, post[i] - pre[i]); return { D, post }; });
+  // this guitar's fingerprint: harmonic strengths of clean single notes, per register (low / middle / high)
+  const DEF = Array.from({ length: 12 }, (_, i) => 1 / Math.pow(i + 1, 0.7)), pr = [[], [], []], reg = p => p < 52 ? 0 : p < 64 ? 1 : 2;
+  G.forEach((g, gi) => { if (new Set(g.map(n => n.p)).size !== 1) return; const p = g[0].p, a = []; for (let h = 1; h <= 12; h++) { const f = jgHf(p, h); a.push(f > JG.HI ? 0 : jgPeak(DS[gi].D, f)); }
+    const top = Math.max(a[0], Math.max(...a) * 0.3); if (top > 0 && a[0] > 0) pr[reg(p)].push(a.map(v => v / top)); });
+  const prof = pr.map(v => v.length >= 3 ? DEF.map((_, h) => { const s = v.map(r => r[h]).sort((a, b) => a - b); return s[s.length >> 1]; }) : DEF);
+  const keep = new Set(), why = { overtone: 0, ringing: 0, weak: 0 };
+  G.forEach((g, gi) => {
+    const t = g[0].t, { D, post } = DS[gi], b = D.subarray(JG.k0, JG.k1 + 1); let sum = 0; for (const v of b) sum += v; if (sum <= 0) { why.weak += g.length; return; }
+    const ps = [...new Set(g.map(n => n.p))].sort((a, b) => a - b), amp = {}; ps.forEach(p => amp[p] = Math.max(...g.filter(n => n.p === p).map(n => n.a || 0)));
+    const ring = est.filter(m => m.t < t - 0.03 && m.t + m.d > t);
+    const inner = {}; ps.forEach(q => inner[q] = ps.some(p => p < q && JG.HARM.includes(q - p) && amp[p] > amp[q]));
+    const strum = ps.filter(q => !inner[q]).length >= 3, sus = {}; ps.forEach(q => sus[q] = inner[q] || (!strum && ring.some(m => JG.HARM.includes(q - m.p))));
+    const A = ps.map(p => jgTmpl(p, prof[reg(p)])), w = jgNnls(A, b);
+    const cont = w.map((v, i) => v * Math.sqrt(A[i].reduce((s, a) => s + a * a, 0))), tot = cont.reduce((s, v) => s + v, 0) + 1e-12;
+    ps.forEach((p, i) => {
+      const f = cont[i] / tot;
+      if (f < (strum ? thrSt : thr)) { why.weak++; return; }
+      if (sus[p] && f < (strum ? thrSt * 1.5 : octThr)) { why.overtone++; return; }
+      if (ring.some(m => m.p === p && m.t < t - 0.03 && m.t + m.d > t - 0.02)) {         // already sounding: it needs new energy of its own
+        const others = strum ? [] : ps.filter(q => q !== p); let num = 0, den = 0;
+        for (let h = 1; h <= 8; h++) { const fh = jgHf(p, h); if (fh > JG.HI) break; if (others.some(q => { for (let k = 1; k <= 12; k++) if (Math.abs(fh - jgHf(q, k)) < fh * 0.02) return true; return false; })) continue; num += jgPeak(D, fh); den += jgPeak(post, fh); }
+        if (den > 0 && num / den < (strum ? uniq * 0.6 : uniq)) { why.ringing++; return; }
+      }
+      keep.add(p + ':' + gi);
+    });
+  });
+  const out = []; G.forEach((g, gi) => g.forEach(n => { if (keep.has(n.p + ':' + gi)) out.push(n); }));
+  spectralJudge.last = why;
+  return out.sort((a, b) => a.t - b.t || a.p - b.p);
+}
 
 // ---- clean-up: out-of-range pitches, quiet blips, noise, ringing strings heard again, overtones of single notes
 function cleanNotes(ns, feat, maxDb) {
@@ -2681,7 +2781,7 @@ function saveTake(source, x22, raw, kept, rows, o) {
       tuningOffsetCents: Math.round((o.off || 0) * 100), settings: { sensitivity: +$('lSens').value, position: $('lPos').value, timing: o.timing, names: $('lNames').value, tuning: song.tuningName, strings: song.tuning, capo: song.capo, bpm: o.bpm, cpm: song.cpm, step: +$('step').value, startCol: o.c0, t0: r3(o.t0) },
       raw: raw.map(n => ({ p: n.p, t: r3(n.t), d: r3(n.d), a: r3(n.a), pb: n.pb })), kept: kept.map(n => ({ p: n.p, p0: n.p0, t: r3(n.t), d: r3(n.d) })),
       written: rows.map(r => ({ t: r3(r.t), col: r.col, notes: r.notes.map(x => ({ s: x.s, f: x.f, p: x.p, a: r3(x.a) })) })),
-      chords: song.marks.filter(m => m.type === 'chord' && m.c >= o.c0).map(m => ({ c: m.c, text: m.text })) });
+      chords: song.marks.filter(m => m.type === 'chord' && m.c >= o.c0).map(m => ({ c: m.c, text: m.text })), engine: { deep: DEEP_SHIFTS.length, judge: spectralJudge.last || null, backend: window.DXBP ? window.DXBP.tf.getBackend() : '' } });
     const msg = { cmd: 'take', name, wav: wavB64(x22, 22050), json };
     if (host) host.postMessage(msg); else window.__lastTake = msg;
   } catch (e) { console.warn('take not saved', e); }
@@ -2694,7 +2794,7 @@ async function aiFromLoop() {
   const audio = await new Promise(res => { const h = e => { if (e.data.ev === 'dump') { LP.node.port.removeEventListener('message', h); res(e.data.d); } }; LP.node.port.addEventListener('message', h); LP.node.port.start(); LP.node.port.postMessage({ cmd: 'dump' }); });
   try {
     const bp = await aiModel(), x22 = await resample(audio, E.ctx.sampleRate);
-    const raw = await aiRun(x22, bp, p => status(`writing tab from the loop… ${Math.round(p * 100)}%`)), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22), feat = audioFeat(x22), ns = cleanNotes(fixed, feat);
+    const raw = await aiRun(x22, bp, p => status(`writing tab from the loop (deep pass)… ${Math.round(p * 100)}%`), true), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22), feat = audioFeat(x22), ns = spectralJudge(cleanNotes(fixed, feat), x22);
     const rows = dropLateOv(solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null), ns, feat);
     const o = { c0: Math.floor(cursor.c / song.cpm) * song.cpm, timing: 'follow', t0: 0, bpm: LP.lock || bpmNow(), names: $('lNames').value === 'on', off };
     if (!rows.length) { saveTake('loop', x22, raw, ns, [], o); return status('no notes found in the loop: try raising Sensitivity'); }
@@ -2731,7 +2831,7 @@ async function aiTick() {
   try {
     const w0 = Math.max(0, end - 3), bp = await aiModel(), x22 = await resample(takeAudio(w0), AI.sr), ft = audioFeat(x22);
     AI.maxDb = Math.max(AI.maxDb == null ? -120 : AI.maxDb, ft.max);
-    const raw = await aiRun(x22, bp); AI.off = tuneFix(raw, x22, AI.off); const ns = cleanNotes(raw, ft, AI.maxDb).map(n => Object.assign(n, { t: n.t + w0 }));
+    const raw = await aiRun(x22, bp); AI.off = tuneFix(raw, x22, AI.off); const ns = spectralJudge(cleanNotes(raw, ft, AI.maxDb), x22).map(n => Object.assign(n, { t: n.t + w0 }));
     const lim = end - 0.5, from = Math.max(AI.lastT, w0 + 0.3);
     const fresh = ns.filter(n => n.t >= from && n.t < lim && !AI.acc.some(m => m.p === n.p && Math.abs(m.t - n.t) < 0.08));
     AI.lastT = Math.max(AI.lastT, lim);
@@ -2764,7 +2864,7 @@ async function aiStop() {                                                    // 
   if (secs > 1 && secs < 300) {
     try {
       const bp = await aiModel(), x22 = await resample(takeAudio(0), AI.sr);
-      const raw = await aiRun(x22, bp, p => status(`final pass over the whole take… ${Math.round(p * 100)}%`)), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22, AI.off), feat = audioFeat(x22), ns = cleanNotes(fixed, feat);
+      const raw = await aiRun(x22, bp, p => status(`deep final pass on the graphics card… ${Math.round(p * 100)}%`), true), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22, AI.off), feat = audioFeat(x22), ns = spectralJudge(cleanNotes(fixed, feat), x22);
       const rows = dropLateOv(solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null), ns, feat);
       if (AI.sense && rows.length) { const sb = senseBpm(rows.map(r => r.t), feat); if (sb) tempoSensed(sb, true); }      // the whole take gives the best tempo; then it stays
       const tOpt = { c0: AI.startCol, timing: $('lTime').value === 'follow' ? 'follow' : 'even', t0: rows.length ? rows[0].t : 0, bpm: +song.tempo || 100, off };
