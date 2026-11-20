@@ -11,7 +11,7 @@ To install it, open the link in Edge or Chrome and click the **Install** icon at
 Features:
 - Write tab by clicking the fretboard, or by playing your guitar (single notes, or chords and notes).
 - Playback, a looper with count-in and overdub, rock and blues drum beats, and a click.
-- A mixer with room reverb, plate, tempo delay and tape echo.
+- A mixer with room reverb, plate, tempo delay and tape echo, and an LED meter bridge for every channel.
 - Save, print or make a PDF of your tabs.
 
 Chord and note detection uses Spotify's open-source Basic Pitch model (Apache-2.0 licence, see `vendor/LICENSE-basic-pitch.txt`).

@@ -26,8 +26,8 @@
   .fld { background:transparent; border:none; border-bottom:1px solid #2a2d33; color:var(--ink); font:inherit; outline:none; -webkit-user-select:text; user-select:text; padding:3px 2px; flex:none; }
   .fld::placeholder { color:#5d636e; }
   .fld:focus { border-bottom-color:var(--gold); }
-  #title { width:280px; font-size:15px; font-weight:400; }
-  #artist { width:180px; font-size:13px; color:var(--val); }
+  #title { width:240px; font-size:15px; font-weight:400; }
+  #artist { width:150px; font-size:13px; color:var(--val); }
   #status { flex:1; min-width:0; font-size:11px; color:var(--lab); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-variant-numeric:tabular-nums; letter-spacing:.01em; }
   #status b { color:var(--lcd); font-weight:500; }
   .pills { display:flex; align-items:center; gap:6px; flex:none; }
@@ -56,7 +56,12 @@
   input.num:focus { border-color:var(--gold); }
   .sep { display:none; }
   /* staff */
-  #staffBox { left:8px; top:80px; width:1555px; height:168px; }
+  #staffBox { left:8px; top:80px; width:1555px; height:168px; transition:opacity .18s ease; }
+  #meterBox { left:8px; top:80px; width:1555px; height:168px; background:linear-gradient(#0d0e11,#08090b); transition:opacity .18s ease, transform .18s ease; overflow:hidden; }
+  #mbCanvas { position:absolute; left:0; top:0; cursor:pointer; }
+  #stage:not(.meters) #meterBox { opacity:0; transform:translateY(-8px); pointer-events:none; }
+  #stage.meters #staffBox { opacity:0; pointer-events:none; }
+  .pseg { display:flex; } .pseg .pill { border-radius:0; } .pseg .pill:first-child { border-radius:12px 0 0 12px; } .pseg .pill:last-child { border-radius:0 12px 12px 0; margin-left:-1px; }
   #strNames { left:0; top:0; width:30px; height:100%; border-right:1px solid #1d2025; }
   #staffScroll { position:absolute; left:30px; top:0; right:0; bottom:0; overflow-x:auto; overflow-y:hidden; }
   #staffScroll::-webkit-scrollbar { height:7px; } #staffScroll::-webkit-scrollbar-thumb { background:#3a3d44; border-radius:4px; } #staffScroll::-webkit-scrollbar-thumb:hover { background:#8a7448; } #staffScroll::-webkit-scrollbar-track { background:transparent; }
@@ -201,6 +206,8 @@
     <input id="artist" class="fld" placeholder="Artist" spellcheck="false">
     <div id="status"></div>
     <div class="pills">
+      <div class="pseg"><div class="pill" id="vStaff" title="Show the tab staff">STAFF</div><div class="pill" id="vMeters" title="Show the LED level meters for every channel">METERS</div></div>
+      <span class="pgap"></span>
       <div class="pill" id="bNew">NEW</div><div class="pill" id="bOpen">OPEN ▾</div><div class="pill" id="bSave">SAVE</div>
       <span class="pgap"></span>
       <div class="pill" id="bPdf">SAVE PDF</div><div class="pill" id="bPrint">PRINT</div><div class="pill" id="bFolder">FOLDER</div>
@@ -284,6 +291,7 @@
     <div class="g"><div class="seg"><div class="tbtn" id="vMix" title="Show the mixer">Mixer</div><div class="tbtn" id="vNeck" title="Drop down the fretboard">Neck</div></div></div>
     <div class="g"><div class="tbtn" id="pMix" title="Looper sync">⚙</div></div>
   </div>
+  <div id="meterBox" class="panel"><canvas id="mbCanvas"></canvas></div>
   <div id="mixBox" class="panel"><div id="mixStrips"></div></div>
   <div id="neckBox" class="panel">
     <svg id="neck" width="1555" height="162"></svg>
@@ -310,7 +318,7 @@
   <h3>H O W &nbsp; T O &nbsp; U S E &nbsp; D U S T E X &nbsp; T A B</h3>
   <div id="helpBody"><div class="hcol">
   <h4>The layout</h4>
-  <p><b>Header:</b> song title and artist, a status line (file name, notes, bars and the bar the cursor is in, or the live readout while listening), and the file buttons: <b>NEW</b>, <b>OPEN</b>, <b>SAVE</b>, <b>SAVE PDF</b>, <b>PRINT</b>, <b>FOLDER</b> and <b>HELP</b>.</p>
+  <p><b>Header:</b> song title and artist, a status line (file name, notes, bars and the bar the cursor is in, or the live readout while listening), the <b>STAFF</b> / <b>METERS</b> switch, and the file buttons: <b>NEW</b>, <b>OPEN</b>, <b>SAVE</b>, <b>SAVE PDF</b>, <b>PRINT</b>, <b>FOLDER</b> and <b>HELP</b>.</p>
   <p><b>Toolbar:</b> techniques, palm mute and let ring, chord names and text, editing tools, tuning, capo, tempo, grid and <b>Listen</b>.</p>
   <p><b>Tab staff:</b> six lines, high e at the top and low E at the bottom, divided into bars. The green box is the <b>cursor</b>: new notes are written there. Scroll sideways with the bar under the staff (or Shift + mouse wheel).</p>
   <p><b>Transport strip</b> (under the tab): playback, the looper, the drum machine and the click, with a readout in the middle showing the count-in, the bar and what's playing, plus the <b>Mixer</b> / <b>Neck</b> buttons.</p>
@@ -368,6 +376,11 @@
   <p><b>Overdub:</b> adds a new layer on top while the loop plays; press again to stop. Every time round counts as its own layer, so you can keep stacking parts. If the loop is paused, Overdub counts you in and starts at the top of the loop.</p>
   <p><b>▶ / ❚❚</b> plays or pauses the loop. <b>↶</b> removes the last layer (pressed while overdubbing, it throws away the pass you're on). <b>Clear</b> erases the loop so you can record a new one at a new length or tempo.</p>
   <p><b>Timing:</b> the looper allows for the PC's audio delay automatically. If your overdubs land slightly behind the beat, open <b>⚙</b> on the strip and move <b>Looper sync</b> to the right; if they land ahead, move it left.</p>
+
+  <h4>Meters</h4>
+  <p>Press <b>METERS</b> (next to NEW) to swap the tab staff for a meter bridge, and <b>STAFF</b> to swap back. The widget remembers which one you had showing.</p>
+  <p>Every channel has a left and right LED stack: <b>INPUT</b>, <b>GUITAR</b>, <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>, the four effects, and a wider stereo pair for <b>MASTER</b>. <b>Green</b> is a healthy level (up to -18 dB), <b>yellow</b> is getting loud (-16 to -6 dB) and <b>red</b> is close to the top (-5 to -1 dB). The single LED that stays lit above the bar is the <b>peak hold</b>. The red light on top of a stack is the <b>clip light</b>: it stays on once a channel has hit full scale. The number over each channel is its latest peak in dB.</p>
+  <p>Click anywhere on the meters to reset the peak holds and clip lights. Aim for most of the action in the green and yellow, with the master peaking in the yellow. If something keeps clipping, pull its fader down on the Mixer (or turn on <b>LIMIT</b> on the master).</p>
 
   <h4>Mixer</h4>
   <p>The panel under the transport strip is a mixer. Press <b>Neck</b> (next to Click) to drop the fretboard down over it, and <b>Mixer</b> to bring the mixer back. The widget remembers which one you had open.</p>
@@ -1457,6 +1470,7 @@ function mixInit(c) {                                                        // 
   for (const ch of MIX_CH) if (!ch.master) {
     const s = { trim: c.createGain(), pan: c.createStereoPanner(), fader: c.createGain(), mute: c.createGain(), an: c.createAnalyser() };
     s.an.fftSize = 512; s.trim.connect(s.pan); s.pan.connect(s.fader); s.fader.connect(s.mute); s.mute.connect(s.an); s.mute.connect(E.master);
+    s.split = c.createChannelSplitter(2); s.anL = c.createAnalyser(); s.anR = c.createAnalyser(); s.anL.fftSize = s.anR.fftSize = 512; s.mute.connect(s.split); s.split.connect(s.anL, 0); s.split.connect(s.anR, 1);   // left/right for the meter bridge
     E.ch[ch.id] = s;
   }
   // room reverb and plate: pre-delay, generated impulse, tone
@@ -1601,8 +1615,8 @@ const MTR = { buf: new Float32Array(512), hold: {}, raf: 0 };
 function peakDb(an) { an.getFloatTimeDomainData(MTR.buf); let m = 0; for (const v of MTR.buf) { const a = v < 0 ? -v : v; if (a > m) m = a; } return m > 1e-5 ? 20 * Math.log10(m) : -90; }
 function meterH(db) { return Math.max(0, Math.min(1, (db + 54) / 60)); }
 function mixFrame() {
-  MTR.raf = 0; if (AUD.view === 'neck') return;
-  if (E.ch) {
+  MTR.raf = 0; const mixOn = AUD.view !== 'neck', mbOn = AUD.top === 'meters'; if (!mixOn && !mbOn) return;
+  if (E.ch && mixOn) {
     document.querySelectorAll('.strip').forEach(st => {
       const id = st.dataset.ch;
       if (id === 'master') { [['L', E.mL], ['R', E.mR]].forEach(([k, an]) => { st.querySelector(`[data-m="${k}"]`).style.height = (meterH(peakDb(an)) * 100) + '%'; }); return; }
@@ -1612,6 +1626,7 @@ function mixFrame() {
       st.querySelector('.mfill').style.height = (h * 100) + '%';
     });
   }
+  if (mbOn) mbDraw();
   MTR.raf = requestAnimationFrame(mixFrame);
 }
 function setView(v) {
@@ -1619,6 +1634,112 @@ function setView(v) {
   $('stage').classList.toggle('neck', v === 'neck');
   $('vMix').classList.toggle('on', v !== 'neck'); $('vNeck').classList.toggle('on', v === 'neck');
   if (v !== 'neck' && !MTR.raf) MTR.raf = requestAnimationFrame(mixFrame);
+}
+
+// ------------------------------------------------------------------ meter bridge: LED stacks for every channel, in place of the staff
+const MB_THR = [-60, -54, -48, -42, -36, -33, -30, -27, -24, -21, -18, -16, -14, -12, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1];   // one LED each, bottom to top; clip LED above
+const MB_COL = t => t <= -18 ? 0 : t <= -6 ? 1 : 2;                         // green, yellow, red
+const MB_ON = ['#46e07a', '#f2cf3a', '#ff4a3d'], MB_HI = ['#b9ffd0', '#fff2b0', '#ffc2bc'], MB_OFF = ['#0f2717', '#2a240d', '#2d100e'], MB_GLOW = ['rgba(70,224,122,.32)', 'rgba(242,207,58,.32)', 'rgba(255,74,61,.38)'];
+const MB = { cv: null, g: null, bg: null, st: {}, last: 0, clipBox: [] };
+const MB_CH = [                                                              // what the bridge shows, in groups
+  { id: 'in', name: 'INPUT' }, { id: 'gtr', name: 'GUITAR' }, { id: 'loop', name: 'LOOPER' }, { id: 'drums', name: 'DRUMS' }, { id: 'click', name: 'CLICK' },
+  { id: 'fxrev', name: 'REVERB', fx: true }, { id: 'fxplt', name: 'PLATE', fx: true }, { id: 'fxdly', name: 'DELAY', fx: true }, { id: 'fxech', name: 'ECHO', fx: true },
+  { id: 'master', name: 'MASTER', master: true },
+];
+const MBG = { W: 1555, H: 168, top: 30, seg: 4.9, n: MB_THR.length };      // geometry: LED pitch 4.9 px, 24 LEDs = 118 px tall
+function mbLayout() {
+  const L = [], scaleW = 46, mW = 186, gap = 18, avail = MBG.W - scaleW - 10 - mW - gap * 2, colW = avail / 9;
+  let x = scaleW + 6;
+  MB_CH.forEach((c, i) => {
+    if (i === 5) x += gap; if (c.master) x += gap;
+    const w = c.master ? mW : colW; L.push({ ...c, x, w, cx: x + w / 2, ledW: c.master ? 26 : 13, pair: c.master ? 8 : 4 }); x += w;
+  });
+  return L;
+}
+function mbInit() {
+  const cv = MB.cv = $('mbCanvas'), dpr = 2; cv.width = MBG.W * dpr; cv.height = MBG.H * dpr; cv.style.width = MBG.W + 'px'; cv.style.height = MBG.H + 'px';
+  MB.g = cv.getContext('2d'); MB.g.setTransform(dpr, 0, 0, dpr, 0, 0); MB.L = mbLayout();
+  // static layer: recesses, unlit LEDs, scale, names
+  const bg = MB.bg = document.createElement('canvas'); bg.width = cv.width; bg.height = cv.height; const g = bg.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const segY = i => MBG.top + (MBG.n - 1 - i) * MBG.seg, bottom = MBG.top + MBG.n * MBG.seg;
+  g.font = '500 8.5px "Segoe UI", sans-serif'; g.textAlign = 'right'; g.textBaseline = 'middle';
+  for (const [db, lbl] of [[-1, '0'], [-3, '-3'], [-6, '-6'], [-12, '-12'], [-18, '-18'], [-30, '-30'], [-42, '-42'], [-60, '-60']]) {
+    const i = MB_THR.indexOf(db), y = segY(i) + MBG.seg / 2 - 0.4; g.fillStyle = db >= -6 ? '#b97a6e' : db >= -18 ? '#b8a46a' : '#6f8a78'; g.fillText(lbl, 38, y - (db === -1 ? 0 : 0));
+    g.fillStyle = '#2a2d33'; g.fillRect(41, y - 0.5, 4, 1);
+    for (const c of MB.L) { g.fillStyle = 'rgba(255,255,255,.035)'; g.fillRect(c.x + 6, y - 0.25, c.w - 12, 0.5); }
+  }
+  g.textAlign = 'right'; g.fillStyle = '#4b5059'; g.fillText('dB', 38, MBG.top - 8);
+  MB.clipBox = [];
+  for (const c of MB.L) {
+    const pw = c.ledW * 2 + c.pair, x0 = c.cx - pw / 2;
+    // recess
+    g.fillStyle = '#050607'; g.strokeStyle = '#1b1e23'; g.lineWidth = 1; mbRound(g, x0 - 6, MBG.top - 14, pw + 12, bottom - MBG.top + 19, 4); g.fill(); g.stroke();
+    for (let ch = 0; ch < 2; ch++) {
+      const lx = x0 + ch * (c.ledW + c.pair);
+      for (let i = 0; i < MBG.n; i++) { g.fillStyle = MB_OFF[MB_COL(MB_THR[i])]; g.fillRect(lx, segY(i) + 0.6, c.ledW, MBG.seg - 1.6); }
+      g.fillStyle = '#2a0c0a'; g.fillRect(lx, MBG.top - 10, c.ledW, 4);                // clip LED (unlit)
+    }
+    MB.clipBox.push([x0 - 6, MBG.top - 14, pw + 12, 12]);
+    g.textAlign = 'center'; g.font = '700 9px "Segoe UI", sans-serif'; g.fillStyle = c.fx ? '#c7a76c' : c.master ? '#e2c58a' : '#b39563';
+    mbSpaced(g, c.name, c.cx, bottom + 13, 1.6);
+    if (c.master) { g.font = '600 7.5px "Segoe UI", sans-serif'; g.fillStyle = '#5d636e'; g.fillText('L', x0 + c.ledW / 2, bottom + 4.5); g.fillText('R', x0 + c.ledW * 1.5 + c.pair, bottom + 4.5); }
+  }
+  // group dividers and titles
+  const div = (x) => { g.fillStyle = '#1d2025'; g.fillRect(x, 8, 1, MBG.H - 16); };
+  div(MB.L[5].x - 9); div(MB.L[9].x - 9);
+  cv.onclick = () => { for (const k in MB.st) { MB.st[k].clip = false; MB.st[k].holdL = MB.st[k].holdR = -90; } mbDraw(true); };
+  cv.title = 'Click to reset the peak holds and clip lights';
+  mbDraw(true);
+}
+function mbRound(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+function mbSpaced(g, t, x, y, sp, align) {                                    // letter-spaced text (DUSTEX labels)
+  const w = [...t].reduce((a, ch) => a + g.measureText(ch).width + sp, -sp); let px = align === 'left' ? x : x - w / 2; const a0 = g.textAlign; g.textAlign = 'left';
+  for (const ch of t) { g.fillText(ch, px, y); px += g.measureText(ch).width + sp; } g.textAlign = a0;
+}
+function mbLevels(id) {                                                       // current peak dB, left and right
+  if (!E.ch) return [-90, -90];
+  if (id === 'master') return [peakDb(E.mL), peakDb(E.mR)];
+  const s = E.ch[id]; if (!s || !s.anL) return [-90, -90];
+  if (id === 'in' && LP.src && !MIX.in.mon) { const d = LP.lvl > 1e-5 ? 20 * Math.log10(LP.lvl) : -90; return [d, d]; }
+  return [peakDb(s.anL), peakDb(s.anR)];
+}
+function mbDraw(force) {
+  if (!MB.g) return;
+  const now = performance.now() / 1000, dt = Math.min(0.1, now - (MB.last || now)); MB.last = now;
+  const g = MB.g; g.clearRect(0, 0, MBG.W, MBG.H); g.drawImage(MB.bg, 0, 0, MBG.W, MBG.H);
+  const segY = i => MBG.top + (MBG.n - 1 - i) * MBG.seg;
+  for (const c of MB.L) {
+    const st = MB.st[c.id] = MB.st[c.id] || { dL: -90, dR: -90, holdL: -90, holdR: -90, hT: [0, 0], clip: false, pk: -90, pkT: 0 };
+    const [lv, rv] = force && !E.ch ? [-90, -90] : mbLevels(c.id), pw = c.ledW * 2 + c.pair, x0 = c.cx - pw / 2;
+    [['dL', 'holdL', lv, 0], ['dR', 'holdR', rv, 1]].forEach(([dk, hk, v, ch]) => {
+      st[dk] = Math.max(v, st[dk] - 24 * dt);                                // fast attack, ~24 dB/s fall-back
+      if (v >= st[hk]) { st[hk] = v; st.hT[ch] = now; } else if (now - st.hT[ch] > 1.6) st[hk] = Math.max(-90, st[hk] - 30 * dt);
+      if (v >= -0.3) st.clip = true;
+      const lx = x0 + ch * (c.ledW + c.pair);
+      let lit = 0; while (lit < MBG.n && MB_THR[lit] <= st[dk]) lit++;
+      for (let i = 0; i < lit; i++) {
+        const col = MB_COL(MB_THR[i]), y = segY(i) + 0.6, h = MBG.seg - 1.6;
+        g.fillStyle = MB_GLOW[col]; g.fillRect(lx - 1.5, y - 1, c.ledW + 3, h + 2);
+        g.fillStyle = MB_ON[col]; g.fillRect(lx, y, c.ledW, h);
+        g.fillStyle = MB_HI[col]; g.fillRect(lx + 1, y + 0.4, c.ledW - 2, 0.9);
+      }
+      let hi = 0; while (hi < MBG.n && MB_THR[hi] <= st[hk]) hi++;                // peak-hold LED
+      if (hi > lit && hi > 0) { const col = MB_COL(MB_THR[hi - 1]), y = segY(hi - 1) + 0.6; g.fillStyle = MB_ON[col]; g.fillRect(lx, y, c.ledW, MBG.seg - 1.6); g.fillStyle = MB_HI[col]; g.fillRect(lx + 1, y + 0.4, c.ledW - 2, 0.9); }
+      if (st.clip) { g.fillStyle = 'rgba(255,74,61,.45)'; g.fillRect(lx - 1.5, MBG.top - 11.5, c.ledW + 3, 7); g.fillStyle = '#ff4a3d'; g.fillRect(lx, MBG.top - 10, c.ledW, 4); }
+    });
+    // peak readout, held for a moment so it can be read
+    const p = Math.max(lv, rv); if (p >= st.pk || now - st.pkT > 1.2) { st.pk = p; st.pkT = now; }
+    g.font = '500 10px "Segoe UI", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    const txt = st.pk <= -60 ? '-∞' : (st.pk >= 0 ? '+' : '') + st.pk.toFixed(1);
+    g.fillStyle = st.pk > -6 ? '#ff8f80' : st.pk > -18 ? '#f2d67a' : '#93d9b4';
+    g.fillText(txt, c.cx, 8.5);
+  }
+}
+function setTop(v) {
+  AUD.top = v; saveAud();
+  $('stage').classList.toggle('meters', v === 'meters');
+  $('vStaff').classList.toggle('on', v !== 'meters'); $('vMeters').classList.toggle('on', v === 'meters');
+  if (v === 'meters') { if (!MB.g) mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); }
 }
 
 // ---- wiring
@@ -1636,7 +1757,7 @@ function setView(v) {
   $('lpClear').onclick = () => { if (LP.layers > 2 && !confirm(`Clear the loop and all ${LP.layers} layers?`)) return; lpClear(); };
   $('dOn').onclick = toggleDrums; $('mOn').onclick = toggleClick;
   $('pMix').onclick = ev => { ev.stopPropagation(); const m = $('mixMenu'); m.style.display = m.style.display === 'grid' ? 'none' : 'grid'; };
-  mixBuildUI(); setView(AUD.view || 'mix'); $('vMix').onclick = () => setView('mix'); $('vNeck').onclick = () => setView('neck');
+  mixBuildUI(); setView(AUD.view || 'mix'); $('vStaff').onclick = () => setTop('staff'); $('vMeters').onclick = () => setTop('meters'); setTop(AUD.top || 'staff'); $('vMix').onclick = () => setView('mix'); $('vNeck').onclick = () => setView('neck');
   const sv = () => { $('syncV').textContent = (AUD.sync > 0 ? '+' : '') + AUD.sync + ' ms'; };
   $('vSync').value = AUD.sync; sv(); $('vSync').oninput = () => { AUD.sync = +$('vSync').value; sv(); saveAud(); };
   $('lDev').addEventListener('change', looperInputReset);
