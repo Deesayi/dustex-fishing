@@ -370,11 +370,22 @@ $view.Add_CoreWebView2InitializationCompleted({ param($sx, $ev)
 })
 
 # PDF finishes in the background: tell the page when it's written
+$script:ver = (Get-Item -LiteralPath $PSCommandPath).LastWriteTimeUtc; $script:verAt = [datetime]::Now
 $tick = New-Object Windows.Threading.DispatcherTimer; $tick.Interval = [TimeSpan]::FromMilliseconds(250)
 $tick.Add_Tick({
     $rq = $null; $rn = 0
     while ($rn -lt 200 -and $RM.inbox.TryDequeue([ref]$rq)) { $rn++; try { Remote-Input $rq } catch { Write-Log "ipad input: $($_.Exception.Message) [$rq]" } }
     if ($script:cdpTasks.Count) { Check-Cdp }
+    # a newer version of this script was saved (an update): restart into it by itself; the open tab comes back from the autosave
+    if (([datetime]::Now - $script:verAt).TotalSeconds -ge 5) {
+        $script:verAt = [datetime]::Now
+        try { $vt = (Get-Item -LiteralPath $PSCommandPath).LastWriteTimeUtc } catch { $vt = $script:ver }
+        if ($vt -ne $script:ver -and ([datetime]::UtcNow - $vt).TotalSeconds -ge 3) {
+            Write-Log 'script updated: restarting'
+            Start-Process powershell.exe -ArgumentList "-NoProfile -STA -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -WindowStyle Hidden
+            $script:ver = $vt
+        }
+    }
     if ($script:pdfTask -and $script:pdfTask.IsCompleted) {
         $tk = $script:pdfTask; $script:pdfTask = $null
         if ($tk.IsFaulted) { Write-Log "pdf: $($tk.Exception.InnerException.Message)"; Reply @{ type = 'pdf'; ok = $false; name = $script:pdfName; error = $tk.Exception.InnerException.Message } }
