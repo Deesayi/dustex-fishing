@@ -25,7 +25,7 @@
   @font-face { font-family:'DX Script'; src:url('fonts/great-vibes-latin-400-normal.woff2') format('woff2'); font-display:block; }
   #brand { display:flex; align-items:baseline; gap:9px; flex:none; margin-right:4px; }
   #brand .bt { font-size:11px; letter-spacing:.5em; color:var(--gold); font-weight:600; }
-  #brand .bs { font-family:'DX Script', 'Segoe Script', cursive; font-size:23px; line-height:1; letter-spacing:.01em; white-space:nowrap; padding-right:2px;
+  #brand .bs { font-family:'DX Script', 'Segoe Script', cursive; font-size:23px; line-height:1.5; letter-spacing:.01em; white-space:nowrap; padding:0 4px 0 2px; position:relative; top:4px;
     background:linear-gradient(#f6e6bd, #d8b46a 55%, #a8853f); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 1px 0 rgba(0,0,0,.55)); }
   .fld { background:transparent; border:none; border-bottom:1px solid #2a2d33; color:var(--ink); font:inherit; outline:none; -webkit-user-select:text; user-select:text; padding:3px 2px; flex:none; }
   .fld::placeholder { color:#5d636e; }
@@ -41,11 +41,12 @@
   .pill:hover { background:linear-gradient(#585d65,#272a2f); border-color:#666b74; }
   .pill.on { border-color:var(--gold); color:var(--gold); box-shadow:0 0 8px rgba(216,180,106,.35); }
   /* toolbar */
-  .tb { position:absolute; left:18px; right:16px; top:46px; height:26px; display:flex; align-items:center; gap:7px; white-space:nowrap; }
+  .tb { position:absolute; left:18px; right:16px; top:46px; height:26px; display:flex; align-items:center; gap:6px; white-space:nowrap; }
   .tb .g { display:flex; align-items:center; gap:4px; }
-  .tb .g + .g { padding-left:7px; border-left:1px solid #24272d; }
+  .tb .g + .g { padding-left:6px; border-left:1px solid #24272d; }
+  #tFull.on { border-color:var(--gold); color:var(--gold); }
   .tb .g:last-child { margin-left:auto; }
-  .tbtn { min-width:27px; height:26px; padding:0 8px; border-radius:7px; border:1px solid #2f3238; background:linear-gradient(#202328,#131519); color:#c9ccd2;
+  .tbtn { min-width:26px; height:26px; padding:0 7px; border-radius:7px; border:1px solid #2f3238; background:linear-gradient(#202328,#131519); color:#c9ccd2;
     font-size:12.5px; font-weight:400; display:flex; align-items:center; justify-content:center; cursor:pointer; font-variant-numeric:tabular-nums; white-space:nowrap; }
   .tbtn:hover { border-color:#4e535b; color:#f0f1f3; }
   .tbtn.on { border-color:var(--gold); color:var(--gold); background:linear-gradient(#2a2519,#15130d); }
@@ -54,7 +55,7 @@
   select.sel { height:26px; border-radius:7px; border:1px solid #2f3238; background:#131519 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='5'><path d='M0 0l4 5 4-5z' fill='%237d838e'/></svg>") no-repeat right 8px center;
     color:#c9ccd2; font:12.5px inherit; padding:0 22px 0 9px; outline:none; -webkit-appearance:none; appearance:none; cursor:pointer; }
   select.sel:hover { border-color:#4e535b; }
-  #tuning { width:110px; } #capo { width:66px; }
+  #tuning { width:104px; } #capo { width:64px; }
   select.sel option { background:#131519; color:#c9ccd2; }
   input.num { width:46px; height:26px; border-radius:7px; border:1px solid #2f3238; background:#131519; color:#c9ccd2; font:12.5px inherit; padding:0 8px; outline:none; text-align:center; -webkit-user-select:text; user-select:text; }
   input.num:focus { border-color:var(--gold); }
@@ -62,7 +63,7 @@
   /* staff */
   #staffBox { left:8px; top:80px; width:1555px; height:168px; transition:opacity .18s ease; }
   #meterBox { left:8px; top:80px; width:1555px; height:168px; background:linear-gradient(#0d0e11,#08090b); transition:opacity .18s ease, transform .18s ease; overflow:hidden; }
-  #mbCanvas { position:absolute; left:0; top:0; cursor:pointer; }
+  #meterBox { cursor:pointer; } .gw { position:absolute; top:6px; width:130px; height:152px; }
   /* full-page studio layout (the web app): staff, meters, transport, fretboard and mixer all showing */
   body.studio #staffBox { top:80px; height:226px; }
   body.studio #meterBox { top:314px; }
@@ -274,6 +275,7 @@
       <div class="tbtn" id="tListen" title="Write notes as you play (guitar into the Spark 2 over USB)">● Listen</div>
       <div class="tbtn" id="tListenSet" title="Listening settings: input, position, timing">⚙</div>
     </div>
+    <div class="g"><div class="tbtn" id="tFull" title="Full screen (Esc to leave)"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9"/></svg></div></div>
   </div>
 
   <div id="staffBox" class="panel">
@@ -306,7 +308,7 @@
     <div class="g"><div class="seg"><div class="tbtn" id="vMix" title="Show the mixer">Mixer</div><div class="tbtn" id="vNeck" title="Drop down the fretboard">Neck</div></div></div>
     <div class="g"><div class="tbtn" id="pMix" title="Looper sync">⚙</div></div>
   </div>
-  <div id="meterBox" class="panel"><canvas id="mbCanvas"></canvas></div>
+  <div id="meterBox" class="panel"></div>
   <div id="mixBox" class="panel"><div id="mixStrips"></div></div>
   <div id="neckBox" class="panel">
     <svg id="neck" width="1555" height="162"></svg>
@@ -334,7 +336,7 @@
   <div id="helpBody"><div class="hcol">
   <h4>The layout</h4>
   <p><b>Header:</b> song title and artist, a status line (file name, notes, bars and the bar the cursor is in, or the live readout while listening), the <b>STAFF</b> / <b>METERS</b> switch, and the file buttons: <b>NEW</b>, <b>OPEN</b>, <b>SAVE</b>, <b>SAVE PDF</b>, <b>PRINT</b>, <b>FOLDER</b> and <b>HELP</b>.</p>
-  <p><b>Toolbar:</b> techniques, palm mute and let ring, chord names and text, editing tools, tuning, capo, tempo, grid and <b>Listen</b>.</p>
+  <p><b>Toolbar:</b> techniques, palm mute and let ring, chord names and text, editing tools, tuning, capo, tempo, grid, <b>Listen</b>, and the <b>full-screen</b> button at the right end.</p>
   <p><b>Tab staff:</b> six lines, high e at the top and low E at the bottom, divided into bars. The green box is the <b>cursor</b>: new notes are written there. Scroll sideways with the bar under the staff (or Shift + mouse wheel).</p>
   <p><b>Transport strip</b> (under the tab): playback, the looper, the drum machine and the click, with a readout in the middle showing the count-in, the bar and what's playing, plus the <b>Mixer</b> / <b>Neck</b> buttons.</p>
   <p><b>Mixer</b> (under the transport strip): volume, pan, trim and effects for each part, explained below. <b>Neck</b> drops the fretboard down in its place.</p>
@@ -393,9 +395,12 @@
   <p><b>Timing:</b> the looper allows for the PC's audio delay automatically. If your overdubs land slightly behind the beat, open <b>⚙</b> on the strip and move <b>Looper sync</b> to the right; if they land ahead, move it left.</p>
 
   <h4>Meters</h4>
-  <p>Press <b>METERS</b> (next to NEW) to swap the tab staff for a meter bridge, and <b>STAFF</b> to swap back. The widget remembers which one you had showing.</p>
-  <p>Every channel has a left and right LED stack: <b>INPUT</b>, <b>GUITAR</b>, <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>, the four effects, and a wider stereo pair for <b>MASTER</b>. <b>Green</b> is a healthy level (up to -18 dB), <b>yellow</b> is getting loud (-16 to -6 dB) and <b>red</b> is close to the top (-5 to -1 dB). The single LED that stays lit above the bar is the <b>peak hold</b>. The red light on top of a stack is the <b>clip light</b>: it stays on once a channel has hit full scale. The number over each channel is its latest peak in dB.</p>
-  <p>Click anywhere on the meters to reset the peak holds and clip lights. Aim for most of the action in the green and yellow, with the master peaking in the yellow. If something keeps clipping, pull its fader down on the Mixer (or turn on <b>LIMIT</b> on the master).</p>
+  <p>Press <b>METERS</b> (next to NEW) to swap the tab staff for a row of DUSTEX level gauges, and <b>STAFF</b> to swap back. The widget remembers which one you had showing.</p>
+  <p>There's a gauge for every channel: <b>INPUT</b>, <b>GUITAR</b>, <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>, the four effects, and <b>MASTER L</b> and <b>MASTER R</b>. Each one reads from -40 to 0 dB: the <b>green</b> zone is a healthy level (up to -18 dB), <b>gold</b> is getting loud (-18 to -6 dB) and <b>red</b> is close to the top (-6 to 0 dB). The orange needle shows the level as it moves. The thin red needle holds the latest <b>peak</b> for a moment, and the number under the gauge shows that peak in dB. The small lamp near the bottom of the face lights red if the channel <b>clips</b> (hits full scale), and stays lit until you reset it.</p>
+  <p>Click anywhere on the gauges to reset the peak needles and clip lamps. Aim for most of the action in the green and gold, with the master peaking in the gold. If something keeps clipping, pull its fader down on the Mixer (or turn on <b>LIMIT</b> on the master).</p>
+
+  <h4>Full screen</h4>
+  <p>The <b>full-screen button</b> at the right end of the toolbar fills the whole monitor with the big full-page layout: the staff, the gauges, the transport strip, the fretboard and the mixer all at once. Press it again, or press <b>Esc</b>, to put the widget back in its spot on the dashboard. In the web app it switches the browser to full screen.</p>
 
   <h4>Mixer</h4>
   <p>The panel under the transport strip is a mixer. Press <b>Neck</b> (next to Click) to drop the fretboard down over it, and <b>Mixer</b> to bring the mixer back. The widget remembers which one you had open.</p>
@@ -455,7 +460,7 @@ const NS = 'http://www.w3.org/2000/svg';
 const el = (tag, at, parent) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; };
 const host = window.chrome && window.chrome.webview ? window.chrome.webview : null;     // the desktop widget; absent when opened in a normal browser
 if (!host) document.body.classList.add('standalone');
-const STUDIO = !host, STAGE_H = STUDIO ? 858 : 462;                         // the web app gets the full-page layout: everything showing at once, bigger
+let STUDIO = !host, STAGE_H = STUDIO ? 858 : 462;                           // the web app gets the full-page layout: everything showing at once, bigger
 if (STUDIO) document.body.classList.add('studio');
 if (!host && 'serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
@@ -814,7 +819,7 @@ addEventListener('keydown', ev => {
     case 'enter': ev.preventDefault(); return tabPlay();
     case 'delete': case 'backspace': ev.preventDefault(); return del();
     case 'insert': return shiftFrom(cursor.c, +$('step').value);
-    case 'escape': sel.clear(); selMark = null; $('openMenu').style.display = 'none'; $('helpSheet').style.display = 'none'; $('listenMenu').style.display = 'none'; $('mixMenu').style.display = 'none'; return render();
+    case 'escape': if (host && STUDIO) send({ cmd: 'fullscreen', on: false }); sel.clear(); selMark = null; $('openMenu').style.display = 'none'; $('helpSheet').style.display = 'none'; $('listenMenu').style.display = 'none'; $('mixMenu').style.display = 'none'; return render();
   }
 });
 
@@ -882,6 +887,7 @@ function onHostMsg(d) {
   else if (d.type === 'pdf') status(d.ok ? `PDF saved: ${d.name}` : `PDF failed: ${d.error || ''}`);
   else if (d.type === 'error') status(d.message);
   else if (d.type === 'takeSaved') console.log('take saved: ' + d.name);
+  else if (d.type === 'fullscreen') setStudio(!!d.on);
   else if (d.type === 'list') {
     const m = $('openMenu'); m.innerHTML = '';
     if (!d.files || !d.files.length) m.innerHTML = '<div class="none">No saved tabs yet</div>';
@@ -1654,65 +1660,54 @@ function setView(v) {
   if (v !== 'neck' && !MTR.raf) MTR.raf = requestAnimationFrame(mixFrame);
 }
 
-// ------------------------------------------------------------------ meter bridge: LED stacks for every channel, in place of the staff
-const MB_THR = [-60, -54, -48, -42, -36, -33, -30, -27, -24, -21, -18, -16, -14, -12, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1];   // one LED each, bottom to top; clip LED above
-const MB_COL = t => t <= -18 ? 0 : t <= -6 ? 1 : 2;                         // green, yellow, red
-const MB_ON = ['#46e07a', '#f2cf3a', '#ff4a3d'], MB_HI = ['#b9ffd0', '#fff2b0', '#ffc2bc'], MB_OFF = ['#0f2717', '#2a240d', '#2d100e'], MB_GLOW = ['rgba(70,224,122,.32)', 'rgba(242,207,58,.32)', 'rgba(255,74,61,.38)'];
-const MB = { cv: null, g: null, bg: null, st: {}, last: 0, clipBox: [] };
-const MB_CH = [                                                              // what the bridge shows, in groups
+// ------------------------------------------------------------------ meters: a row of DUSTEX gauges (same faces as the fishing gauges), in place of the staff
+const MB_CH = [
   { id: 'in', name: 'INPUT' }, { id: 'gtr', name: 'GUITAR' }, { id: 'loop', name: 'LOOPER' }, { id: 'drums', name: 'DRUMS' }, { id: 'click', name: 'CLICK' },
   { id: 'fxrev', name: 'REVERB', fx: true }, { id: 'fxplt', name: 'PLATE', fx: true }, { id: 'fxdly', name: 'DELAY', fx: true }, { id: 'fxech', name: 'ECHO', fx: true },
-  { id: 'master', name: 'MASTER', master: true },
+  { id: 'master', ch: 0, name: 'MASTER L', master: true }, { id: 'master', ch: 1, name: 'MASTER R', master: true },
 ];
-const MBG = { W: 1555, H: 168, top: 30, seg: 4.9, n: MB_THR.length };      // geometry: LED pitch 4.9 px, 24 LEDs = 118 px tall
-function mbLayout() {
-  const L = [], scaleW = 46, mW = 186, gap = 18, avail = MBG.W - scaleW - 10 - mW - gap * 2, colW = avail / 9;
-  let x = scaleW + 6;
-  MB_CH.forEach((c, i) => {
-    if (i === 5) x += gap; if (c.master) x += gap;
-    const w = c.master ? mW : colW; L.push({ ...c, x, w, cx: x + w / 2, ledW: c.master ? 26 : 13, pair: c.master ? 8 : 4 }); x += w;
-  });
-  return L;
+const MB = { built: false, g: [], st: {}, last: 0 };
+const GMIN = -40, GMAX = 0, gAng = v => -135 + 270 * Math.max(-0.02, Math.min(1.03, (v - GMIN) / (GMAX - GMIN)));
+const gPt = (c, r, deg) => { const a = deg * Math.PI / 180; return [c + r * Math.sin(a), c - r * Math.cos(a)]; };
+const gArc = (c, r, a1, a2) => { const p1 = gPt(c, r, a1), p2 = gPt(c, r, a2); return `M${p1[0]},${p1[1]} A${r},${r} 0 ${(a2 - a1) > 180 ? 1 : 0} 1 ${p2[0]},${p2[1]}`; };
+function gauge(host, size, label, id) {
+  const c = size / 2, R = c - 3, k = size / 150;
+  const svg = el('svg', { width: size, height: size + 20, viewBox: `0 0 ${size} ${size + 20}`, style: 'overflow:visible' }, host);
+  const defs = el('defs', {}, svg);
+  const sh = el('filter', { id: 'gsh' + id, x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs); el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 3.5, 'flood-opacity': .7 }, sh);
+  const ng = el('linearGradient', { id: 'gng' + id, x1: 0, y1: 0, x2: 1, y2: 0 }, defs); el('stop', { offset: 0, 'stop-color': '#ff9a4d' }, ng); el('stop', { offset: 1, 'stop-color': '#e04a00' }, ng);
+  const cp = el('radialGradient', { id: 'gcp' + id, cx: '35%', cy: '30%', r: '70%' }, defs); el('stop', { offset: 0, 'stop-color': '#f4f5f7' }, cp); el('stop', { offset: .6, 'stop-color': '#9a9ea6' }, cp); el('stop', { offset: 1, 'stop-color': '#4a4e56' }, cp);
+  el('image', { href: 'gauge_face.png', x: 0, y: 0, width: size, height: size, filter: `url(#gsh${id})` }, svg);
+  el('image', { href: 'gauge_logo.png', x: size * .1, y: size * .1, width: size * .8, height: size * .8 }, svg);
+  for (const z of [[GMIN, -18, '#2f9e5e'], [-18, -6, '#e0a030'], [-6, GMAX, '#d8443c']]) el('path', { d: gArc(c, R - 13, gAng(z[0]), gAng(z[1])), stroke: z[2], 'stroke-width': 4 * k + 0.6, fill: 'none' }, svg);
+  for (let v = GMIN; v <= GMAX; v += 2) {
+    const a = gAng(v), major = v % 10 === 0, p1 = gPt(c, R - 8, a), p2 = gPt(c, major ? R - 19 * k : R - 13 * k, a);
+    el('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: major ? '#15171b' : 'rgba(58,62,70,.67)', 'stroke-width': major ? 1.8 : .8 }, svg);
+    if (major) { const tp = gPt(c, R - 30 * k, a), fs = size * .072; const t = el('text', { x: tp[0], y: tp[1] + fs * .35, 'text-anchor': 'middle', 'font-size': fs, 'font-weight': 600, fill: '#1a1c21' }, svg); t.textContent = v === 0 ? '0' : v; }
+  }
+  const fs2 = size * .07, numBot = c + (R - 30 * k) * .7071 + size * .068 * .62;
+  const lb = el('text', { x: c, y: numBot + 2 + fs2, 'text-anchor': 'middle', 'font-size': fs2, 'font-weight': 900, fill: '#2a3b55', 'letter-spacing': '.02em' }, svg); lb.textContent = label;
+  const lamp = el('circle', { cx: c, cy: c + R * .42, r: 3.2 * k + .6, fill: '#3a1210', stroke: '#1a1c21', 'stroke-width': .6 }, svg);
+  const pk = el('polygon', { points: `${c - 1.1},${c - R * .35} ${c + 1.1},${c - R * .35} ${c + .5},${c - R + 10 * k} ${c - .5},${c - R + 10 * k}`, fill: 'rgba(229,72,77,.75)', style: `transform-origin:${c}px ${c}px;transform:rotate(-140deg)` }, svg);
+  const nd = el('polygon', { points: `${c - 3.2 * k},${c + R * .16} ${c + 3.2 * k},${c + R * .16} ${c + k},${c - R + 11 * k} ${c - k},${c - R + 11 * k}`, fill: `url(#gng${id})`, style: `transform-origin:${c}px ${c}px;transform:rotate(-140deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))` }, svg);
+  el('circle', { cx: c, cy: c, r: size * .055, fill: `url(#gcp${id})`, stroke: '#2a2c31' }, svg);
+  el('image', { href: 'gauge_glass.png', x: 0, y: 0, width: size, height: size }, svg);
+  const vt = el('text', { x: c, y: size + 15, 'text-anchor': 'middle', 'font-size': 11, fill: '#a3dcbf', 'font-weight': 500, 'font-family': '"Segoe UI", sans-serif', style: 'font-variant-numeric:tabular-nums' }, svg);
+  return { nd, pk, lamp, vt };
 }
 function mbInit() {
-  const cv = MB.cv = $('mbCanvas'), dpr = 2; cv.width = MBG.W * dpr; cv.height = MBG.H * dpr; cv.style.width = MBG.W + 'px'; cv.style.height = MBG.H + 'px';
-  MB.g = cv.getContext('2d'); MB.g.setTransform(dpr, 0, 0, dpr, 0, 0); MB.L = mbLayout();
-  // static layer: recesses, unlit LEDs, scale, names
-  const bg = MB.bg = document.createElement('canvas'); bg.width = cv.width; bg.height = cv.height; const g = bg.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const segY = i => MBG.top + (MBG.n - 1 - i) * MBG.seg, bottom = MBG.top + MBG.n * MBG.seg;
-  g.font = '500 8.5px "Segoe UI", sans-serif'; g.textAlign = 'right'; g.textBaseline = 'middle';
-  for (const [db, lbl] of [[-1, '0'], [-3, '-3'], [-6, '-6'], [-12, '-12'], [-18, '-18'], [-30, '-30'], [-42, '-42'], [-60, '-60']]) {
-    const i = MB_THR.indexOf(db), y = segY(i) + MBG.seg / 2 - 0.4; g.fillStyle = db >= -6 ? '#b97a6e' : db >= -18 ? '#b8a46a' : '#6f8a78'; g.fillText(lbl, 38, y - (db === -1 ? 0 : 0));
-    g.fillStyle = '#2a2d33'; g.fillRect(41, y - 0.5, 4, 1);
-    for (const c of MB.L) { g.fillStyle = 'rgba(255,255,255,.035)'; g.fillRect(c.x + 6, y - 0.25, c.w - 12, 0.5); }
-  }
-  g.textAlign = 'right'; g.fillStyle = '#4b5059'; g.fillText('dB', 38, MBG.top - 8);
-  MB.clipBox = [];
-  for (const c of MB.L) {
-    const pw = c.ledW * 2 + c.pair, x0 = c.cx - pw / 2;
-    // recess
-    g.fillStyle = '#050607'; g.strokeStyle = '#1b1e23'; g.lineWidth = 1; mbRound(g, x0 - 6, MBG.top - 14, pw + 12, bottom - MBG.top + 19, 4); g.fill(); g.stroke();
-    for (let ch = 0; ch < 2; ch++) {
-      const lx = x0 + ch * (c.ledW + c.pair);
-      for (let i = 0; i < MBG.n; i++) { g.fillStyle = MB_OFF[MB_COL(MB_THR[i])]; g.fillRect(lx, segY(i) + 0.6, c.ledW, MBG.seg - 1.6); }
-      g.fillStyle = '#2a0c0a'; g.fillRect(lx, MBG.top - 10, c.ledW, 4);                // clip LED (unlit)
-    }
-    MB.clipBox.push([x0 - 6, MBG.top - 14, pw + 12, 12]);
-    g.textAlign = 'center'; g.font = '700 9px "Segoe UI", sans-serif'; g.fillStyle = c.fx ? '#c7a76c' : c.master ? '#e2c58a' : '#b39563';
-    mbSpaced(g, c.name, c.cx, bottom + 13, 1.6);
-    if (c.master) { g.font = '600 7.5px "Segoe UI", sans-serif'; g.fillStyle = '#5d636e'; g.fillText('L', x0 + c.ledW / 2, bottom + 4.5); g.fillText('R', x0 + c.ledW * 1.5 + c.pair, bottom + 4.5); }
-  }
-  // group dividers and titles
-  const div = (x) => { g.fillStyle = '#1d2025'; g.fillRect(x, 8, 1, MBG.H - 16); };
-  div(MB.L[5].x - 9); div(MB.L[9].x - 9);
-  cv.onclick = () => { for (const k in MB.st) { MB.st[k].clip = false; MB.st[k].holdL = MB.st[k].holdR = -90; } mbDraw(true); };
-  cv.title = 'Click to reset the peak holds and clip lights';
-  mbDraw(true);
-}
-function mbRound(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
-function mbSpaced(g, t, x, y, sp, align) {                                    // letter-spaced text (DUSTEX labels)
-  const w = [...t].reduce((a, ch) => a + g.measureText(ch).width + sp, -sp); let px = align === 'left' ? x : x - w / 2; const a0 = g.textAlign; g.textAlign = 'left';
-  for (const ch of t) { g.fillText(ch, px, y); px += g.measureText(ch).width + sp; } g.textAlign = a0;
+  const box = $('meterBox'); box.querySelectorAll('.gw').forEach(n => n.remove()); MB.g = [];
+  const size = 130, n = MB_CH.length, extra = 22, gap = (1555 - 16 - n * size - extra * 2) / (n - 1);
+  let x = 8;
+  MB_CH.forEach((c, i) => {
+    if (i === 5 || i === 9) x += extra;
+    const w = document.createElement('div'); w.className = 'gw'; w.style.left = x + 'px'; box.appendChild(w);
+    MB.g.push(Object.assign(gauge(w, size, c.name, 'm' + i), { c, disp: -90, hold: -90, hT: 0, clip: false, shown: -90, shownT: 0 }));
+    x += size + gap;
+  });
+  box.onclick = () => { MB.g.forEach(g => { g.clip = false; g.hold = -90; }); };
+  box.title = 'Click to reset the peak needles and clip lamps';
+  MB.built = true; mbDraw();
 }
 function mbLevels(id) {                                                       // current peak dB, left and right
   if (!E.ch) return [-90, -90];
@@ -1721,45 +1716,39 @@ function mbLevels(id) {                                                       //
   if (id === 'in' && LP.src && !MIX.in.mon) { const d = LP.lvl > 1e-5 ? 20 * Math.log10(LP.lvl) : -90; return [d, d]; }
   return [peakDb(s.anL), peakDb(s.anR)];
 }
-function mbDraw(force) {
-  if (!MB.g) return;
+function mbDraw() {
+  if (!MB.built) return;
   const now = performance.now() / 1000, dt = Math.min(0.1, now - (MB.last || now)); MB.last = now;
-  const g = MB.g; g.clearRect(0, 0, MBG.W, MBG.H); g.drawImage(MB.bg, 0, 0, MBG.W, MBG.H);
-  const segY = i => MBG.top + (MBG.n - 1 - i) * MBG.seg;
-  for (const c of MB.L) {
-    const st = MB.st[c.id] = MB.st[c.id] || { dL: -90, dR: -90, holdL: -90, holdR: -90, hT: [0, 0], clip: false, pk: -90, pkT: 0 };
-    const [lv, rv] = force && !E.ch ? [-90, -90] : mbLevels(c.id), pw = c.ledW * 2 + c.pair, x0 = c.cx - pw / 2;
-    [['dL', 'holdL', lv, 0], ['dR', 'holdR', rv, 1]].forEach(([dk, hk, v, ch]) => {
-      st[dk] = Math.max(v, st[dk] - 24 * dt);                                // fast attack, ~24 dB/s fall-back
-      if (v >= st[hk]) { st[hk] = v; st.hT[ch] = now; } else if (now - st.hT[ch] > 1.6) st[hk] = Math.max(-90, st[hk] - 30 * dt);
-      if (v >= -0.3) st.clip = true;
-      const lx = x0 + ch * (c.ledW + c.pair);
-      let lit = 0; while (lit < MBG.n && MB_THR[lit] <= st[dk]) lit++;
-      for (let i = 0; i < lit; i++) {
-        const col = MB_COL(MB_THR[i]), y = segY(i) + 0.6, h = MBG.seg - 1.6;
-        g.fillStyle = MB_GLOW[col]; g.fillRect(lx - 1.5, y - 1, c.ledW + 3, h + 2);
-        g.fillStyle = MB_ON[col]; g.fillRect(lx, y, c.ledW, h);
-        g.fillStyle = MB_HI[col]; g.fillRect(lx + 1, y + 0.4, c.ledW - 2, 0.9);
-      }
-      let hi = 0; while (hi < MBG.n && MB_THR[hi] <= st[hk]) hi++;                // peak-hold LED
-      if (hi > lit && hi > 0) { const col = MB_COL(MB_THR[hi - 1]), y = segY(hi - 1) + 0.6; g.fillStyle = MB_ON[col]; g.fillRect(lx, y, c.ledW, MBG.seg - 1.6); g.fillStyle = MB_HI[col]; g.fillRect(lx + 1, y + 0.4, c.ledW - 2, 0.9); }
-      if (st.clip) { g.fillStyle = 'rgba(255,74,61,.45)'; g.fillRect(lx - 1.5, MBG.top - 11.5, c.ledW + 3, 7); g.fillStyle = '#ff4a3d'; g.fillRect(lx, MBG.top - 10, c.ledW, 4); }
-    });
-    // peak readout, held for a moment so it can be read
-    const p = Math.max(lv, rv); if (p >= st.pk || now - st.pkT > 1.2) { st.pk = p; st.pkT = now; }
-    g.font = '500 10px "Segoe UI", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
-    const txt = st.pk <= -60 ? '-∞' : (st.pk >= 0 ? '+' : '') + st.pk.toFixed(1);
-    g.fillStyle = st.pk > -6 ? '#ff8f80' : st.pk > -18 ? '#f2d67a' : '#93d9b4';
-    g.fillText(txt, c.cx, 8.5);
+  const lv = {}; for (const g of MB.g) if (!lv[g.c.id]) lv[g.c.id] = mbLevels(g.c.id);
+  for (const g of MB.g) {
+    const L = lv[g.c.id], v = g.c.master ? L[g.c.ch] : Math.max(L[0], L[1]);
+    const tc = v > g.disp ? 0.035 : 0.32; g.disp += (Math.max(v, -60) - g.disp) * (1 - Math.exp(-dt / tc));    // needle: quick up, slow fall (VU-style)
+    if (v >= g.hold) { g.hold = v; g.hT = now; } else if (now - g.hT > 1.6) g.hold = Math.max(-90, g.hold - 18 * dt);
+    if (v >= -0.3) g.clip = true;
+    g.nd.style.transform = `rotate(${gAng(g.disp)}deg)`; g.pk.style.transform = `rotate(${gAng(g.hold)}deg)`;
+    g.lamp.setAttribute('fill', g.clip ? '#ff4a3d' : '#3a1210'); g.lamp.style.filter = g.clip ? 'drop-shadow(0 0 3px #ff4a3d)' : '';
+    if (now - g.shownT > 0.25) { g.shownT = now; const p = g.hold; g.vt.textContent = p <= -60 ? '-∞ dB' : `${p >= 0 ? '+' : ''}${p.toFixed(1)} dB`; g.vt.setAttribute('fill', p > -6 ? '#ff8f80' : p > -18 ? '#f2d67a' : '#a3dcbf'); }
   }
 }
 function setTop(v) {
   AUD.top = v; saveAud();
   $('stage').classList.toggle('meters', v === 'meters');
   $('vStaff').classList.toggle('on', v !== 'meters'); $('vMeters').classList.toggle('on', v === 'meters');
-  if (v === 'meters') { if (!MB.g) mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); }
+  if (v === 'meters') { if (!MB.built) mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); }
 }
 
+function setStudio(on) {                                                      // full-page layout on/off (desktop widget: full screen)
+  STUDIO = on; STAGE_H = on ? 858 : 462;
+  document.body.classList.toggle('studio', on); if (host) document.body.classList.toggle('standalone', on);
+  fit(); render(); setView(AUD.view || 'mix'); setTop(AUD.top || 'staff');
+  if (on) { mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); }
+  $('tFull').classList.toggle('on', on && (!!host || !!document.fullscreenElement));
+}
+function toggleFull() {
+  if (host) { send({ cmd: 'fullscreen', on: !STUDIO }); return; }
+  if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => status('full screen was blocked by the browser'));
+}
+document.addEventListener('fullscreenchange', () => $('tFull').classList.toggle('on', !!document.fullscreenElement));
 // ---- wiring
 (function () {
   const pat = $('dPat'); let grp = null;
@@ -1775,6 +1764,7 @@ function setTop(v) {
   $('lpClear').onclick = () => { if (LP.layers > 2 && !confirm(`Clear the loop and all ${LP.layers} layers?`)) return; lpClear(); };
   $('dOn').onclick = toggleDrums; $('mOn').onclick = toggleClick;
   $('pMix').onclick = ev => { ev.stopPropagation(); const m = $('mixMenu'); m.style.display = m.style.display === 'grid' ? 'none' : 'grid'; };
+  $('tFull').onclick = toggleFull;
   mixBuildUI(); setView(AUD.view || 'mix'); $('vStaff').onclick = () => setTop('staff'); $('vMeters').onclick = () => setTop('meters'); setTop(AUD.top || 'staff'); if (STUDIO) { mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); } $('vMix').onclick = () => setView('mix'); $('vNeck').onclick = () => setView('neck');
   const sv = () => { $('syncV').textContent = (AUD.sync > 0 ? '+' : '') + AUD.sync + ' ms'; };
   $('vSync').value = AUD.sync; sv(); $('vSync').oninput = () => { AUD.sync = +$('vSync').value; sv(); saveAud(); };
