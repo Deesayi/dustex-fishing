@@ -4,6 +4,8 @@ A guitar tab builder that runs as an installable app in Microsoft Edge or Google
 
 **Open it:** https://deesayi.github.io/dustex-fishing/tab/
 
+**Install guide (PDF, step by step):** https://deesayi.github.io/dustex-fishing/tab/DUSTEX-Tab-Install-Guide.pdf
+
 To install it, open the link in Edge or Chrome and click the **Install** icon at the right end of the address bar. It then opens from the Start menu like any program, works offline, and updates itself.
 
 Features:

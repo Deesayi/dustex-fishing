@@ -371,11 +371,15 @@
 
   <h4>Mixer</h4>
   <p>The panel under the transport strip is a mixer. Press <b>Neck</b> (next to Click) to drop the fretboard down over it, and <b>Mixer</b> to bring the mixer back. The widget remembers which one you had open.</p>
-  <p><b>Channel strips:</b> <b>INPUT</b> (your guitar from the Spark 2), <b>GUITAR</b> (tab playback), <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>. Each one has a volume fader with a level meter, <b>IN</b> (input trim, ±12 dB), <b>PAN</b>, <b>REV</b> and <b>DLY</b> (how much goes to the reverb and the delay), plus <b>M</b> mute and <b>S</b> solo (solo plays only the soloed strips).</p>
+  <p><b>Channel strips:</b> <b>INPUT</b> (your guitar from the Spark 2), <b>GUITAR</b> (tab playback), <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>. Each one has a volume fader with a level meter, <b>IN</b> (input trim, ±12 dB), <b>PAN</b>, four effect knobs, <b>REV</b>, <b>PLT</b>, <b>DLY</b> and <b>ECH</b> (how much goes to the room reverb, the plate, the delay and the echo), plus <b>M</b> mute and <b>S</b> solo (solo plays only the soloed strips).</p>
   <p><b>INPUT strip:</b> <b>● IN</b> opens the guitar input so its meter shows your level; the looper opens it too. Its <b>IN</b> trim also sets how loud the looper records. <b>MON</b> plays your guitar through the PC with the mixer's effects. It starts off, because the Spark already plays your guitar and you'd hear it twice, slightly late.</p>
-  <p><b>Effects:</b> <b>REVERB</b> has <b>SIZE</b> (room length) and <b>TONE</b>. <b>DELAY</b> follows the BPM: click <b>TIME</b> to step through 1/16, 1/8, dotted 1/8, 1/4, dotted 1/4 and 1/2 (right-click steps back), with <b>FDBK</b> (repeats) and <b>TONE</b>. Their faders set how loud the effect comes back.</p>
+  <p><b>Effects</b> (the four gold strips; each fader sets how loud that effect comes back):</p>
+  <p><b>REVERB</b>, a room: <b>SIZE</b> (how long it lasts), <b>PRE</b> (a short gap before it starts), <b>TONE</b> and <b>PAN</b>.</p>
+  <p><b>PLATE</b>, the bright, smooth reverb of a studio steel plate: <b>DECAY</b>, <b>PRE</b>, <b>DAMP</b> (brightness) and <b>PAN</b>.</p>
+  <p><b>DELAY</b>, echoes locked to the BPM: <b>TIME</b> steps through 1/16, 1/8, dotted 1/8, 1/4, dotted 1/4 and 1/2, plus <b>FDBK</b> (repeats), <b>TONE</b> and <b>PAN</b>.</p>
+  <p><b>ECHO</b>, a tape echo with a warm, slightly wobbly sound: <b>TIME</b> (free, in milliseconds), <b>FDBK</b>, <b>WOW</b> (tape wobble) and <b>TONE</b> (darker repeats).</p>
   <p><b>MASTER</b> is the output, with left and right meters. <b>LIMIT</b> keeps loud moments from clipping. <b>RESET MIX</b> puts every control back to its starting value.</p>
-  <p><b>Using the controls:</b> drag a fader or slider, or use the mouse wheel over it. Double-click any control to reset it (faders go to 0 dB, sends to 0). The mixer settings are saved.</p>
+  <p><b>Using the controls:</b> drag a fader or slider, or drag a knob up and down, or use the mouse wheel over it. Hover over a knob to see its value. Double-click any control to reset it (faders go to 0 dB, effect sends to 0). The mixer settings are saved.</p>
 
   <h4>Drum machine and click</h4>
   <p><b>Drums</b> starts and stops the drum machine; the menu next to it picks the beat. <b>Rock:</b> basic rock, driving eighths, 16ths, half-time, four on the floor and ballad. <b>Blues:</b> shuffle, slow 12/8, Texas shuffle, Chicago and boogie. Drums follow the BPM and come in with a crash.</p>
@@ -401,6 +405,9 @@
   <p><b>0-9</b> write a fret (two quick digits for 10-22) · <b>← →</b> move the cursor · <b>↑ ↓</b> change string · <b>Space</b> move one Step · <b>Delete</b> erase · <b>Insert</b> add space · <b>Esc</b> clear the selection · <b>Enter</b> play / stop the tab</p>
   <p><b>H</b> hammer-on · <b>P</b> pull-off · <b>/</b> slide up · <b>\</b> slide down · <b>B</b> bend · <b>R</b> release · <b>~</b> vibrato · <b>X</b> mute · <b>N</b> harmonic · <b>G</b> ghost · <b>T</b> tap · <b>M</b> palm mute · <b>L</b> let ring · <b>C</b> chord name · <b>Q</b> stack</p>
   <p><b>Ctrl+Z</b> undo · <b>Ctrl+Y</b> redo · <b>Ctrl+S</b> save · <b>Ctrl+P</b> save PDF</p>
+
+  <h4>On another PC (the web app)</h4>
+  <p>DUSTEX Tab also runs as an app on any Windows PC: open <b>deesayi.github.io/dustex-fishing/tab</b> in Microsoft Edge or Google Chrome and click the <b>Install</b> icon in the address bar. It gets its own window and Start menu icon, works offline and updates itself. There, <b>SAVE</b> keeps tabs inside the app, and <b>OPEN</b> also has <b>Open a file from this PC</b> and <b>Save a copy to this PC</b> (to Downloads). <b>SAVE PDF</b> uses the print window (choose <b>Save as PDF</b>). The DUSTEX Tab Install Guide PDF walks through it step by step.</p>
 
   <h4>On the desktop</h4>
   <p>The widget docks into its port under the Fishing panel on the right screen. It starts by itself when you sign in to Windows (through a <i>DUSTEX Tab</i> shortcut in the Startup folder), and you can also start it from the <b>Tab Widget</b> shortcut in the Dashboard folder. Both shortcuts are made the first time the widget runs. Right-click an empty part of the widget for <b>Reload</b>, <b>Open the Tab Widget folder</b> or <b>Close</b>.</p>
