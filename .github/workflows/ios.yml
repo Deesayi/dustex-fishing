@@ -1,0 +1,28 @@
+name: iOS apps
+on:
+  push:
+    paths: ['ios/**', '.github/workflows/ios.yml']
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate the Xcode project
+        run: brew install xcodegen && cd ios && xcodegen generate
+      - name: Build Tab Creator Studio (iPhone + iPad simulator)
+        run: cd ios && xcodebuild -project DustexApps.xcodeproj -target TabCreatorStudio -sdk iphonesimulator -configuration Release CODE_SIGNING_ALLOWED=NO build | tail -20
+      - name: Build Fishing Forecaster (iPhone + iPad simulator)
+        run: cd ios && xcodebuild -project DustexApps.xcodeproj -target FishingForecaster -sdk iphonesimulator -configuration Release CODE_SIGNING_ALLOWED=NO build | tail -20
+      - name: Package
+        run: |
+          cd ios/build/Release-iphonesimulator
+          ls
+          zip -qry "$GITHUB_WORKSPACE/DustexApps-simulator.zip" *.app
+          cd "$GITHUB_WORKSPACE/ios" && zip -qry "$GITHUB_WORKSPACE/DustexApps-xcode-project.zip" DustexApps.xcodeproj project.yml Shared TabStudio FishingForecaster
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DustexApps
+          path: |
+            DustexApps-simulator.zip
+            DustexApps-xcode-project.zip

@@ -1,0 +1,38 @@
+# XcodeGen spec for the DUSTEX iPhone + iPad apps. On a Mac: brew install xcodegen && xcodegen generate, then open DustexApps.xcodeproj.
+name: DustexApps
+options:
+  bundleIdPrefix: com.dustex
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    TARGETED_DEVICE_FAMILY: "1,2"
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+targets:
+  TabCreatorStudio:
+    type: application
+    platform: iOS
+    sources:
+      - Shared
+      - path: TabStudio
+        excludes: [Info.plist]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dustex.tabstudio
+        PRODUCT_NAME: Tab Studio
+        INFOPLIST_FILE: TabStudio/Info.plist
+  FishingForecaster:
+    type: application
+    platform: iOS
+    sources:
+      - Shared
+      - path: FishingForecaster
+        excludes: [Info.plist]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dustex.fishingforecaster
+        PRODUCT_NAME: Forecaster
+        INFOPLIST_FILE: FishingForecaster/Info.plist

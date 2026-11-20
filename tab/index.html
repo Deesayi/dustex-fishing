@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <title>DUSTEX Tab Creator Studio</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tab Studio">
 <meta name="theme-color" content="#16181c">
 <meta name="description" content="Guitar tab builder: write tab by clicking or by playing, with playback, a looper, drums and a mixer.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -71,18 +75,83 @@
   body.studio #neckBox { top:526px; }
   body.studio #mixBox { top:696px; }
   body.studio #stage #staffBox, body.studio #stage #meterBox, body.studio #stage #neckBox, body.studio #stage #mixBox { opacity:1; transform:none; pointer-events:auto; visibility:visible; box-shadow:none; }
-  body.studio .pseg, body.studio .seg, body.studio .pseg + .pgap { display:none; }
+  body.studio .seg { display:none; }
   body.studio #mixMenu { bottom:370px; }
   body.studio #helpSheet .box { width:1340px; height:780px; }
   body.studio #helpBody p { font-size:14px; } body.studio #helpBody h4 { font-size:12px; }
   #stage:not(.meters) #meterBox { opacity:0; transform:translateY(-8px); pointer-events:none; }
   #stage.meters #staffBox { opacity:0; pointer-events:none; }
+  #eqBox { left:8px; top:80px; width:1555px; height:168px; background:linear-gradient(#0d0e11,#08090b); transition:opacity .18s ease, transform .18s ease; overflow:hidden; }
+  #stage:not(.eq) #eqBox { opacity:0; transform:translateY(-8px); pointer-events:none; }
+  #stage.eq #staffBox, #stage.eq #meterBox { opacity:0; pointer-events:none; }
+  body.studio #eqBox { top:314px; } body.studio #stage.eq #meterBox { opacity:0; pointer-events:none; }
+  body.studio .pseg { display:flex; } body.studio #vStaff { display:none; } body.studio #vMeters { border-radius:12px 0 0 12px; margin-left:0; }
+  .eqh { position:absolute; left:12px; right:12px; top:6px; height:22px; display:flex; align-items:center; gap:16px; }
+  .eqt { font-size:11px; font-weight:700; letter-spacing:.3em; color:var(--gold); }
+  .eqch, .eqty { display:flex; border:1px solid #33363c; border-radius:11px; overflow:hidden; }
+  .eqch span, .eqty span { font-size:9.5px; letter-spacing:.12em; padding:3px 9px; color:#8d929b; cursor:pointer; border-left:1px solid #22252a; }
+  .eqch span:first-child, .eqty span:first-child { border-left:0; }
+  .eqch span.lit { color:#93d9b4; } .eqch span.on, .eqty span.on { color:#1a1408; background:linear-gradient(#e6c983,#b8924a); font-weight:700; }
+  .eqch span:not(.on):hover, .eqty span:not(.on):hover { color:var(--gold); }
+  .eqr { margin-left:auto; display:flex; align-items:center; gap:8px; } .eqr .mb { padding:2px 10px; } #eqLat { font-size:10px; color:#7d838e; font-style:italic; }
+  #eqCv { position:absolute; left:12px; top:34px; width:1010px; height:126px; border-radius:6px; background:#060708; border:1px solid #1d2025; }
+  .eqp { position:absolute; left:1036px; right:12px; top:34px; height:126px; display:flex; flex-direction:column; justify-content:center; gap:8px; }
+  .eqchips { display:flex; gap:4px; } .eqchips span { font-size:10px; font-weight:700; letter-spacing:.06em; padding:3px 8px; border-radius:6px; border:1px solid #3a3d44; color:#c9ccd2; cursor:pointer; }
+  .eqchips span.sel { border-color:var(--gold); color:var(--gold); } .eqchips span.off { opacity:.4; }
+  .eqkr { display:flex; gap:22px; justify-content:center; } .eqkr.ana { gap:30px; }
+  .eqk { width:34px; } .eqk .kd { width:26px; height:26px; } .eqk .kl { font-size:8px; }
+  .eqk .kd::before { -webkit-mask:radial-gradient(circle, transparent 14.5px, #000 15px); mask:radial-gradient(circle, transparent 14.5px, #000 15px); }
+  .eqdyn .eqk .kd::before { -webkit-mask:radial-gradient(circle, transparent 12.5px, #000 13px); mask:radial-gradient(circle, transparent 12.5px, #000 13px); }
+  .eqnote { font-size:10px; color:#6e737c; text-align:center; font-style:italic; }
+  .eqsl { display:flex; justify-content:space-between; height:118px; padding:0 4px; }
+  .eqs { display:flex; flex-direction:column; align-items:center; width:42px; } .eqs b { font-size:9px; font-weight:500; color:#c9ccd2; height:12px; font-variant-numeric:tabular-nums; }
+  .eqs .et { position:relative; width:28px; flex:1; cursor:ns-resize; margin:3px 0; } .eqs .et::before { content:''; position:absolute; left:12px; top:4px; bottom:4px; width:4px; border-radius:2px; background:#2a2d33; box-shadow:inset 0 1px 2px rgba(0,0,0,.7); }
+  .eqs .e0 { position:absolute; left:4px; right:4px; top:50%; height:1px; background:#8a7448; }
+  .eqs .ec { position:absolute; left:0; width:28px; height:14px; background:url(fader_cap.png) center/100% 100% no-repeat; filter:drop-shadow(0 2px 3px rgba(0,0,0,.6)); }
+  .eqs span { font-size:8.5px; color:#b39563; letter-spacing:.04em; }
+  .eqdyn { display:flex; justify-content:space-between; } .eqdc { display:flex; flex-direction:column; align-items:center; gap:4px; } .eqdt { font-size:9px; letter-spacing:.2em; color:var(--gold); font-weight:700; }
+  .eqdyn { padding:0 2px; } .eqdyn .eqkr { gap:3px; } .eqdyn .eqk { width:27px; } .eqdyn .eqk .kd { width:22px; height:22px; } .eqdyn .eqk .kl { font-size:7.5px; letter-spacing:.04em; }
+  .shide { position:absolute; left:3px; top:2px; width:13px; height:13px; font-size:11px; line-height:12px; text-align:center; color:#6e737c; border-radius:3px; cursor:pointer; z-index:2; }
+  .shide:hover { color:var(--gold); background:#23262b; }
+  .vname { display:none; } .strip.collapsed { width:26px !important; flex:none !important; padding:6px 2px; }
+  .strip.collapsed > .fcol, .strip.collapsed > .ccol { display:none; }
+  .strip.collapsed .vname { display:block; writing-mode:vertical-rl; transform:rotate(180deg); font-size:9.5px; letter-spacing:.25em; color:var(--gold); font-weight:700; margin:22px auto 0; cursor:pointer; }
+  body:not(.phone) #stage { position:fixed; }                                 /* the scaled stage never widens the page (mobile browsers would zoom out) */
+  /* ---------- iPhone: the panels flow down the page at real size; wide parts swipe sideways ---------- */
+  html.phone, html.phone body { height:auto; overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  body.phone #stage { position:relative; width:100%; height:auto !important; transform:none !important; border-radius:0; border:0; padding:env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 20px); }
+  body.phone #hdr, body.phone .tb, body.phone #tp { position:relative; left:auto; right:auto; top:auto; height:auto; flex-wrap:wrap; row-gap:6px; padding:8px 10px; white-space:normal; }
+  body.phone #hdr .fld { flex:1 1 40%; min-width:120px; } body.phone #status { flex-basis:100%; order:9; } body.phone .pills { flex-wrap:wrap; row-gap:6px; } body.phone .pgap { display:none; }
+  body.phone #tFull, body.phone #bFolder, body.phone #bPrint, body.phone .vbar { display:none; }
+  body.phone #stage { overflow-x:hidden; } body.phone .pills { flex:1 1 100%; min-width:0; } body.phone .tb .g, body.phone #tp .g { flex-wrap:wrap; row-gap:6px; min-width:0; max-width:100%; } body.phone .tb > *, body.phone #tp > * { max-width:100%; }
+  body.phone #staffBox, body.phone #meterBox, body.phone #eqBox, body.phone #mixBox, body.phone #neckBox { position:relative; left:auto; top:auto; width:auto; margin:6px 8px; transform:none; opacity:1; box-shadow:none; }
+  body.phone #stage:not(.meters) #meterBox, body.phone #stage:not(.eq) #eqBox, body.phone #stage.meters #staffBox, body.phone #stage.eq #staffBox { display:none; }
+  body.phone #stage.neck #mixBox, body.phone #stage:not(.neck) #neckBox { display:none; }
+  body.phone #meterBox, body.phone #mixBox, body.phone #neckBox { overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; }
+  body.phone #mixStrips { position:relative; left:0; top:0; height:162px; width:max-content; padding:5px 6px; }
+  body.phone #meterBox .gw { position:absolute; } body.phone #meterBox::after { content:''; position:absolute; left:1555px; top:0; width:1px; height:1px; }
+  body.phone #neckBox > svg, body.phone #neck { min-width:1555px; }
+  body.phone #eqBox { height:auto; padding-bottom:10px; } body.phone .eqh { position:relative; left:auto; right:auto; top:auto; height:auto; flex-wrap:wrap; row-gap:6px; padding:8px 10px 0; }
+  body.phone #eqCv { position:relative; left:auto; top:auto; display:block; width:calc(100% - 20px); margin:8px 10px; height:150px; }
+  body.phone .eqp { position:relative; left:auto; right:auto; top:auto; margin:0 10px; height:auto; min-height:120px; overflow-x:auto; }
+  body.phone .eqr { margin-left:0; flex-wrap:wrap; } body.phone #eqLat { flex-basis:100%; }
+  body.phone .menu, body.phone #auxMenu { position:fixed; left:3vw !important; right:3vw !important; width:auto !important; top:12vh !important; bottom:auto !important; max-height:76vh; overflow:auto; }
+  body.phone #listenMenu { grid-template-columns:1fr; } body.phone #helpSheet { position:fixed; } body.phone #helpSheet .box { width:94vw; height:86vh; }
+  /* touch screens: no double-tap zoom, controls take the finger instead of scrolling */
+  html.touch body { touch-action:manipulation; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; }
+  html.touch .knob, html.touch .fader, html.touch .mini .mt, html.touch .eqs .et, html.touch #eqCv, html.touch #neck { touch-action:none; }
+  html.touch input, html.touch textarea { -webkit-user-select:text; user-select:text; }
   .pseg { display:flex; } .pseg .pill { border-radius:0; } .pseg .pill:first-child { border-radius:12px 0 0 12px; } .pseg .pill:last-child { border-radius:0 12px 12px 0; margin-left:-1px; }
   #strNames { left:0; top:0; width:30px; height:100%; border-right:1px solid #1d2025; }
   #staffScroll { position:absolute; left:30px; top:0; right:0; bottom:0; overflow-x:auto; overflow-y:hidden; }
   #staffScroll::-webkit-scrollbar { height:7px; } #staffScroll::-webkit-scrollbar-thumb { background:#3a3d44; border-radius:4px; } #staffScroll::-webkit-scrollbar-thumb:hover { background:#8a7448; } #staffScroll::-webkit-scrollbar-track { background:transparent; }
   #staff { display:block; }
   #vNot { position:absolute; top:6px; right:10px; z-index:3; display:flex; border:1px solid #4a4e56; border-radius:11px; overflow:hidden; background:rgba(12,13,16,.88); box-shadow:0 2px 6px rgba(0,0,0,.5); cursor:pointer; }
+  #lSrc { display:flex; border:1px solid #3a3d44; border-radius:9px; overflow:hidden; } #lSrc span { flex:1; text-align:center; font-size:10px; letter-spacing:.1em; padding:5px 6px; color:#8d929b; cursor:pointer; }
+  #lSrc span.on { color:#1a1408; background:linear-gradient(#e6c983,#b8924a); font-weight:700; }
+  #vQ { position:absolute; top:6px; right:142px; z-index:3; font-size:10px; letter-spacing:.12em; padding:3px 11px; border:1px solid #4a4e56; border-radius:11px; background:rgba(12,13,16,.88); color:#8d929b; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.5); }
+  #vQ.on { color:#1a1408; background:linear-gradient(#e6c983,#b8924a); font-weight:700; border-color:#b8924a; } #vQ:not(.on):hover { color:#d8b46a; }
+  body.studio #vQ { top:8px; right:168px; font-size:11.5px; padding:4px 13px; }
   #vNot span { font-size:10px; letter-spacing:.14em; padding:3px 10px; color:#8d929b; }
   #vNot span.on { color:#1a1408; background:linear-gradient(#e6c983,#b8924a); font-weight:700; }
   #vNot span:not(.on):hover { color:#d8b46a; }
@@ -111,8 +180,8 @@
   .fader { position:relative; width:24px; height:124px; cursor:ns-resize; }
   .ftrack { position:absolute; left:10px; top:6px; bottom:6px; width:4px; border-radius:2px; background:#2a2d33; box-shadow:inset 0 1px 2px rgba(0,0,0,.7); }
   .f0 { position:absolute; left:1px; right:1px; top:39px; height:1px; background:#8a7448; }
-  .fcap { position:absolute; left:0; width:24px; height:14px; border-radius:3px; background:linear-gradient(#60656d,#2b2e34 45%,#1b1d21 55%,#4c5057); border:1px solid #6e737c; box-shadow:0 2px 5px rgba(0,0,0,.65); }
-  .fcap::after { content:''; position:absolute; left:3px; right:3px; top:5.5px; height:1.5px; background:#d8b46a; }
+  .fcap { position:absolute; left:-2px; width:28px; height:14px; background:url(fader_cap.png) center/100% 100% no-repeat; filter:drop-shadow(0 2px 3px rgba(0,0,0,.65)); }
+
   .ccol { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
   .shead { display:flex; justify-content:space-between; align-items:baseline; gap:6px; }
   .fx .sname { letter-spacing:.08em; } .fx .sval { font-size:9px; } .fx .shead { gap:4px; }
@@ -133,17 +202,18 @@
   .mini .mt::before { content:''; position:absolute; left:0; right:0; top:5px; height:4px; border-radius:2px; background:#2a2d33; box-shadow:inset 0 1px 1px rgba(0,0,0,.6); }
   .mini .mt.ctr::after { content:''; position:absolute; left:50%; top:2px; width:1px; height:10px; background:#3d4048; }
   .mini[data-r=time] .mt { cursor:pointer; }
-  .mk { position:absolute; top:2px; width:10px; height:10px; margin-left:-5px; border-radius:50%; background:radial-gradient(circle at 35% 35%,#f3e6c4,#b39563 60%,#6e5a35); box-shadow:0 1px 3px rgba(0,0,0,.7); pointer-events:none; }
+  .mk { position:absolute; top:0; width:9px; height:14px; margin-left:-4.5px; pointer-events:none; }
+  .mk::before { content:''; position:absolute; left:50%; top:50%; width:15px; height:8px; margin:-4px 0 0 -7.5px; background:url(fader_cap.png) center/100% 100% no-repeat; transform:rotate(90deg); filter:drop-shadow(0 1px 2px rgba(0,0,0,.7)); }
   .mini b { width:31px; flex:none; text-align:right; font-size:9.5px; font-weight:500; color:#c9ccd2; font-variant-numeric:tabular-nums; }
   .knobs { display:flex; justify-content:space-between; margin-top:4px; padding:0 1px; }
   .knobs.grid { display:grid; grid-template-columns:1fr 1fr; row-gap:5px; justify-items:center; margin-top:3px; }
   .knob { display:flex; flex-direction:column; align-items:center; width:26px; cursor:ns-resize; }
-  .kd { position:relative; isolation:isolate; width:22px; height:22px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#5d626a,#25282d 55%,#141518); border:1px solid #3c3f46; box-shadow:0 2px 4px rgba(0,0,0,.65); }
+  .kd { position:relative; isolation:isolate; width:22px; height:22px; border-radius:50%; }
   .kd::before { content:''; position:absolute; inset:-4px; border-radius:50%; z-index:-1;
     background:conic-gradient(from -135deg, #c7a76c calc(var(--f, 0) * 270deg), #2a2d33 0 270deg, transparent 0);
     -webkit-mask:radial-gradient(circle, transparent 12.5px, #000 13px); mask:radial-gradient(circle, transparent 12.5px, #000 13px); }
-  .kd i { position:absolute; left:50%; top:2px; width:2px; height:7px; margin-left:-1px; border-radius:1px; background:#f3e6c4; transform-origin:1px 9px; }
-  .knob:not(.lit) .kd i { background:#6e737c; } .knob:not(.lit) .kd::before { opacity:.5; }
+  .kd i { position:absolute; inset:-1px; border-radius:50%; background:url(knob_rot.png) center/100% 100% no-repeat; transform-origin:50% 50%; filter:drop-shadow(0 2px 3px rgba(0,0,0,.6)); }
+  .knob:not(.lit) .kd i { filter:brightness(.72) saturate(.4) drop-shadow(0 2px 3px rgba(0,0,0,.6)); } .knob:not(.lit) .kd::before { opacity:.5; }
   .kl { font-size:8px; letter-spacing:.1em; color:#b39563; font-weight:600; margin-top:3px; white-space:nowrap; height:10px; line-height:10px; }
   .knob:hover .kl, .knob.drag .kl { font-size:0; } .knob:hover .kl::before, .knob.drag .kl::before { content:attr(data-v); font-size:8.5px; letter-spacing:.02em; color:#eceef1; }
   .knob.drag .kd, .knob:hover .kd { border-color:#8a7448; }
@@ -231,7 +301,7 @@
     <input id="artist" class="fld" placeholder="Artist" spellcheck="false">
     <div id="status"></div>
     <div class="pills">
-      <div class="pseg"><div class="pill" id="vStaff" title="Show the tab staff">STAFF</div><div class="pill" id="vMeters" title="Show the LED level meters for every channel">METERS</div></div>
+      <div class="pseg"><div class="pill" id="vStaff" title="Show the tab staff">STAFF</div><div class="pill" id="vMeters" title="Show the level gauges for every channel">METERS</div><div class="pill" id="vEq" title="EQ for every channel: parametric, graphic, dynamic, linear phase and analog">EQ</div></div>
       <span class="pgap"></span>
       <div class="pill" id="bNew">NEW</div><div class="pill" id="bOpen">OPEN ▾</div><div class="pill" id="bSave">SAVE</div>
       <span class="pgap"></span>
@@ -290,6 +360,7 @@
   <div id="staffBox" class="panel">
     <svg id="strNames" class="abs"></svg>
     <div id="staffScroll"><svg id="staff"></svg><div id="playhead"></div></div>
+    <div id="vQ" title="Quantize: snap the notes you recorded by listening to 1/16, 1/8, 1/4 or triplets. OFF puts them back exactly where you played them.">Q OFF</div>
     <div id="vNot" title="Switch between tab and sheet music (both are written as you play)"><span data-v="tab">TAB</span><span data-v="notes">♪ NOTES</span></div>
   </div>
   <div class="tb" id="tp">
@@ -319,6 +390,7 @@
     <div class="g"><div class="tbtn" id="pMix" title="Looper sync">⚙</div></div>
   </div>
   <div id="meterBox" class="panel"></div>
+  <div id="eqBox" class="panel"></div>
   <div id="mixBox" class="panel"><div id="mixStrips"></div></div>
   <div id="neckBox" class="panel">
     <svg id="neck" width="1555" height="162"></svg>
@@ -333,10 +405,11 @@
   <div id="auxMenu"></div>
   <div class="menu" id="listenMenu">
     <div class="c full"><label>WHAT TO LISTEN FOR</label><select class="sel" id="lMode"><option value="single">Single notes: instant</option><option value="ai">Chords and notes (AI): about 1 s behind</option></select></div>
+    <div class="c full" id="lSrcRow" style="display:none"><label>SOURCE</label><div id="lSrc"><span data-s="usb" title="The guitar's own input: the Spark 2 or another USB interface">GUITAR / USB INPUT</span><span data-s="mic" title="The microphone built into this computer, tablet or phone: play an acoustic guitar, or an amp, near it">MICROPHONE</span></div></div>
     <div class="c full"><label>INPUT</label><select class="sel" id="lDev"><option value="">(press Listen first)</option></select><div id="lMeter"><div></div></div></div>
     <div class="c"><label>FRET POSITION</label>
     <select class="sel" id="lPos"><option value="auto">Automatic: follow my hand</option><option value="0">Open position (frets 0-4)</option><option value="3">3rd position</option><option value="5">5th position</option><option value="7">7th position</option><option value="9">9th position</option><option value="12">12th position</option></select></div>
-    <div class="c"><label>TIMING</label><select class="sel" id="lTime"><option value="even">Even steps (uses STEP)</option><option value="follow">Follow my timing (BPM)</option></select></div>
+    <div class="c"><label>TIMING</label><select class="sel" id="lTime"><option value="follow">As played (exact timing)</option><option value="even">Even steps (uses STEP)</option></select></div>
     <div class="c"><label>SENSITIVITY</label><input type="range" id="lSens" min="1" max="10" value="6"></div>
     <div class="c"><label>CHORD NAMES</label><select class="sel" id="lNames"><option value="on">Name the chords</option><option value="off">Don't name chords</option></select></div>
     <div class="pill full" id="lLoopTab">WRITE TAB FROM THE LOOP</div>
@@ -383,15 +456,22 @@
   <p><b>Title</b> and <b>Artist</b>: type in the header. The title becomes the file name.</p>
   <p><b>Tuning:</b> Standard, Drop D, Half step down, Full step down, Drop C#, Drop C, DADGAD, Open G, Open D, Open E and Open C. The string names on the tab and fretboard follow it, and so does Listen.</p>
   <p><b>Capo:</b> frets are written relative to the capo, as in normal tab. Note names and Listen take the capo into account.</p>
-  <p><b>BPM:</b> the tempo, printed on the PDF and used by Listen's "follow my timing".</p>
+  <p><b>BPM:</b> the tempo, printed on the PDF and used by Listen to place notes where you played them. Leave it blank and Listen works it out for you.</p>
   <p><b>Grid:</b> columns per bar (8, 12, 16 or 24). Changing it keeps every note in the same bar and relative spot. Use 16 for most songs and 12 or 24 for triplet feels.</p>
 
   <h4>Listen: write notes as you play</h4>
   <p><b>Setup, once:</b> connect the Spark 2 to the PC with a USB cable (Bluetooth only sends audio to the amp, not back). In Windows Settings → Privacy &amp; security → Microphone, turn on Microphone access and "Let desktop apps access your microphone": Windows treats the Spark's USB input as a microphone.</p>
   <p><b>Start:</b> press <b>● Listen</b>. It glows green while listening. Each note you pick is written at the cursor and the cursor moves on. Press it again to stop.</p>
   <p><b>The readout</b> in the header shows the note you're playing, how many cents sharp or flat, and the string and fret it will write. A green dot follows along on the fretboard, so it works as a tuner too.</p>
-  <p><b>⚙ settings:</b> <b>What to listen for</b> picks <i>Single notes</i> (instant) or <i>Chords and notes (AI)</i>, explained below. <b>Input</b> picks the Spark automatically when Windows lists it; choose another input here if needed. The level meter shows the signal. <b>Fret position</b>: the same note can be played in several places, so "Automatic" picks the spot nearest to where you've been playing, or lock it to open, 3rd, 5th, 7th, 9th or 12th position. <b>Timing</b>: "Even steps" writes each note one Step apart; "Follow my timing" uses the BPM to space notes the way you played them. <b>Sensitivity</b>: raise it if soft notes are missed, lower it if noise writes notes.</p>
+  <p><b>⚙ settings:</b> <b>What to listen for</b> picks <i>Single notes</i> (instant) or <i>Chords and notes (AI)</i>, explained below. <b>Input</b> picks the Spark automatically when Windows lists it; choose another input here if needed. The level meter shows the signal. <b>Fret position</b>: the same note can be played in several places, so "Automatic" picks the spot nearest to where you've been playing, or lock it to open, 3rd, 5th, 7th, 9th or 12th position. <b>Timing</b>: "As played" (the default) writes each note exactly when you played it, at the BPM (see Tempo below); "Even steps" writes each note one Step apart. <b>Sensitivity</b>: raise it if soft notes are missed, lower it if noise writes notes.</p>
   <p><b>Tips:</b> use a clean or lightly driven tone (heavy gain, delay and chorus confuse pitch detection). In the default single-note mode, play single notes; for chords, switch to Chords and notes mode (below). Hammer-ons, pull-offs and slides are marked for you: a note that changes without a new pick gets h or p, one that glides there gets / or \, and both notes are kept on one string (a slide's starting note moves off an open string if needed). Bends and vibrato aren't detected; add them with the buttons. If the meter barely moves, turn up the Spark's input or its USB level.</p>
+
+  <p><b>Microphone:</b> if the computer, tablet or phone has a microphone, the Listen ⚙ menu shows <b>SOURCE</b>: <b>GUITAR / USB INPUT</b> or <b>MICROPHONE</b>. Pick the microphone to play an acoustic guitar, or an amp, near it; the app cuts the low room rumble so it isn't written as notes. The looper records from the same source.</p>
+
+  <h4>Tempo, exact timing and quantize</h4>
+  <p><b>Listen</b> now writes every note exactly when you played it, at the song's tempo (Timing: <b>As played</b>, the new default). The tempo never changes while you play: if you've typed a <b>BPM</b>, it's used as it is.</p>
+  <p><b>BPM blank?</b> Then the app works the tempo out from what you play: from the attacks in the sound and the timing of your notes. In chords and notes mode it writes the notes once it has the tempo (about 5 seconds in) and checks it against the whole take when you stop; then it puts the result in the BPM box, where it stays. If your timing was loose it says so, so you can type the BPM or play to the click.</p>
+  <p><b>Q</b> (next to TAB | NOTES) quantizes: each press steps through <b>OFF</b>, <b>1/16</b>, <b>1/8</b>, <b>1/4</b> and triplets (when the GRID allows them), snapping the notes you recorded by listening to the nearest one. It never throws your timing away: every recorded note remembers when you really played it, so <b>Q OFF</b> puts them all back exactly as played. Notes you place or drag by hand stay where you put them.</p>
 
   <h4>Sheet music</h4>
   <p>The <b>TAB | ♪ NOTES</b> switch in the top right corner of the staff flips between the tab and standard <b>sheet music</b> (treble clef with a small 8 under it, the usual way guitar is written: it sounds an octave lower than it reads). Both are always written together: everything you click in, type or play while <b>Listen</b> is on goes into the tab and the sheet music at the same time, so you can switch back and forth whenever you like, even while listening.</p>
@@ -419,11 +499,21 @@
   <h4>Full screen</h4>
   <p>The <b>full-screen button</b> at the right end of the toolbar fills the whole monitor with the big full-page layout: the staff, the gauges, the transport strip, the fretboard and the mixer all at once. Press it again, or press <b>Esc</b>, to put the widget back in its spot on the dashboard. In the web app it switches the browser to full screen.</p>
 
+  <h4>EQ</h4>
+  <p>Press <b>EQ</b> (next to METERS) to swap the staff for the EQ window (in the full-page layout it takes the place of the gauges). Pick a channel along the top: <b>INPUT</b>, <b>AUX</b>, <b>GUITAR</b>, <b>LOOPER</b>, <b>DRUMS</b>, <b>CLICK</b> or <b>MASTER</b>, then the EQ type. <b>ON</b> switches that channel's EQ in or out and <b>FLAT</b> resets the type you're on. The <b>EQ</b> button on each mixer strip opens it straight on that channel, and lights when its EQ is on.</p>
+  <p>The curve shows what the EQ does; the green shading behind it is the channel's live sound. A channel with its EQ off uses no processing at all.</p>
+  <p><b>Parametric:</b> seven bands, high-pass, low shelf, three peaks, high shelf and low-pass. Drag a dot on the curve to set its frequency and gain, use the wheel over a dot for its width (Q), or use the knobs; double-click a band's name to switch it on or off.</p>
+  <p><b>Graphic:</b> ten sliders from 31 Hz to 16 kHz, ±12 dB each (double-click a slider to zero it).</p>
+  <p><b>Dynamic:</b> three bands that react to the music: when a band gets louder than its <b>THR</b> (threshold) it is turned down (a negative <b>RANGE</b>) or brought up (a positive RANGE), by an amount set with <b>RATIO</b>; <b>GAIN</b> is its steady boost or cut. Great for taming boomy strums or harsh picks only when they happen.</p>
+  <p><b>Linear phase:</b> ten sliders like the graphic EQ, but shaping the sound without shifting its timing, which keeps transients and stereo images clean. It needs a few milliseconds of look-ahead, so every other channel is delayed by the same amount automatically to keep everything in time.</p>
+  <p><b>Analog:</b> a tube-style program EQ: <b>LOW</b> picks 20, 30, 60 or 100 Hz with <b>BOOST</b> and <b>ATTEN</b> (use both for the classic big-but-tight low end), <b>HIGH</b> picks the top boost frequency with <b>WIDTH</b>, <b>ATT SEL</b> and <b>ATTEN</b> roll off the very top, <b>DRIVE</b> adds warm tube saturation and <b>OUTPUT</b> sets the level.</p>
+
   <h4>Mixer</h4>
   <p>The panel under the transport strip is a mixer. Press <b>Neck</b> (next to Click) to drop the fretboard down over it, and <b>Mixer</b> to bring the mixer back. The widget remembers which one you had open.</p>
   <p><b>Channel strips:</b> <b>INPUT</b> (your guitar from the Spark 2), <b>AUX</b> (a line in), <b>GUITAR</b> (tab playback), <b>LOOPER</b>, <b>DRUMS</b> and <b>CLICK</b>. Each one has a volume fader with a level meter, <b>IN</b> (input trim, ±12 dB), <b>PAN</b>, four effect knobs, <b>REV</b>, <b>PLT</b>, <b>DLY</b> and <b>ECH</b> (how much goes to the room reverb, the plate, the delay and the echo), plus <b>M</b> mute and <b>S</b> solo (solo plays only the soloed strips).</p>
-  <p><b>INPUT strip:</b> <b>● IN</b> opens the guitar input so its meter shows your level; the looper opens it too. Its <b>IN</b> trim also sets how loud the looper records. <b>MON</b> plays your guitar through the PC with the mixer's effects. It starts off, because the Spark already plays your guitar and you'd hear it twice, slightly late.</p>
+  <p><b>INPUT strip:</b> <b>● IN</b> opens the guitar input so its meter shows your level; the looper opens it too. Its <b>IN</b> trim also sets how loud the looper records. The knobs and fader caps are the same chrome DUSTEX parts as the Fishing Forecaster. <b>MON</b> plays your guitar through the PC with the mixer's effects. It starts off, because the Spark already plays your guitar and you'd hear it twice, slightly late.</p>
   <p><b>AUX strip:</b> a second input for anything else you want to play along with or through the mixer: a keyboard, a phone or MP3 player with a backing track, a drum machine, a second guitar or a microphone. Plug it into the PC's line in (or a USB audio interface), press <b>● IN</b> and pick the input from the list; click the name under AUX to choose a different one later. It's in stereo, and <b>MON</b> starts on so you hear it straight away, with the same trim, pan, effect sends and fader as the other strips. AUX has its own gauge on the meter row too. It plays alongside the looper but isn't recorded into it.</p>
+  <p><b>Hide a strip:</b> the small <b>–</b> in the top left corner of every strip folds it down to a narrow tab with its name (the sound keeps playing); click the tab or its <b>+</b> to open it again. Hidden strips stay hidden the next time.</p>
   <p><b>Effects</b> (the four gold strips; each fader sets how loud that effect comes back):</p>
   <p><b>REVERB</b>, a room: <b>SIZE</b> (how long it lasts), <b>PRE</b> (a short gap before it starts), <b>TONE</b> and <b>PAN</b>.</p>
   <p><b>PLATE</b>, the bright, smooth reverb of a studio steel plate: <b>DECAY</b>, <b>PRE</b>, <b>DAMP</b> (brightness) and <b>PAN</b>.</p>
@@ -457,6 +547,9 @@
   <p><b>H</b> hammer-on · <b>P</b> pull-off · <b>/</b> slide up · <b>\</b> slide down · <b>B</b> bend · <b>R</b> release · <b>~</b> vibrato · <b>X</b> mute · <b>N</b> harmonic · <b>G</b> ghost · <b>T</b> tap · <b>M</b> palm mute · <b>L</b> let ring · <b>C</b> chord name · <b>Q</b> stack</p>
   <p><b>Ctrl+Z</b> undo · <b>Ctrl+Y</b> redo · <b>Ctrl+S</b> save · <b>Ctrl+P</b> save PDF</p>
 
+  <h4>iPhone and iPad</h4>
+  <p>Open the web app in Safari and tap <b>Share › Add to Home Screen</b>; it runs full screen and offline. On <b>iPad</b> it shows the full-page layout; on <b>iPhone</b> the panels run down the page at full size and the wide parts (the staff, the gauges, the mixer, the fretboard) swipe sideways. Knobs, faders, sliders, the EQ curve and the staff all work with a finger. Listen uses the built-in microphone, or a guitar interface plugged into the iPhone or iPad. There are also native Tab Studio and Forecaster apps in the GitHub project (folder ios) for putting them in the App Store.</p>
+
   <h4>On another PC (the web app)</h4>
   <p>Tab Creator Studio also runs as an app on any Windows PC: open <b>deesayi.github.io/dustex-fishing/tab</b> in Microsoft Edge or Google Chrome and click the <b>Install</b> icon in the address bar. It gets its own window and Start menu icon, works offline and updates itself. There, <b>SAVE</b> keeps tabs inside the app, and <b>OPEN</b> also has <b>Open a file from this PC</b> and <b>Save a copy to this PC</b> (to Downloads). <b>SAVE PDF</b> uses the print window (choose <b>Save as PDF</b>). The web app uses the <b>full-page layout</b>: the staff, meters, fretboard and mixer all show at once, bigger, so the STAFF/METERS and Mixer/Neck switches aren't needed there. The install guide PDF walks through it step by step.</p>
 
@@ -478,13 +571,25 @@ const NS = 'http://www.w3.org/2000/svg';
 const el = (tag, at, parent) => { const e = document.createElementNS(NS, tag); for (const k in at) e.setAttribute(k, at[k]); if (parent) parent.appendChild(e); return e; };
 const host = window.chrome && window.chrome.webview ? window.chrome.webview : null;     // the desktop widget; absent when opened in a normal browser
 if (!host) document.body.classList.add('standalone');
-let STUDIO = !host, STAGE_H = STUDIO ? 858 : 462;                           // the web app gets the full-page layout: everything showing at once, bigger
+const TOUCH = 'ontouchstart' in window || navigator.maxTouchPoints > 1, PHONE = !host && (Math.min(screen.width, screen.height) < 600 || /[?&]phone/.test(location.search));
+document.documentElement.classList.toggle('touch', TOUCH); document.documentElement.classList.toggle('phone', PHONE); document.body.classList.toggle('phone', PHONE);
+let STUDIO = !host && !PHONE, STAGE_H = STUDIO ? 858 : 462;                           // the web app gets the full-page layout: everything showing at once, bigger
 if (STUDIO) document.body.classList.add('studio');
 if (!host && 'serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 
 // ------------------------------------------------------------------ fit the panel (1571 x 462, or 1571 x 858 full page) to the window
-function fit() { const s = Math.min(innerWidth / 1571, innerHeight / STAGE_H); $('stage').style.height = STAGE_H + 'px'; $('stage').style.transform = `translate(${(innerWidth - 1571 * s) / 2}px, ${(innerHeight - STAGE_H * s) / 2}px) scale(${s})`; }
+function fit() { if (PHONE) { $('stage').style.transform = 'none'; return; } const s = Math.min(innerWidth / 1571, innerHeight / STAGE_H); $('stage').style.height = STAGE_H + 'px'; $('stage').style.transform = `translate(${(innerWidth - 1571 * s) / 2}px, ${(innerHeight - STAGE_H * s) / 2}px) scale(${s})`; }
 addEventListener('resize', fit); fit();
+if (TOUCH) {                                                                  // a finger drag on a control works like a mouse drag; everywhere else the page scrolls as usual
+  const DRAG = '.knob, .fader, .mini .mt, .eqs .et, #eqCv, #staff, #neck, #meterBox';
+  let tgt = null, lastTap = 0;
+  const fire = (type, t, el, extra) => el.dispatchEvent(new MouseEvent(type, Object.assign({ bubbles: true, cancelable: true, view: window, clientX: t.clientX, clientY: t.clientY, button: 0, buttons: type === 'mouseup' ? 0 : 1 }, extra || {})));
+  addEventListener('touchstart', e => { const el = e.target.closest && e.target.closest(DRAG); if (!el || e.touches.length > 1) return; e.preventDefault(); tgt = e.target; fire('mousedown', e.touches[0], tgt); }, { passive: false });
+  addEventListener('touchmove', e => { if (!tgt) return; e.preventDefault(); fire('mousemove', e.touches[0], tgt); }, { passive: false });
+  addEventListener('touchend', e => { if (!tgt) return; const t = e.changedTouches[0], el = tgt; tgt = null; fire('mouseup', t, el); fire('click', t, el);
+    const now = Date.now(); if (now - lastTap < 320) fire('dblclick', t, el, { detail: 2 }); lastTap = now; }, { passive: false });
+  addEventListener('touchcancel', () => { tgt = null; });
+}
 
 // ------------------------------------------------------------------ tunings
 const NOTES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -759,6 +864,7 @@ function render() {
     if (STUDIO || true) { const ph = $('playhead'); ph.style.top = (NL.top - NL.L * 3) + 'px'; ph.style.height = (NL.L * 10.5) + 'px'; }
   } else Xs = drawStaff($('staff'), SG, 0, song.measures, SCREEN);
   $('vNot').querySelectorAll('span').forEach(b => b.classList.toggle('on', (b.dataset.v === 'notes') === NOTEVIEW));
+  { const qi = song.q && qOk(song.q) ? song.q : 0; $('vQ').textContent = 'Q ' + QV[qi][0]; $('vQ').classList.toggle('on', !!qi); }
   if (rubber) el('rect', { x: Math.min(rubber.x0, rubber.x1), y: Math.min(rubber.y0, rubber.y1), width: Math.abs(rubber.x1 - rubber.x0), height: Math.abs(rubber.y1 - rubber.y0),
     fill: 'rgba(216,180,106,.08)', stroke: '#d8b46a', 'stroke-dasharray': '4 3' }, $('staff'));
   // string names column
@@ -860,6 +966,12 @@ function cellAt(p) {
   const s = Math.max(0, Math.min(5, Math.round((p.y - SG.top) / SG.gap)));
   return { c, s, lane: p.y < SG.top - SG.gap * 0.55 };
 }
+document.querySelectorAll('#lSrc span').forEach(x => x.onclick = () => {
+  const mic = x.dataset.s === 'mic'; localStorage.setItem('dxtab_src', mic ? 'mic' : 'usb'); listDevices().then(id => { localStorage.setItem('dxtabdev', id);
+    if (L.on) startListen(id); if (LP.src) { looperInputReset(); looperReady().catch(() => {}); }
+    status(mic ? 'listening through the microphone: play close to it, and keep the room quiet' : 'listening through the guitar input'); });
+});
+$('vQ').onclick = () => { let i = song.q || 0; do { i = (i + 1) % QV.length; } while (!qOk(i)); setQ(i); };
 $('vNot').onclick = ev => { const v = ev.target.dataset && ev.target.dataset.v; NOTEVIEW = v ? v === 'notes' : !NOTEVIEW; try { localStorage.setItem('dxtabView', NOTEVIEW ? 'notes' : 'tab'); } catch (e) {} render(); };
 $('staff').addEventListener('mousedown', ev => {
   if (ev.button !== 0) return;
@@ -909,6 +1021,7 @@ addEventListener('mousemove', ev => {
   }
 });
 addEventListener('mouseup', () => {
+  if (drag && drag.moved) for (const o of drag.orig) { const n = song.notes.find(x => x.id === o.id); if (n) { delete n.tm; delete n.tk; } }   // moved by hand: it stays where you put it
   if (drag && drag.moved) {                                            // a note dropped onto another replaces it
     const ids = new Set(drag.orig.map(o => o.id));
     song.notes = song.notes.filter(n => ids.has(n.id) || !song.notes.some(m => ids.has(m.id) && m.c === n.c && m.s === n.s));
@@ -1133,16 +1246,63 @@ function choosePos(midi, sameString) {
   }
   return best;
 }
+// ---- tempo: sense it when BPM is blank (audio attacks + note timing), keep it fixed while listening; quantize is a view of the real timing
+function senseBpm(ts, ft) {                                                  // ts: note/chord times (s); ft: audioFeat of the take (or null). -> { bpm, conf }
+  const B = []; for (let b = 55; b <= 190; b += 0.5) B.push(b);
+  let A = null, C = null;
+  if (ft && ft.flux && ft.flux.length > 200) {
+    const n = ft.flux.length, e = new Float32Array(n); let run = 0;
+    for (let i = 0; i < n; i++) { run += ft.flux[i] - (i >= 16 ? ft.flux[i - 16] : 0); e[i] = Math.max(0, ft.flux[i] - run / Math.min(16, i + 1)); }
+    let mean = 0; for (const v of e) mean += v; mean /= n; for (let i = 0; i < n; i++) e[i] -= mean;
+    const fps = 1 / ft.dt, maxL = Math.ceil(2 * 60 / 55 * fps) + 2, ac = new Float32Array(maxL + 1);
+    for (let L = 0; L <= maxL; L++) { let sm = 0; for (let i = 0; i + L < n; i++) sm += e[i] * e[i + L]; ac[L] = sm; }
+    const at = L => { const i = Math.floor(L), f = L - i; return i + 1 <= maxL ? (ac[i] * (1 - f) + ac[i + 1] * f) / (ac[0] || 1) : 0; };
+    A = B.map(b => { const L = 60 / b * fps; return Math.max(0, at(L) + 0.5 * at(2 * L) + 0.25 * at(L / 2)); });
+  }
+  if (ts && ts.length >= 4 && ts[ts.length - 1] - ts[0] >= 3) C = B.map(b => { const bt = 60 / b; let r1 = 0, i1 = 0, r2 = 0, i2 = 0;
+    for (const t of ts) { const a = 2 * Math.PI * t / bt; r1 += Math.cos(a); i1 += Math.sin(a); r2 += Math.cos(2 * a); i2 += Math.sin(2 * a); } return (Math.hypot(r1, i1) + 0.35 * Math.hypot(r2, i2)) / ts.length; });
+  if (!A && !C) return null;
+  const mx = a => a ? Math.max(...a) || 1 : 1, mA = mx(A), mC = mx(C);
+  const S = B.map((b, i) => (A ? A[i] / mA : 1) * (C ? C[i] / mC : 1) * Math.exp(-Math.pow(Math.log2(b / 110), 2) / (2 * 0.8 * 0.8)));
+  let bi = 0; S.forEach((v, i) => { if (v > S[bi]) bi = i; });
+  const near = b => { let j = 0; B.forEach((x, i) => { if (Math.abs(x - b) < Math.abs(B[j] - b)) j = i; }); let m = j; for (let k = Math.max(0, j - 3); k <= Math.min(B.length - 1, j + 3); k++) if (S[k] > S[m]) m = k; return m; };
+  if (B[bi] > 140) { const h = near(B[bi] / 2); if (S[h] >= (B[bi] > 150 ? 0.25 : 0.45) * S[bi]) bi = h; }          // eighth notes read as a fast beat: take the half tempo
+  else if (B[bi] < 70) { const d = near(B[bi] * 2); if (S[d] >= 0.45 * S[bi]) bi = d; }
+  return { bpm: B[bi], conf: Math.max(...S) };
+}
+const QV = [['OFF', 0], ['1/16', 0.25], ['1/8', 0.5], ['1/4', 1], ['1/8T', 1 / 3], ['1/16T', 1 / 6]];
+const qOk = i => { const v = QV[i][1]; if (!v) return true; const k = v * song.cpm / 4; return k >= 1 - 1e-6 && Math.abs(k - Math.round(k)) < 1e-6; };
+function qCols() { const i = song.q || 0; return i && qOk(i) ? Math.round(QV[i][1] * song.cpm / 4) : 1; }
+const qSnap = x => { const q = qCols(); return Math.round(x / q) * q; }, colsPerSec = bpm => bpm / 60 * song.cpm / 4;
+function placeTake(tk) {                                                     // put a take's notes where they were played (snapped to Q); notes squeezed out by Q wait in qhold
+  const T0 = song.takes && song.takes[tk]; if (!T0 || !T0.bpm) return; const k = colsPerSec(T0.bpm), T = { c0: Math.round(T0.c0 * song.cpm / (T0.cpm || song.cpm)) };
+  if (song.qhold && song.qhold.length) { song.notes.push(...song.qhold.filter(n => n.tk === tk)); song.qhold = song.qhold.filter(n => n.tk !== tk); }
+  const ns = song.notes.filter(n => n.tk === tk && n.tm != null).sort((a, b) => a.tm - b.tm), seen = new Set(), hold = [];
+  for (const n of ns) { n.c = T.c0 + qSnap(n.tm * k); const key = n.c + ':' + n.s; if (seen.has(key)) hold.push(n); else { seen.add(key); ensureCols(n.c); } }
+  if (hold.length) { const h = new Set(hold); song.notes = song.notes.filter(n => !h.has(n)); song.qhold = (song.qhold || []).concat(hold); }
+  for (const m of song.marks) if (m.tk === tk && m.tm != null) m.c = T.c0 + qSnap(m.tm * k);
+}
+function setQ(i) { snapshot(); song.q = i; for (const tk in (song.takes || {})) placeTake(tk); changed();
+  status(i ? `quantize ${QV[i][0]}: your recorded notes snap to the nearest ${QV[i][0]}` : 'quantize off: your recorded notes sit where you played them'); }
+function tempoSensed(sb, final) { song.tempo = String(sb.bpm); $('tempo').value = song.tempo;
+  status(`tempo ${final ? '' : 'sensed: '}${sb.bpm} BPM${sb.conf < 0.6 ? ' (your timing was loose, so this is a best guess: type the BPM or play to the click to be exact)' : ''}`); }
 function liveWrite(pos) {
   if (AI.on) return;                                                   // chords + notes mode writes through its own path
-  const now = performance.now(), bpm = +song.tempo;
+  const now = performance.now(), follow = $('lTime').value === 'follow';
+  if (!L.take) L.take = { tk: 't' + Date.now(), t0: now, c0: cursor.c, ts: [], fixed: !!+song.tempo };
+  const tm = (now - L.take.t0) / 1000; L.take.ts.push(tm);
   let c = cursor.c;
-  if ($('lTime').value === 'follow' && bpm && L.lastLive && now - L.lastLive.t < 8000) {
-    const cols = Math.round((now - L.lastLive.t) / 1000 * bpm / 60 * song.cpm / 4);
-    c = L.lastLive.c + Math.max(1, Math.min(song.cpm, cols));
+  if (follow) {
+    if (!+song.tempo && L.take.ts.length >= 6 && tm >= 4) { const sb = senseBpm(L.take.ts, null); if (sb) tempoSensed(sb); }
+    if (+song.tempo) {                                                 // exactly where you played it, at the song's tempo (never changed by listening)
+      song.takes = song.takes || {}; const first = !song.takes[L.take.tk]; song.takes[L.take.tk] = { c0: L.take.c0, bpm: +song.tempo, cpm: song.cpm };
+      if (first) placeTake(L.take.tk);                                 // notes written before the tempo was known move to their real places
+      c = L.take.c0 + qSnap(tm * colsPerSec(+song.tempo));
+    } else c = L.lastLive ? L.lastLive.c + +$('step').value : L.take.c0;    // tempo not known yet: provisional
   }
   ensureCols(c); cursor.c = c;
   const keepStack = stack; stack = false; writeNote(c, pos.s, pos.f); stack = keepStack;
+  const wn = noteAt(c, pos.s); if (wn) { wn.tm = tm; wn.tk = L.take.tk; }
   L.lastLive = { t: now, c }; L.lastPos = { s: pos.s, f: pos.f, t: now }; L.lastId = [...sel][0];
 }
 function liveTick() {
@@ -1216,9 +1376,13 @@ async function listDevices() {
   sel.innerHTML = '';
   devs.forEach(d => { const o = document.createElement('option'); o.value = d.deviceId; o.textContent = d.label || 'Input ' + (sel.length + 1); sel.appendChild(o); });
   const spark = devs.find(d => /spark|positive grid/i.test(d.label));
-  sel.value = devs.some(d => d.deviceId === want) ? want : spark ? spark.deviceId : (devs[0] ? devs[0].deviceId : '');
-  return sel.value;
+  const mic = devs.find(d => d !== spark && /mic|microphone|array|headset|webcam|camera|built-in|internal|realtek|iphone|ipad/i.test(d.label)) || (!spark && devs.length === 1 ? devs[0] : null);
+  L.micDev = mic ? mic.deviceId : ''; $('lSrcRow').style.display = mic ? '' : 'none';
+  const wantMic = localStorage.getItem('dxtab_src') === 'mic' && mic;
+  sel.value = wantMic ? mic.deviceId : devs.some(d => d.deviceId === want) ? want : spark ? spark.deviceId : (devs[0] ? devs[0].deviceId : '');
+  srcPaint(); return sel.value;
 }
+function srcPaint() { const m = L.micDev && $('lDev').value === L.micDev; document.querySelectorAll('#lSrc span').forEach(x => x.classList.toggle('on', (x.dataset.s === 'mic') === !!m)); }
 async function startListen(devId) {
   try {
     stopListen(true);
@@ -1227,8 +1391,11 @@ async function startListen(devId) {
     if (!devId) { const id = await listDevices(); if (id && stream.getAudioTracks()[0].getSettings().deviceId !== id) { stream.getTracks().forEach(t => t.stop()); stream = await navigator.mediaDevices.getUserMedia({ audio: Object.assign({ deviceId: { exact: id } }, base) }); } }
     else await listDevices();
     L.stream = stream; L.ctx = new AudioContext({ latencyHint: 'interactive' });
-    const src = L.src = L.ctx.createMediaStreamSource(stream); L.an = L.ctx.createAnalyser(); L.an.fftSize = 2048; src.connect(L.an);
-    L.buf = new Float32Array(L.an.fftSize); L.on = true; L.state = 'idle'; L.env = 0; L.hfEnv = 0; L.floor = 0.002; L.lastLive = null; L.seen = new Set(); L.lastId = null;
+    const src = L.src = L.ctx.createMediaStreamSource(stream); L.an = L.ctx.createAnalyser(); L.an.fftSize = 2048;
+    L.mic = !!L.micDev && stream.getAudioTracks()[0].getSettings().deviceId === L.micDev;
+    if (L.mic) { const hp = L.ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 75; hp.Q.value = 0.7; src.connect(hp); L.in = hp; } else L.in = src;   // microphone: cut the room rumble
+    L.in.connect(L.an);
+    L.take = null; L.buf = new Float32Array(L.an.fftSize); L.on = true; L.state = 'idle'; L.env = 0; L.hfEnv = 0; L.floor = 0.002; L.lastLive = null; L.seen = new Set(); L.lastId = null;
     L.timer = setInterval(liveTick, 20);
     if ($('lMode').value === 'ai' && !(await aiStart())) { stopListen(true); return; }
     $('tListen').classList.add('live'); $('tListen').textContent = '● Listening';
@@ -1246,7 +1413,8 @@ function stopListen(quiet) {
 $('tListen').onclick = () => { if (AI.finalizing) return status('still writing the last take…'); L.on ? stopListen() : startListen($('lDev').value || null); };
 $('lLoopTab').onclick = aiFromLoop;
 $('tListenSet').onclick = ev => { ev.stopPropagation(); const m = $('listenMenu'); m.style.display = m.style.display === 'grid' ? 'none' : 'grid'; };
-$('lDev').onchange = () => { localStorage.setItem('dxtabdev', $('lDev').value); if (L.on) startListen($('lDev').value); };
+$('lDev').onchange = () => { localStorage.setItem('dxtabdev', $('lDev').value); localStorage.setItem('dxtab_src', L.micDev && $('lDev').value === L.micDev ? 'mic' : 'usb'); srcPaint(); if (L.on) startListen($('lDev').value); };
+if (localStorage.getItem('dxtab_timeV') !== '2') { localStorage.setItem('dxtab_lTime', 'follow'); localStorage.setItem('dxtab_timeV', '2'); }
 for (const id of ['lPos', 'lTime', 'lSens', 'lMode', 'lNames']) { const v = localStorage.getItem('dxtab_' + id); if (v) $(id).value = v; $(id).addEventListener('change', () => localStorage.setItem('dxtab_' + id, $(id).value)); }
 
 // ------------------------------------------------------------------ audio: tab playback, looper, drums and click, all on one clock
@@ -1762,6 +1930,7 @@ function mixInit(c) {                                                        // 
   // sources into their strips
   E.gVol.connect(E.ch.gtr.trim); E.lVol.connect(E.ch.loop.trim); E.dVol.connect(E.ch.drums.trim); E.cVol.connect(E.ch.click.trim);
   E.revBuilt = 0; E.pltBuilt = 0; mixApply();
+  eqWire(); if ($('stage').classList.contains('eq')) eqTap();
 }
 function buildRoom(sec) {
   const c = E.ctx, sr = c.sampleRate, n = Math.floor(sr * sec), b = c.createBuffer(2, n, sr);
@@ -1809,14 +1978,16 @@ function mixBuildUI() {
   const box = $('mixStrips'); box.innerHTML = '';
   for (const ch of MIX_CH) {
     const o = MIX[ch.id], st = document.createElement('div'); st.className = 'strip' + (ch.fx ? ' fx' : '') + (ch.master ? ' master' : ''); st.dataset.ch = ch.id;
-    st.innerHTML = `<div class="fcol"><div class="meter">${ch.master ? '<div class="mfill" data-m="L"></div><div class="mfill r" data-m="R"></div>' : '<div class="mfill"></div>'}</div>
+    st.innerHTML = `<div class="shide" title="Hide or show this channel's strip (the sound keeps playing)">–</div><div class="vname">${ch.name}</div><div class="fcol"><div class="meter">${ch.master ? '<div class="mfill" data-m="L"></div><div class="mfill r" data-m="R"></div>' : '<div class="mfill"></div>'}</div>
       <div class="fader" title="${ch.fx ? 'Effect return level' : 'Volume'}: drag, mouse wheel, double-click for 0 dB"><div class="ftrack"></div><div class="f0"></div><div class="fcap"></div></div></div>
       <div class="ccol"><div class="shead"><span class="sname">${ch.name}</span><span class="sval"></span></div><div class="ssub">${ch.sub}</div>
-      <div class="sbtns">${ch.btns.map(b => `<div class="mb" data-b="${b}">${{ mute: 'M', solo: 'S', arm: '● IN', mon: 'MON', limit: 'LIMIT' }[b]}</div>`).join('')}</div>
+      <div class="sbtns">${ch.btns.concat(EQ_CH.includes(ch.id) ? ['eq'] : []).map(b => `<div class="mb" data-b="${b}"${b === 'eq' ? ' title="Open this channel\'s EQ (lit when the EQ is on)"' : ''}>${{ mute: 'M', solo: 'S', arm: '● IN', mon: 'MON', limit: 'LIMIT', eq: 'EQ' }[b]}</div>`).join('')}</div>
       ${ch.rows.map(r => `<div class="mini" data-r="${r}"><span>${MIX_ROWS[r].lbl}</span><div class="mt"><div class="mk"></div></div><b></b></div>`).join('')}
       ${ch.knobs.length ? `<div class="knobs${ch.fx ? ' grid' : ''}">${ch.knobs.map(k => `<div class="knob" data-k="${k}" title="${MIX_ROWS[k].tip || MIX_ROWS[k].lbl}: drag up/down, wheel, double-click to reset"><div class="kd"><i></i></div><div class="kl">${MIX_ROWS[k].lbl}</div></div>`).join('')}</div>` : ''}
       ${ch.master ? '<div class="mb wide" data-b="reset" title="Put every mixer control back to its starting value">RESET</div>' : ''}</div>`;
     box.appendChild(st);
+    st.querySelector('.shide').onclick = ev => { ev.stopPropagation(); o.hide = !o.hide; mixSave(); mixPaint(st, ch); };
+    st.querySelector('.vname').onclick = () => { o.hide = false; mixSave(); mixPaint(st, ch); };
     if (ch.id === 'aux') st.querySelector('.ssub').onclick = () => auxOpen(true);
     const fad = st.querySelector('.fader');
     const setP = p => { o.p = Math.max(0, Math.min(1, p)); mixApply(); mixPaint(st, ch); mixSave(); };
@@ -1842,6 +2013,7 @@ function mixBuildUI() {
     });
     st.querySelectorAll('.mb').forEach(b => b.onclick = async () => {
       const k = b.dataset.b;
+      if (k === 'eq') { EQS.view = ch.id; EQS.sel = 2; setTop('eq'); return; }
       if (k === 'arm' && ch.id === 'aux') { if (AUX.src) auxClose(); else await auxOpen(); mixPaint(st, ch); return; }
       if (k === 'arm') { if (LP.src) { looperInputReset(); mixPaint(st, ch); return; } try { await looperReady(); status('guitar input open: the meter shows your level'); } catch (e) { status(micErr(e)); } mixPaint(st, ch); return; }
       if (k === 'reset') { if (!confirm('Reset every mixer control to its starting value?')) return; delete AUD.mix; saveAud(); location.reload(); return; }
@@ -1851,7 +2023,7 @@ function mixBuildUI() {
   }
 }
 function mixPaint(st, ch) {
-  const o = MIX[ch.id];
+  const o = MIX[ch.id]; st.classList.toggle('collapsed', !!o.hide); st.querySelector('.shide').textContent = o.hide ? '+' : '–';
   st.querySelector('.fcap').style.top = ((1 - o.p) * (124 - 14)) + 'px';
   st.querySelector('.sval').textContent = faderDb(o.p);
   st.querySelectorAll('.mini').forEach(mi => {
@@ -1868,7 +2040,7 @@ function mixPaint(st, ch) {
   });
   st.querySelectorAll('.mb').forEach(b => {
     const k = b.dataset.b;
-    b.classList.toggle('on', k === 'arm' ? !!(ch.id === 'aux' ? AUX.src : LP.src) : !!o[k]);
+    b.classList.toggle('on', k === 'arm' ? !!(ch.id === 'aux' ? AUX.src : LP.src) : k === 'eq' ? !!(o.eq && o.eq.on) : !!o[k]);
     if (k === 'mute') b.classList.toggle('red', !!o.mute);
   });
   const soloOn = MIX_CH.some(c2 => !c2.fx && !c2.master && c2.id !== 'in' && MIX[c2.id].solo);
@@ -1876,6 +2048,224 @@ function mixPaint(st, ch) {
   if (ch.id === 'aux') { const sub = st.querySelector('.ssub'); sub.textContent = AUX.src ? (AUX.label || 'LINE IN') : 'LINE IN ▾'; sub.title = 'Choose the line-in device'; sub.style.cursor = 'pointer'; }
 }
 function mixPaintAll() { document.querySelectorAll('.strip').forEach(st => mixPaint(st, MIX_CH.find(c => c.id === st.dataset.ch))); }
+// ------------------------------------------------------------------ EQ: an insert on every channel (and the master): parametric, graphic, dynamic, linear-phase, analog-modeled
+const EQ_CH = ['in', 'aux', 'gtr', 'loop', 'drums', 'click', 'master'];
+const EQ_NAME = { in: 'INPUT', aux: 'AUX', gtr: 'GUITAR', loop: 'LOOPER', drums: 'DRUMS', click: 'CLICK', master: 'MASTER' };
+const EQ_TYPES = [['param', 'PARAMETRIC'], ['graphic', 'GRAPHIC'], ['dyn', 'DYNAMIC'], ['lin', 'LINEAR PHASE'], ['analog', 'ANALOG']];
+const GEQ_F = [31, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000];
+const LEQ_F = [40, 80, 160, 315, 630, 1250, 2500, 5000, 10000, 16000];
+const ALF = [20, 30, 60, 100], AHF = [3000, 4000, 5000, 8000, 10000, 12000, 16000], AAF = [5000, 10000, 20000];
+function eqDefault() {
+  return { on: false, type: 'param',
+    param: [{ t: 'highpass', f: 60, q: 0.71, on: false }, { t: 'lowshelf', f: 120, g: 0 }, { t: 'peaking', f: 400, g: 0, q: 1 }, { t: 'peaking', f: 1500, g: 0, q: 1 },
+      { t: 'peaking', f: 4000, g: 0, q: 1 }, { t: 'highshelf', f: 9000, g: 0 }, { t: 'lowpass', f: 16000, q: 0.71, on: false }],
+    graphic: GEQ_F.map(() => 0), lin: LEQ_F.map(() => 0),
+    dyn: [{ f: 150, q: 1, th: -24, ra: 3, rg: -6, g: 0 }, { f: 1200, q: 1.2, th: -24, ra: 3, rg: -6, g: 0 }, { f: 5000, q: 1.2, th: -28, ra: 3, rg: -6, g: 0 }],
+    analog: { lf: 2, lb: 0, la: 0, hf: 4, hb: 0, bw: 0.5, af: 1, ha: 0, drive: 0.2, out: 0 } };
+}
+for (const id of EQ_CH) { if (!MIX[id]) continue; const d = eqDefault(); MIX[id].eq = Object.assign(d, MIX[id].eq || {}); for (const k of ['param', 'graphic', 'lin', 'dyn']) if (!Array.isArray(MIX[id].eq[k]) || MIX[id].eq[k].length !== d[k].length) MIX[id].eq[k] = d[k]; MIX[id].eq.analog = Object.assign(d.analog, MIX[id].eq.analog || {}); }
+const EQS = { view: 'gtr', sel: 2, raf: 0, dynT: 0, pdc: 0, linT: {} };
+const LIN_N = 2048;
+function eqSlot(id) {                                                          // the insert points: in -> [EQ] -> out
+  const c = E.ctx, x = { inp: c.createGain(), out: c.createGain(), nodes: [], an: null, dyn: null, conv: null, lat: 0 }; x.inp.connect(x.out); return x;
+}
+function eqWire() {                                                            // called once from mixInit: put a slot on every channel and the master
+  for (const id of EQ_CH) {
+    if (id === 'master') { const x = E.mEq = eqSlot(); E.master.disconnect(); E.master.connect(x.inp); x.out.connect(E.limiter); x.out.connect(E.mSplit); continue; }
+    const s = E.ch[id]; if (!s) continue; s.eq = eqSlot(); s.trim.disconnect(); s.trim.connect(s.eq.inp); s.eq.out.connect(s.pdc = E.ctx.createDelay(0.1)); s.pdc.connect(s.pan);
+    if (id === 'in' && LP.node) s.trim.connect(LP.node);                         // the looper still records from the input trim (pre-EQ)
+  }
+  for (const id of EQ_CH) eqBuild(id);
+}
+const slotOf = id => id === 'master' ? E.mEq : E.ch[id] && E.ch[id].eq;
+function eqBuild(id) {                                                         // (re)build one channel's EQ chain; off = a plain wire, no processing
+  if (!E.ctx) return; const x = slotOf(id); if (!x) return; const c = E.ctx, o = MIX[id].eq;
+  try { x.inp.disconnect(); } catch (e) {} x.nodes.forEach(n => { try { n.disconnect(); } catch (e) {} }); x.nodes = []; x.dyn = null; x.conv = null; x.lat = 0;
+  if (!o.on) { x.inp.connect(x.out); eqPdc(); eqDynLoop(); return; }
+  const chain = [];
+  const bq = (type, f, g, q) => { const b = c.createBiquadFilter(); b.type = type; b.frequency.value = f; if (g != null) b.gain.value = g; if (q != null) b.Q.value = q; chain.push(b); return b; };
+  if (o.type === 'param') for (const b of o.param) { if (b.on === false) continue; bq(b.t, b.f, b.g, b.t === 'lowshelf' || b.t === 'highshelf' ? null : b.q); }
+  else if (o.type === 'graphic') o.graphic.forEach((g, i) => bq('peaking', GEQ_F[i], g, 1.41));
+  else if (o.type === 'dyn') { x.dyn = o.dyn.map(d => { const f = bq('peaking', d.f, d.g, d.q), det = c.createBiquadFilter(); det.type = 'bandpass'; det.frequency.value = d.f; det.Q.value = d.q;
+      const an = c.createAnalyser(); an.fftSize = 256; x.inp.connect(det); det.connect(an); x.nodes.push(det, an); return { f, an, d, buf: new Float32Array(256), env: -90, gr: 0 }; }); }
+  else if (o.type === 'lin') { const cv = c.createConvolver(); cv.normalize = false; cv.buffer = linIR(o.lin); chain.push(cv); x.conv = cv; x.lat = (LIN_N / 2) / c.sampleRate; }
+  else if (o.type === 'analog') {
+    const a = o.analog, lf = ALF[a.lf], hf = AHF[a.hf], af = AAF[a.af];
+    bq('lowshelf', lf, a.lb * 1.35); bq('lowshelf', lf * 1.9, -a.la * 1.1);       // boost and cut together: the classic shelf with a dip just above it
+    bq('peaking', hf, a.hb * 1.6, 0.4 + (1 - a.bw) * 2.2); bq('highshelf', af, -a.ha * 1.6);
+    const ws = c.createWaveShaper(), dr = 1 + a.drive * 5, n = 1024, cv = new Float32Array(n);
+    for (let i = 0; i < n; i++) { const v = i / (n - 1) * 2 - 1; cv[i] = (Math.tanh(dr * v + 0.18 * a.drive * v * v) - 0.18 * a.drive * 0.1) / Math.tanh(dr); }   // warm, slightly asymmetric tube curve
+    ws.curve = cv; ws.oversample = a.drive > 0.02 ? '2x' : 'none'; chain.push(ws);
+    const og = c.createGain(); og.gain.value = Math.pow(10, a.out / 20); chain.push(og);
+  }
+  let prev = x.inp; for (const n of chain) { prev.connect(n); prev = n; } prev.connect(x.out); x.nodes.push(...chain);
+  eqPdc(); eqDynLoop();
+}
+function eqPdc() {                                                             // linear phase delays its channel: delay every other channel the same (delay compensation)
+  if (!E.ch) return; let m = 0; for (const id of EQ_CH) { const x = slotOf(id); if (x && id !== 'master') m = Math.max(m, x.lat); }
+  for (const id of EQ_CH) { if (id === 'master') continue; const s = E.ch[id]; if (s && s.pdc) s.pdc.delayTime.setTargetAtTime(m - s.eq.lat, E.ctx.currentTime, 0.01); }
+  EQS.pdc = m;
+}
+function linIR(gains) {                                                        // FIR from the band gains: frequency sampling + Blackman window, symmetric = linear phase
+  const c = E.ctx, sr = c.sampleRate, N = LIN_N, H = new Float64Array(N / 2 + 1), lf = LEQ_F.map(Math.log);
+  for (let k = 0; k <= N / 2; k++) { const f = Math.max(10, k * sr / N), L = Math.log(f); let g;
+    if (L <= lf[0]) g = gains[0]; else if (L >= lf[lf.length - 1]) g = gains[gains.length - 1];
+    else { let i = 0; while (L > lf[i + 1]) i++; const t = (L - lf[i]) / (lf[i + 1] - lf[i]); g = gains[i] + (gains[i + 1] - gains[i]) * (0.5 - 0.5 * Math.cos(Math.PI * t)); }
+    H[k] = Math.pow(10, g / 20); }
+  const h = new Float32Array(N);
+  for (let n = 0; n < N; n++) { let s = H[0]; const m = n - N / 2; for (let k = 1; k < N / 2; k++) s += 2 * H[k] * Math.cos(2 * Math.PI * k * m / N); s += H[N / 2] * Math.cos(Math.PI * m);
+    const w = 0.42 - 0.5 * Math.cos(2 * Math.PI * n / (N - 1)) + 0.08 * Math.cos(4 * Math.PI * n / (N - 1)); h[n] = s / N * w; }
+  const b = c.createBuffer(1, N, sr); b.copyToChannel(h, 0); return b;
+}
+function eqDynLoop() {                                                         // dynamic bands follow their level ~25 times a second, only while one is on
+  const any = EQ_CH.some(id => { const x = slotOf(id); return x && x.dyn; });
+  if (!any) { clearInterval(EQS.dynT); EQS.dynT = 0; return; } if (EQS.dynT) return;
+  EQS.dynT = setInterval(() => { const now = E.ctx.currentTime;
+    for (const id of EQ_CH) { const x = slotOf(id); if (!x || !x.dyn) continue;
+      for (const b of x.dyn) { b.an.getFloatTimeDomainData(b.buf); let s = 0; for (const v of b.buf) s += v * v; const db = 10 * Math.log10(s / b.buf.length + 1e-12);
+        b.env = db > b.env ? db : b.env + (db - b.env) * 0.25; const over = b.env - b.d.th;
+        b.gr = over > 0 ? Math.max(Math.min(0, b.d.rg), Math.min(Math.max(0, b.d.rg), (b.d.rg < 0 ? -1 : 1) * over * (1 - 1 / b.d.ra))) : 0;
+        b.f.gain.setTargetAtTime(b.d.g + b.gr, now, 0.02); } } }, 40);
+}
+let eqT = {}; function eqChanged(id, rebuild) {                                 // live parameter changes without rebuilding when possible
+  MIX[id].eq.on = true; const x = slotOf(id), o = MIX[id].eq; mixSave();
+  if (!E.ctx) return;
+  if (rebuild || !x.nodes.length) { eqBuild(id); return; }
+  const now = E.ctx.currentTime, sm = (p, v) => p.setTargetAtTime(v, now, 0.012);
+  if (o.type === 'param') { let i = 0; for (const b of o.param) { if (b.on === false) continue; const n = x.nodes[i++]; if (!n) return eqBuild(id); sm(n.frequency, b.f); if (b.g != null) sm(n.gain, b.g); if (b.q != null && n.type !== 'lowshelf' && n.type !== 'highshelf') sm(n.Q, b.q); } }
+  else if (o.type === 'graphic') o.graphic.forEach((g, i) => sm(x.nodes[i].gain, g));
+  else if (o.type === 'dyn') x.dyn.forEach((b, i) => { const d = o.dyn[i]; sm(b.f.frequency, d.f); sm(b.f.Q, d.q); const det = x.nodes[i * 2]; sm(det.frequency, d.f); sm(det.Q, d.q); });
+  else if (o.type === 'lin') { clearTimeout(eqT[id]); eqT[id] = setTimeout(() => { if (x.conv) x.conv.buffer = linIR(o.lin); }, 120); }
+  else eqBuild(id);
+}
+// ---- response of the current settings (for the curve): built from offline filter maths, no audio needed
+const EQF = (() => { const f = new Float32Array(240); for (let i = 0; i < 240; i++) f[i] = 20 * Math.pow(1000, i / 239); return f; })();
+function eqResponse(id) {
+  const o = MIX[id].eq, out = new Float32Array(EQF.length);
+  const c = E.ctx || (EQS.oc || (EQS.oc = new OfflineAudioContext(1, 128, 48000)));
+  const add = (type, f, g, q) => { const b = c.createBiquadFilter(); b.type = type; b.frequency.value = f; if (g != null) b.gain.value = g; if (q != null) b.Q.value = q;
+    const mag = new Float32Array(EQF.length), ph = new Float32Array(EQF.length); b.getFrequencyResponse(EQF, mag, ph); for (let i = 0; i < out.length; i++) out[i] += 20 * Math.log10(mag[i] + 1e-9); };
+  if (o.type === 'param') for (const b of o.param) { if (b.on !== false) add(b.t, b.f, b.g, b.t === 'lowshelf' || b.t === 'highshelf' ? null : b.q); }
+  else if (o.type === 'graphic') o.graphic.forEach((g, i) => add('peaking', GEQ_F[i], g, 1.41));
+  else if (o.type === 'dyn') { const x = E.ctx && slotOf(id); o.dyn.forEach((d, i) => add('peaking', d.f, d.g + (x && x.dyn && x.dyn[i] ? x.dyn[i].gr : 0), d.q)); }
+  else if (o.type === 'lin') { const lf = LEQ_F.map(Math.log); for (let i = 0; i < out.length; i++) { const L = Math.log(EQF[i]); let g;
+      if (L <= lf[0]) g = o.lin[0]; else if (L >= lf[lf.length - 1]) g = o.lin[o.lin.length - 1]; else { let k = 0; while (L > lf[k + 1]) k++; const t = (L - lf[k]) / (lf[k + 1] - lf[k]); g = o.lin[k] + (o.lin[k + 1] - o.lin[k]) * (0.5 - 0.5 * Math.cos(Math.PI * t)); } out[i] = g; } }
+  else { const a = o.analog, lf = ALF[a.lf]; add('lowshelf', lf, a.lb * 1.35); add('lowshelf', lf * 1.9, -a.la * 1.1); add('peaking', AHF[a.hf], a.hb * 1.6, 0.4 + (1 - a.bw) * 2.2); add('highshelf', AAF[a.af], -a.ha * 1.6); for (let i = 0; i < out.length; i++) out[i] += a.out; }
+  return out;
+}
+
+// ---- the EQ window (in the staff's place; in the full-page layout, in the meters' place)
+function eqKnob(parent, lbl, get, set, min, max, fmt, list, log) {
+  const k = document.createElement('div'); k.className = 'knob eqk'; k.innerHTML = `<div class="kd"><i></i></div><div class="kl">${lbl}</div>`; parent.appendChild(k);
+  const span = list ? list.length - 1 : max - min, toF = v => list ? v / span : log ? Math.log(v / min) / Math.log(max / min) : (v - min) / span;
+  const fromF = f => list ? Math.round(Math.max(0, Math.min(1, f)) * span) : log ? min * Math.pow(max / min, Math.max(0, Math.min(1, f))) : min + Math.max(0, Math.min(1, f)) * span;
+  const paint = () => { const f = toF(get()); k.querySelector('i').style.transform = `rotate(${-135 + f * 270}deg)`; k.querySelector('.kd').style.setProperty('--f', f); k.querySelector('.kl').dataset.v = list ? list[get()] : fmt(get()); k.classList.add('lit'); };
+  let acc = toF(get());
+  dragY(k, d => { acc = Math.max(0, Math.min(1, toF(get()) + d * (list ? 1.4 : 1))); set(fromF(acc)); paint(); eqDraw(true); });
+  k.onwheel = ev => { ev.preventDefault(); set(fromF(toF(get()) - Math.sign(ev.deltaY) * (list ? 1 / span : 0.025))); paint(); eqDraw(true); };
+  k.title = lbl + ': drag up/down or use the wheel'; paint(); return paint;
+}
+function eqSlider(parent, lbl, get, set) {                                     // vertical band slider (graphic / linear phase), the DUSTEX rectangular cap
+  const w = document.createElement('div'); w.className = 'eqs'; w.innerHTML = `<b></b><div class="et"><div class="e0"></div><div class="ec"></div></div><span>${lbl}</span>`; parent.appendChild(w);
+  const tr = w.querySelector('.et'), cap = w.querySelector('.ec'), val = w.querySelector('b');
+  const paint = () => { const g = get(); cap.style.top = ((12 - g) / 24 * (tr.clientHeight - 10 || 70)) + 'px'; val.textContent = (g > 0 ? '+' : '') + g.toFixed(1); };
+  const fromY = ev => { const r = tr.getBoundingClientRect(); return Math.round((12 - 24 * Math.max(0, Math.min(1, (ev.clientY - r.top - 5) / (r.height - 10)))) * 2) / 2; };
+  tr.onmousedown = ev => { ev.preventDefault(); const mv = e2 => { set(fromY(e2)); paint(); eqDraw(true); }; mv(ev); const up = () => { removeEventListener('mousemove', mv); removeEventListener('mouseup', up); }; addEventListener('mousemove', mv); addEventListener('mouseup', up); };
+  tr.ondblclick = () => { set(0); paint(); eqDraw(true); };
+  w.onwheel = ev => { ev.preventDefault(); set(Math.max(-12, Math.min(12, get() - Math.sign(ev.deltaY) * 0.5))); paint(); eqDraw(true); };
+  setTimeout(paint, 0); return paint;
+}
+const fHz = v => v >= 1000 ? (v / 1000).toFixed(v >= 10000 ? 0 : 1) + 'k' : Math.round(v) + '', fDb = v => (v > 0 ? '+' : '') + v.toFixed(1);
+const BAND_LBL = { highpass: 'HP', lowshelf: 'LS', peaking: 'P', highshelf: 'HS', lowpass: 'LP' };
+function eqUI() {
+  const box = $('eqBox'), id = EQS.view, o = MIX[id].eq;
+  box.innerHTML = `<div class="eqh"><span class="eqt">E Q</span><div class="eqch">${EQ_CH.map(c => `<span data-c="${c}" class="${c === id ? 'on' : ''}${MIX[c].eq.on ? ' lit' : ''}">${EQ_NAME[c]}</span>`).join('')}</div>
+    <div class="eqty">${EQ_TYPES.map(([k, n]) => `<span data-t="${k}" class="${k === o.type ? 'on' : ''}">${n}</span>`).join('')}</div>
+    <div class="eqr"><span id="eqLat"></span><div class="mb${o.on ? ' on' : ''}" id="eqOn" title="EQ on/off for this channel">${o.on ? 'ON' : 'OFF'}</div><div class="mb" id="eqFlat" title="Put this EQ type back to flat">FLAT</div></div></div>
+    <canvas id="eqCv"></canvas><div class="eqp" id="eqPanel"></div>`;
+  box.querySelectorAll('.eqch span').forEach(s => s.onclick = () => { EQS.view = s.dataset.c; EQS.sel = 2; eqUI(); });
+  box.querySelectorAll('.eqty span').forEach(s => s.onclick = () => { o.type = s.dataset.t; o.on = true; mixSave(); eqBuild(id); eqUI(); mixPaintAll(); });
+  $('eqOn').onclick = () => { o.on = !o.on; mixSave(); eqBuild(id); eqUI(); mixPaintAll(); };
+  $('eqFlat').onclick = () => { const d = eqDefault(); o[o.type] = d[o.type]; mixSave(); eqBuild(id); eqUI(); };
+  const P = $('eqPanel'), on = () => { if (!o.on) { o.on = true; $('eqOn').classList.add('on'); $('eqOn').textContent = 'ON'; box.querySelector(`.eqch span[data-c="${id}"]`).classList.add('lit'); mixPaintAll(); } };
+  const ch = rebuild => { on(); eqChanged(id, rebuild); };
+  if (o.type === 'param') {
+    const chips = document.createElement('div'); chips.className = 'eqchips'; P.appendChild(chips);
+    o.param.forEach((b, i) => { const s = document.createElement('span'); s.textContent = BAND_LBL[b.t] + (b.t === 'peaking' ? i - 1 : ''); s.className = (i === EQS.sel ? 'sel ' : '') + (b.on === false ? 'off' : '');
+      s.title = 'Click to select; double-click to switch the band on or off'; s.onclick = () => { EQS.sel = i; eqUI(); }; s.ondblclick = () => { b.on = b.on === false; ch(true); eqUI(); }; chips.appendChild(s); });
+    const b = o.param[EQS.sel], row = document.createElement('div'); row.className = 'eqkr'; P.appendChild(row);
+    eqKnob(row, 'FREQ', () => b.f, v => { b.f = v; ch(); }, 20, 20000, fHz, null, true);
+    if (b.g != null) eqKnob(row, 'GAIN', () => b.g, v => { b.g = Math.round(v * 2) / 2; ch(); }, -18, 18, fDb);
+    if (b.q != null) eqKnob(row, b.t === 'peaking' ? 'Q' : 'RES', () => b.q, v => { b.q = v; ch(); }, 0.3, 12, v => v.toFixed(2), null, true);
+    const nb = document.createElement('div'); nb.className = 'eqnote'; nb.textContent = b.on === false ? 'band off: double-click its name to use it' : 'drag the dots on the curve · wheel over a dot for Q'; P.appendChild(nb);
+  } else if (o.type === 'graphic' || o.type === 'lin') {
+    const arr = o[o.type], F = o.type === 'graphic' ? GEQ_F : LEQ_F, row = document.createElement('div'); row.className = 'eqsl'; P.appendChild(row);
+    arr.forEach((g, i) => eqSlider(row, fHz(F[i]), () => arr[i], v => { arr[i] = v; ch(); }));
+  } else if (o.type === 'dyn') {
+    const row = document.createElement('div'); row.className = 'eqdyn'; P.appendChild(row);
+    o.dyn.forEach((d, i) => { const col = document.createElement('div'); col.className = 'eqdc'; col.innerHTML = `<div class="eqdt">${['LOW', 'MID', 'HIGH'][i]}</div>`; row.appendChild(col); const r = document.createElement('div'); r.className = 'eqkr'; col.appendChild(r);
+      eqKnob(r, 'FREQ', () => d.f, v => { d.f = v; ch(); }, 30, 16000, fHz, null, true);
+      eqKnob(r, 'THR', () => d.th, v => { d.th = Math.round(v); ch(); }, -60, 0, v => v + 'dB');
+      eqKnob(r, 'RATIO', () => d.ra, v => { d.ra = v; ch(); }, 1, 10, v => v.toFixed(1) + ':1');
+      eqKnob(r, 'RANGE', () => d.rg, v => { d.rg = Math.round(v); ch(); }, -18, 12, fDb);
+      eqKnob(r, 'GAIN', () => d.g, v => { d.g = Math.round(v * 2) / 2; ch(); }, -12, 12, fDb); });
+  } else {
+    const a = o.analog, r1 = document.createElement('div'), r2 = document.createElement('div'); r1.className = r2.className = 'eqkr ana'; P.appendChild(r1); P.appendChild(r2);
+    const rb = () => ch(true);
+    eqKnob(r1, 'LOW', () => a.lf, v => { a.lf = v; rb(); }, 0, 0, null, ALF.map(fHz));
+    eqKnob(r1, 'BOOST', () => a.lb, v => { a.lb = Math.round(v * 10) / 10; rb(); }, 0, 10, v => v.toFixed(1));
+    eqKnob(r1, 'ATTEN', () => a.la, v => { a.la = Math.round(v * 10) / 10; rb(); }, 0, 10, v => v.toFixed(1));
+    eqKnob(r1, 'DRIVE', () => a.drive, v => { a.drive = v; rb(); }, 0, 1, v => Math.round(v * 100) + '%');
+    eqKnob(r1, 'OUTPUT', () => a.out, v => { a.out = Math.round(v * 2) / 2; rb(); }, -12, 12, fDb);
+    eqKnob(r2, 'HIGH', () => a.hf, v => { a.hf = v; rb(); }, 0, 0, null, AHF.map(fHz));
+    eqKnob(r2, 'BOOST', () => a.hb, v => { a.hb = Math.round(v * 10) / 10; rb(); }, 0, 10, v => v.toFixed(1));
+    eqKnob(r2, 'WIDTH', () => a.bw, v => { a.bw = v; rb(); }, 0, 1, v => v < 0.33 ? 'sharp' : v < 0.66 ? 'mid' : 'broad');
+    eqKnob(r2, 'ATT SEL', () => a.af, v => { a.af = v; rb(); }, 0, 0, null, AAF.map(fHz));
+    eqKnob(r2, 'ATTEN', () => a.ha, v => { a.ha = Math.round(v * 10) / 10; rb(); }, 0, 10, v => v.toFixed(1));
+  }
+  $('eqLat').textContent = o.type === 'lin' && o.on ? `linear phase: every channel is delayed ${Math.round(LIN_N / 2 / (E.ctx ? E.ctx.sampleRate : 48000) * 1000)} ms to stay in time` : o.type === 'analog' ? 'tube-style shelves with warm saturation' : o.type === 'dyn' ? 'each band reacts to its level: cuts when it gets loud (RANGE below 0) or lifts (above 0)' : '';
+  eqCanvasEvents(); eqTap(); eqDraw(true);
+}
+function eqTap() {                                                             // a spectrum analyser on the chosen channel's EQ output, only while the window is open
+  if (!E.ctx) return; const x = slotOf(EQS.view); if (!x) return;
+  if (EQS.an) { try { EQS.tapFrom.disconnect(EQS.an); } catch (e) {} } else { EQS.an = E.ctx.createAnalyser(); EQS.an.fftSize = 4096; EQS.an.smoothingTimeConstant = 0.82; EQS.spec = new Float32Array(2048); }
+  x.out.connect(EQS.an); EQS.tapFrom = x.out;
+}
+const eqX = (f, w) => Math.log(f / 20) / Math.log(1000) * w, eqFx = (x, w) => 20 * Math.pow(1000, x / w), eqY = (db, h) => h / 2 - db / 18 * (h / 2 - 8);
+function eqDraw(once) {
+  const cv = $('eqCv'); if (!cv || !$('stage').classList.contains('eq')) { EQS.raf = 0; return; }
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth, H = cv.clientHeight; if (cv.width !== W * dpr) { cv.width = W * dpr; cv.height = H * dpr; }
+  const g = cv.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
+  g.strokeStyle = '#1b1e23'; g.lineWidth = 1; g.font = '9px Segoe UI'; g.fillStyle = '#575d68';
+  for (const f of [30, 50, 100, 200, 500, 1000, 2000, 5000, 10000]) { const x = Math.round(eqX(f, W)) + .5; g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H); g.stroke(); g.fillText(fHz(f), x + 3, H - 4); }
+  for (const d of [-12, -6, 0, 6, 12]) { const y = Math.round(eqY(d, H)) + .5; g.strokeStyle = d ? '#1b1e23' : '#2e3239'; g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke(); g.fillText((d > 0 ? '+' : '') + d, 3, y - 3); }
+  if (EQS.an && E.ctx) {                                                      // live spectrum, faint
+    EQS.an.getFloatFrequencyData(EQS.spec); const sr = E.ctx.sampleRate, n = EQS.spec.length; g.beginPath();
+    for (let x = 0; x <= W; x += 3) { const f = eqFx(x, W), b = Math.min(n - 1, Math.round(f / (sr / 2) * n)), db = EQS.spec[b]; const y = H - Math.max(0, Math.min(1, (db + 100) / 80)) * (H - 4); x ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.lineTo(W, H); g.lineTo(0, H); g.closePath(); const gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, 'rgba(147,217,180,.22)'); gr.addColorStop(1, 'rgba(147,217,180,.02)'); g.fillStyle = gr; g.fill();
+  }
+  const id = EQS.view, o = MIX[id].eq; if (once || o.type === 'dyn' || !EQS.resp || EQS.respId !== id) { EQS.resp = eqResponse(id); EQS.respId = id; } const r = EQS.resp;
+  g.beginPath(); for (let i = 0; i < EQF.length; i++) { const x = eqX(EQF[i], W), y = eqY(r[i], H); i ? g.lineTo(x, y) : g.moveTo(x, y); }
+  g.strokeStyle = o.on ? '#e2c27c' : '#6e737c'; g.lineWidth = 2; g.shadowColor = o.on ? 'rgba(216,180,106,.6)' : 'transparent'; g.shadowBlur = 6; g.stroke(); g.shadowBlur = 0;
+  g.lineTo(W, eqY(0, H)); g.lineTo(0, eqY(0, H)); g.closePath(); g.fillStyle = o.on ? 'rgba(216,180,106,.07)' : 'rgba(110,115,124,.05)'; g.fill();
+  if (o.type === 'param') o.param.forEach((b, i) => { if (b.on === false) return; const x = eqX(b.f, W), y = eqY(b.g != null ? b.g : 0, H), s = i === EQS.sel;
+    g.beginPath(); g.arc(x, y, s ? 7 : 5.5, 0, 7); g.fillStyle = s ? '#e2c27c' : '#9aa0aa'; g.fill(); g.strokeStyle = '#0b0c0f'; g.lineWidth = 1.5; g.stroke();
+    g.fillStyle = '#0b0c0f'; g.font = 'bold 8px Segoe UI'; g.textAlign = 'center'; g.fillText(BAND_LBL[b.t][0], x, y + 3); g.textAlign = 'left'; });
+  if (!once || (o.type === 'dyn' || EQS.an)) { if (!EQS.raf) EQS.raf = requestAnimationFrame(() => { EQS.raf = 0; setTimeout(() => eqDraw(), 33); }); }
+}
+function eqCanvasEvents() {
+  const cv = $('eqCv'), id = EQS.view, o = MIX[id].eq; if (o.type !== 'param') { cv.onmousedown = cv.onwheel = null; cv.style.cursor = 'default'; return; }
+  const pick = ev => { const r = cv.getBoundingClientRect(), x = ev.clientX - r.left, y = ev.clientY - r.top; let best = -1, bd = 14;
+    o.param.forEach((b, i) => { if (b.on === false) return; const d = Math.hypot(eqX(b.f, r.width) - x, eqY(b.g != null ? b.g : 0, r.height) - y); if (d < bd) { bd = d; best = i; } }); return best; };
+  cv.style.cursor = 'crosshair';
+  cv.onmousedown = ev => { const i = pick(ev); if (i < 0) return; ev.preventDefault(); EQS.sel = i; const b = o.param[i], r = cv.getBoundingClientRect();
+    const mv = e2 => { b.f = Math.max(20, Math.min(20000, eqFx(e2.clientX - r.left, r.width))); if (b.g != null) b.g = Math.round(Math.max(-18, Math.min(18, (r.height / 2 - (e2.clientY - r.top)) / (r.height / 2 - 8) * 18)) * 2) / 2;
+      MIX[id].eq.on = true; eqChanged(id); eqDraw(true); };
+    const up = () => { removeEventListener('mousemove', mv); removeEventListener('mouseup', up); eqUI(); }; addEventListener('mousemove', mv); addEventListener('mouseup', up); };
+  cv.onwheel = ev => { const i = pick(ev); if (i < 0) return; ev.preventDefault(); const b = o.param[i]; if (b.q == null) return; b.q = Math.max(0.3, Math.min(12, b.q * (ev.deltaY < 0 ? 1.12 : 0.89))); eqChanged(id); eqDraw(true); };
+  cv.ondblclick = ev => { const i = pick(ev); if (i < 0) return; const b = o.param[i]; if (b.g != null) b.g = 0; eqChanged(id); eqUI(); };
+}
+
 
 // ---- meters (run while the mixer is showing)
 const MTR = { buf: new Float32Array(512), hold: {}, raf: 0 };
@@ -1977,8 +2367,9 @@ function mbDraw() {
 }
 function setTop(v) {
   AUD.top = v; saveAud();
-  $('stage').classList.toggle('meters', v === 'meters');
-  $('vStaff').classList.toggle('on', v !== 'meters'); $('vMeters').classList.toggle('on', v === 'meters');
+  $('stage').classList.toggle('meters', v === 'meters'); $('stage').classList.toggle('eq', v === 'eq');
+  $('vStaff').classList.toggle('on', v !== 'meters' && v !== 'eq'); $('vMeters').classList.toggle('on', v === 'meters' || (STUDIO && v !== 'eq')); $('vEq').classList.toggle('on', v === 'eq');
+  if (v === 'eq') eqUI();
   if (v === 'meters') { if (!MB.built) mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); }
 }
 
@@ -2010,7 +2401,7 @@ document.addEventListener('fullscreenchange', () => $('tFull').classList.toggle(
   $('dOn').onclick = toggleDrums; $('mOn').onclick = toggleClick;
   $('pMix').onclick = ev => { ev.stopPropagation(); const m = $('mixMenu'); m.style.display = m.style.display === 'grid' ? 'none' : 'grid'; };
   $('tFull').onclick = toggleFull;
-  mixBuildUI(); setView(AUD.view || 'mix'); $('vStaff').onclick = () => setTop('staff'); $('vMeters').onclick = () => setTop('meters'); setTop(AUD.top || 'staff'); if (STUDIO) { mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); } $('vMix').onclick = () => setView('mix'); $('vNeck').onclick = () => setView('neck');
+  mixBuildUI(); setView(AUD.view || 'mix'); $('vStaff').onclick = () => setTop('staff'); $('vMeters').onclick = () => setTop('meters'); $('vEq').onclick = () => setTop(AUD.top === 'eq' ? (STUDIO ? 'meters' : 'staff') : 'eq'); setTop(AUD.top || 'staff'); if (STUDIO) { mbInit(); if (!MTR.raf) MTR.raf = requestAnimationFrame(mixFrame); } $('vMix').onclick = () => setView('mix'); $('vNeck').onclick = () => setView('neck');
   const sv = () => { $('syncV').textContent = (AUD.sync > 0 ? '+' : '') + AUD.sync + ' ms'; };
   $('vSync').value = AUD.sync; sv(); $('vSync').oninput = () => { AUD.sync = +$('vSync').value; sv(); saveAud(); };
   $('lDev').addEventListener('change', looperInputReset);
@@ -2241,16 +2632,22 @@ function bendMark(pb) {
 }
 
 // ---- write solved columns into the song
+function dropLateOv(rows, ns, ft, t0) {                                      // a lone note an octave / 12th / two octaves above a string that is still ringing, with no new pick: an overtone, not a note
+  return rows.filter(r => { if (r.notes.length !== 1) return true; const p = r.notes[0].p;
+    const ring = ns.some(n => n.t < r.t - 0.15 && n.t + n.d > r.t && [12, 19, 24, 28, 31].includes(p - n.p));
+    return !(ring && ft && ft.attack(r.t - (t0 || 0)) < 3); });
+}
 function writeSolved(rows, o) {                                             // o: {c0, timing:'follow'|'even', t0, bpm, names, ids}
-  const colDur = 240 / o.bpm / song.cpm, step = +$('step').value;
+  const colDur = 240 / o.bpm / song.cpm, step = +$('step').value, follow = o.timing === 'follow';
+  if (follow && o.tk) { song.takes = song.takes || {}; song.takes[o.tk] = { c0: o.c0, bpm: o.bpm, cpm: song.cpm }; }
   let last = -1, prevRow = null, prevCol = null;
   for (const r of rows) {
-    let c = o.timing === 'follow' ? o.c0 + Math.round((r.t - o.t0) / colDur) : (last < 0 ? o.c0 : last + step);
+    let c = follow ? o.c0 + qSnap((r.t - o.t0) / colDur) : (last < 0 ? o.c0 : last + step);
     if (c <= last) c = last + 1;
     ensureCols(c + 1); r.col = c;
     for (const x of r.notes) {
       song.notes = song.notes.filter(n => !(n.c === c && n.s === x.s));
-      const n = { id: uid++, c, s: x.s, f: x.f }, bm = bendMark(x.pb); if (bm) n.t = bm;
+      const n = { id: uid++, c, s: x.s, f: x.f }, bm = bendMark(x.pb); if (bm) n.t = bm; if (follow && o.tk) { n.tm = r.t - o.t0; n.tk = o.tk; }
       song.notes.push(n); if (o.ids) o.ids.push(n.id);
     }
     if (prevRow && prevRow.notes.length === 1 && r.notes.length === 1) {   // hammer-on / pull-off: same string, quick, softer second note
@@ -2260,7 +2657,7 @@ function writeSolved(rows, o) {                                             // o
     if (o.names && r.notes.length >= 2) {
       const nm = chordName(r.notes.map(x => x.p));
       if (nm && !song.marks.some(m => m.type === 'chord' && m.c === c) && !(o.lastName && o.lastName.replace(/\/.*$/, '').replace(/5$/, '') === nm.replace(/\/.*$/, '').replace(/5$/, '') && c - o.lastNameC < song.cpm * 4)) {
-        const mk = { id: uid++, type: 'chord', c, text: nm }; song.marks.push(mk); if (o.mids) o.mids.push(mk.id); o.lastName = nm; o.lastNameC = c;
+        const mk = { id: uid++, type: 'chord', c, text: nm }; if (follow && o.tk) { mk.tm = r.t - o.t0; mk.tk = o.tk; } song.marks.push(mk); if (o.mids) o.mids.push(mk.id); o.lastName = nm; o.lastNameC = c;
       }
     }
     last = c; prevRow = r; prevCol = c;
@@ -2299,7 +2696,7 @@ async function aiFromLoop() {
   try {
     const bp = await aiModel(), x22 = await resample(audio, E.ctx.sampleRate);
     const raw = await aiRun(x22, bp, p => status(`writing tab from the loop… ${Math.round(p * 100)}%`)), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22), feat = audioFeat(x22), ns = cleanNotes(fixed, feat);
-    const rows = solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null);
+    const rows = dropLateOv(solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null), ns, feat);
     const o = { c0: Math.floor(cursor.c / song.cpm) * song.cpm, timing: 'follow', t0: 0, bpm: LP.lock || bpmNow(), names: $('lNames').value === 'on', off };
     if (!rows.length) { saveTake('loop', x22, raw, ns, [], o); return status('no notes found in the loop: try raising Sensitivity'); }
     snapshot(); writeSolved(rows, o); saveTake('loop', x22, raw, ns, rows, o);
@@ -2314,9 +2711,10 @@ async function aiStart() {
   const c = L.ctx;
   try { await c.audioWorklet.addModule('looper-worklet.js'); } catch (e) { await c.audioWorklet.addModule(URL.createObjectURL(new Blob([LOOPER_JS], { type: 'application/javascript' }))); }
   AI.node = new AudioWorkletNode(c, 'dxcap', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1] });
-  const z = c.createGain(); z.gain.value = 0; L.src.connect(AI.node); AI.node.connect(z); z.connect(c.destination);
+  const z = c.createGain(); z.gain.value = 0; (L.in || L.src).connect(AI.node); AI.node.connect(z); z.connect(c.destination);
   AI.chunks = []; AI.len = 0; AI.sr = c.sampleRate; AI.acc = []; AI.lastT = 0; AI.ids = []; AI.mids = []; AI.on = true; AI.busy = false; AI.pos = L.lastPos ? L.lastPos.f : null;
   AI.startCol = cursor.c; AI.nextCol = cursor.c; AI.t0 = null; AI.liveRows = []; AI.maxDb = null; AI.off = 0;
+  AI.tk = 't' + Date.now(); AI.pend = []; AI.rowT = []; AI.sense = $('lTime').value === 'follow' && !+song.tempo;   // sense the tempo only if BPM is blank
   AI.node.port.onmessage = e => { AI.chunks.push(e.data); AI.len += e.data.length; };
   snapshot();
   AI.timer = setInterval(aiTick, 1500);
@@ -2340,12 +2738,17 @@ async function aiTick() {
     AI.lastT = Math.max(AI.lastT, lim);
     if (fresh.length && AI.on && !AI.finalizing) {
       AI.acc.push(...fresh);
-      const rows = solveTab(groupNotes(fresh), AI.pos);
+      let rows = dropLateOv(solveTab(groupNotes(fresh), AI.pos), ns, ft, w0);
+      const timing = $('lTime').value === 'follow' ? 'follow' : 'even';
+      if (rows.length && timing === 'follow' && !+song.tempo) {         // BPM blank: hold the notes until the tempo is sensed (about 5 s in)
+        if (AI.t0 == null) AI.t0 = rows[0].t;
+        AI.pend.push(...rows); AI.rowT.push(...rows.map(r => r.t)); rows = [];
+        if (AI.rowT.length >= 5 && end - AI.t0 >= 5) { const sb = senseBpm(AI.rowT, audioFeat(await resample(takeAudio(0), AI.sr))); if (sb) { tempoSensed(sb); rows = AI.pend; AI.pend = []; } }
+      }
       if (rows.length) {
         if (AI.t0 == null) AI.t0 = rows[0].t;
-        const timing = $('lTime').value === 'follow' && +song.tempo ? 'follow' : 'even';
         const c0 = timing === 'follow' ? AI.startCol : AI.nextCol;
-        const last = writeSolved(rows, { c0, timing, t0: timing === 'follow' ? AI.t0 : 0, bpm: +song.tempo || 100, names: $('lNames').value === 'on', ids: AI.ids, mids: AI.mids });
+        const last = writeSolved(rows, { c0, timing, t0: timing === 'follow' ? AI.t0 : 0, bpm: +song.tempo || 100, names: $('lNames').value === 'on', ids: AI.ids, mids: AI.mids, tk: AI.tk });
         AI.nextCol = last + +$('step').value; AI.pos = rows[rows.length - 1].hand; cursor.c = AI.nextCol; ensureCols(cursor.c);
         sel.clear(); changed(); scrollToCursor();
       }
@@ -2363,14 +2766,15 @@ async function aiStop() {                                                    // 
     try {
       const bp = await aiModel(), x22 = await resample(takeAudio(0), AI.sr);
       const raw = await aiRun(x22, bp, p => status(`final pass over the whole take… ${Math.round(p * 100)}%`)), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22, AI.off), feat = audioFeat(x22), ns = cleanNotes(fixed, feat);
-      const rows = solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null);
-      const tOpt = { c0: AI.startCol, timing: $('lTime').value === 'follow' && +song.tempo ? 'follow' : 'even', t0: rows.length ? rows[0].t : 0, bpm: +song.tempo || 100, off };
+      const rows = dropLateOv(solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null), ns, feat);
+      if (AI.sense && rows.length) { const sb = senseBpm(rows.map(r => r.t), feat); if (sb) tempoSensed(sb, true); }      // the whole take gives the best tempo; then it stays
+      const tOpt = { c0: AI.startCol, timing: $('lTime').value === 'follow' ? 'follow' : 'even', t0: rows.length ? rows[0].t : 0, bpm: +song.tempo || 100, off };
       if (!rows.length) saveTake('live', x22, raw, ns, [], tOpt);
       if (rows.length) {
         const drop = new Set(AI.ids), dropM = new Set(AI.mids);
         song.notes = song.notes.filter(n => !drop.has(n.id)); song.marks = song.marks.filter(m => !dropM.has(m.id));
-        const timing = $('lTime').value === 'follow' && +song.tempo ? 'follow' : 'even';
-        const last = writeSolved(rows, { c0: AI.startCol, timing, t0: rows[0].t, bpm: +song.tempo || 100, names: $('lNames').value === 'on' }); saveTake('live', x22, raw, ns, rows, tOpt);
+        const timing = $('lTime').value === 'follow' ? 'follow' : 'even';
+        const last = writeSolved(rows, { c0: AI.startCol, timing, t0: rows[0].t, bpm: +song.tempo || 100, names: $('lNames').value === 'on', tk: AI.tk }); saveTake('live', x22, raw, ns, rows, tOpt);
         cursor.c = last + +$('step').value; ensureCols(cursor.c); sel.clear(); changed(); scrollToCursor();
         status(`wrote ${rows.reduce((k, r) => k + r.notes.length, 0)} notes (${rows.filter(r => r.notes.length > 1).length} chords)${tuneNote(off)}`);
       } else status('no notes found: try raising Sensitivity');
