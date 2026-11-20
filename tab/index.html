@@ -528,7 +528,7 @@
 
   <h4>Chords and notes mode (AI)</h4>
   <p>Open Listen <b>⚙</b> and set <b>What to listen for</b> to <b>Chords and notes (AI)</b>. Listen then hears several strings at once, so strummed chords, double-stops and riffs all get written. It runs Spotify's open-source Basic Pitch note model, stored in the widget folder, so it works offline and your audio never leaves the PC. The first time, it takes a few seconds to load.</p>
-  <p><b>Three judges check every note.</b> 1. <b>The neural model</b> reads a picture of the sound (a spectrogram), on the graphics card. When you stop, it makes a <b>deep pass</b>: it hears the whole take four times, each copy shifted by a quarter of its 11.6 ms frame, and averages them, which steadies the note starts and brings quiet notes out of the noise. 2. <b>The spectrum judge</b> looks only at the new sound each pick adds and explains it with your guitar's own harmonic fingerprint, learned from the clean single notes of the same take. A note survives only if it really adds energy, so an overtone (an octave or twelfth above a note you played) or a string that was just ringing when you picked another one is not written as a new note. 3. <b>The frequency judge</b> measures each note's exact pitch and corrects for a guitar that is a little sharp or flat. Each take saved in Takes also records what the judges decided.</p>
+  <p><b>Four judges check every note.</b> 1. <b>The neural model</b> reads a picture of the sound (a spectrogram), on the graphics card. When you stop, it makes a <b>deep pass</b>: it hears the whole take four times, each copy shifted by a quarter of its 11.6 ms frame, and averages them, which steadies the note starts and brings quiet notes out of the noise. 2. <b>The spectrum judge</b> looks only at the new sound each pick adds and explains it with your guitar's own harmonic fingerprint, learned from the clean single notes of the same take. A note survives only if it really adds energy, so an overtone (an octave or twelfth above a note you played) or a string that was just ringing when you picked another one is not written as a new note. 3. <b>The frequency judge</b> measures each note's exact pitch and corrects for a guitar that is a little sharp or flat. 4. <b>The pick judge</b> asks of every note whether it was really picked: its own harmonics must jump at that moment. On a scale where the last note keeps ringing on the next string, that string is not written again each time you pick the next note. Then the tab is laid out with a real fretting hand: if a phrase needs the 7th to 10th frets, the whole phrase is written in that box, the way a position exercise is read, while a phrase that fits the open position stays there. Each take saved in Takes also records what the judges decided.</p>
   <p><b>While you play</b> the tab fills in about a second behind you. <b>When you stop</b>, it goes over the whole take once more and rewrites it neatly: one fingering for the whole phrase, with as little hand movement as possible, and chord shapes your hand can actually make. One <b>↶ Undo</b> removes the whole take.</p>
   <p><b>Write tab from the loop</b> (in the same menu) transcribes whatever the looper has recorded and writes it from the start of the cursor's bar, in time with the BPM. Record one part per loop for the cleanest result.</p>
   <p><b>Chord names:</b> chords it recognises (major, minor, 7ths, power chords, sus, dim and more, including slash chords like D/F#) are named above the tab. Turn this off with <b>Chord names</b>. Bends and vibrato are picked up from the pitch and marked <b>b</b> and <b>~</b>; quick, softer notes on the same string are marked <b>h</b> or <b>p</b>.</p>
@@ -2594,6 +2594,64 @@ function spectralJudge(ns, x, o = {}) {
   return out.sort((a, b) => a.t - b.t || a.p - b.p);
 }
 
+// ---- fourth judge, the pick judge: every note must show a pick of its own. A string still ringing from the last note, heard again
+// when the next note is picked, or a faint resonance beside a louder pick, is dropped unless its own harmonics jump at that moment.
+const RA = { SR: 22050, win1: null, win2: null };
+function raPeak(x) { if (x.__pk) return x.__pk; let m = 1e-6; for (let i = 0; i < x.length; i += 3) { const v = Math.abs(x[i]); if (v > m) m = v; } return (x.__pk = m); }
+function raFrame(x, a, n, win, N) {                                          // windowed frame, zero-padded to N, magnitudes
+  const re = new Float32Array(N), im = new Float32Array(N); a = Math.floor(a);
+  for (let i = 0; i < n; i++) { const j = a + i; re[i] = j >= 0 && j < x.length ? x[j] * win[i] : 0; }
+  return fftMag(re, im);
+}
+function raHann(n) { const w = new Float32Array(n); for (let i = 0; i < n; i++) w[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * i / (n - 1)); return w; }
+function raSnap(x, t) {                                                      // the pick transient nearest the model's onset
+  const SR = RA.SR, H = 128, n = 1024; if (!RA.win1) RA.win1 = raHann(n);
+  const g = 100 / (512 * raPeak(x)); let prev = null, best = -1, bt = t;
+  for (let a = Math.round((t - 0.075) * SR); a <= (t + 0.045) * SR; a += H) {
+    const S = raFrame(x, a - n / 2, n, RA.win1, n), L = new Float32Array(S.length);
+    for (let i = 0; i < S.length; i++) L[i] = Math.log1p(g * S[i]);
+    if (prev) { let f = 0; for (let i = 0; i < L.length; i++) { const d = L[i] - prev[i]; if (d > 0) f += d; } const tc = a / SR; if (tc >= t - 0.06 && tc <= t + 0.04 && f > best) { best = f; bt = tc; } }
+    prev = L;
+  }
+  return bt;
+}
+function raBand(x, t0, t1, f) {
+  const SR = RA.SR, n = Math.round((t1 - t0) * SR), N = 8192, w = raHann(n), S = raFrame(x, t0 * SR, n, w, N), bw = SR / N;
+  const lo = Math.ceil(f * Math.pow(2, -0.5 / 12) / bw), hi = Math.floor(f * Math.pow(2, 0.5 / 12) / bw); let e = 0;
+  for (let k = Math.max(0, lo); k <= Math.min(S.length - 1, hi); k++) e += S[k] * S[k];
+  return e / n + 1e-12;
+}
+function raRise(x, p, t, others) {                                           // how much this pitch's own harmonics jump at the pick (log10)
+  const f0 = 440 * Math.pow(2, (p - 69) / 12); let s = 0, ws = 0;
+  const shared = f => (others || []).some(q => { const g = 440 * Math.pow(2, (q - 69) / 12); for (let k = 1; k <= 8; k++) if (Math.abs(f - g * k) < f * 0.02) return true; return false; });
+  [[1, 1], [2, 1], [3, 0.5], [4, 0.5]].forEach(([h, w]) => { if (f0 * h > 5000 || (h > 3 && !others) || (others && h > 1 && shared(f0 * h))) return; s += w * Math.log10(raBand(x, t + 0.02, t + 0.105, f0 * h) / raBand(x, t - 0.10, t - 0.015, f0 * h)); ws += w; });
+  return ws ? s / ws : 1;
+}
+function reattackJudge(ns, x, o = {}) {
+  const thr = o.thr != null ? o.thr : 0.5, recWin = o.rec || 1.0, gap = o.gap != null ? o.gap : 0.2, thrLone = o.lone != null ? o.lone : 0.3, nearWin = o.near || 0.3, weakA = o.weakA || 0.7, thrWeak = o.thrWeak != null ? o.thrWeak : 0.4, out = [], why = { reattack: 0 };
+  const est = ns.slice().sort((a, b) => a.t - b.t);
+  const isRec = n => est.some(m => m.p === n.p && n.t - m.t > 0.1 && n.t - m.t < recWin);
+  const rise = n => (n.rise != null ? n.rise : (n.rise = raRise(x, n.p, raSnap(x, n.t))));
+  for (const n of est) {
+    const co = est.filter(m => m !== n && m.p !== n.p && Math.abs(m.t - n.t) < 0.06);
+    if (!isRec(n)) {                                                         // a faint note with no pick of its own beside a louder picked one: resonance
+      if (o.weak !== false) { const nb = est.filter(m => m !== n && m.p !== n.p && Math.abs(m.t - n.t) < nearWin); const la = Math.max(0, ...nb.map(m => m.a || 0));
+        if (nb.length && (n.a || 0) < la * weakA && rise(n) < thrWeak) { why.reattack++; continue; } }
+      out.push(n); continue;
+    }
+    if (!co.length) {                                                        // heard again next to another note's pick, with no pick of its own
+      const near = est.some(m => m.p !== n.p && Math.abs(m.t - n.t) < nearWin);
+      if (near && rise(n) < thrLone) { why.reattack++; continue; } out.push(n); continue;
+    }
+    if (co.length >= 2) { out.push(n); continue; }                           // a strum: chord tones are picked again together
+    const r = rise(n), top = Math.max(...co.map(rise));
+    if (r < thr && top - r > gap) { why.reattack++; continue; }   // the other note was picked; this one just rang on
+    out.push(n);
+  }
+  reattackJudge.last = why;
+  return out;
+}
+
 // ---- clean-up: out-of-range pitches, quiet blips, noise, ringing strings heard again, overtones of single notes
 function cleanNotes(ns, feat, maxDb) {
   const sens = +$('lSens').value, minA = 0.40 - sens * 0.018, lo = Math.min(...[0, 1, 2, 3, 4, 5].map(openMidi)), hi = Math.max(...[0, 1, 2, 3, 4, 5].map(openMidi)) + 22;
@@ -2673,35 +2731,59 @@ function staticCost(c) {
   if (lock !== 'auto') { const p = +lock; for (const x of c.as) { if (x.f === 0) { if (p > 3) k += 1; } else if (x.f < p - 1 || x.f > p + 4) k += 2; } }
   return k;
 }
-function solveTab(groups, startPos) {                                       // Viterbi over the whole phrase: playable shapes, little hand movement
+// Viterbi over the whole phrase with a real fretting hand: each state is a shape plus where the index finger sits.
+// A fretted note is reachable from index fret h when h <= f <= h+3 (h+4 is a stretch). Moving the hand costs; using frets
+// costs almost nothing, so a phrase that needs the 7th-10th frets is written in that box from its first note, the way a
+// player reads a position exercise, while a phrase that fits the open position stays there.
+function solveCore(groups, startPos, near) {
   const open = [0, 1, 2, 3, 4, 5].map(openMidi), layers = [];
   for (const g of groups) {
-    let cs = fingerings(g, open).map(c => Object.assign(c, { k: staticCost(c) })).sort((a, b) => a.k - b.k).slice(0, 60);
+    let cs = fingerings(g, open).map(c => Object.assign(c, { k: staticCost(c) - (c.pos || 0) * 0.03 + Math.max(0, (c.pos || 0) - 12) * 0.05 })).sort((a, b) => a.k - b.k).slice(0, 40);
     if (!cs.length) cs = [{ as: [], lo: 0, hi: 0, pos: null, k: 5, drop: 5, keep: [] }];
-    layers.push(cs);
+    const st = [];
+    for (const c of cs) {
+      const fr = c.as.filter(x => x.f > 0).map(x => x.f), opens = c.as.length - fr.length;
+      const ok = h => !near || near[layers.length] == null || Math.abs(h - near[layers.length]) <= 1;
+      if (!fr.length) { for (let h = 1; h <= 15; h++) if (ok(h)) st.push({ c, h, k: c.k + opens * (h <= 3 ? -0.05 : h <= 5 ? 0.3 : 0.6) + h * 0.004 }); continue; }
+      const lo = Math.min(...fr), hi = Math.max(...fr);
+      for (let h = Math.max(1, hi - 4); h <= lo; h++) if (ok(h)) st.push({ c, h, k: c.k + (hi - h === 4 ? 0.5 : 0) + opens * (h <= 3 ? -0.05 : h <= 5 ? 0.3 : 0.6) + h * 0.004 });
+    }
+    if (!st.length && near) return solveCore(groups, startPos, null);
+    layers.push(st);
   }
   if (!layers.length) return [];
   const best = [], back = [];
-  layers.forEach((cs, i) => {
-    best[i] = []; back[i] = [];
-    cs.forEach((c, j) => {
-      if (i === 0) { const d = c.pos != null && startPos != null ? Math.abs(c.pos - startPos) * 0.4 : 0; best[i][j] = c.k + d; back[i][j] = -1; c.hand = c.pos != null ? c.pos : startPos; return; }
-      const gap = groups[i].t - groups[i - 1].t, w = 0.55 / (1 + gap);
+  layers.forEach((st, i) => {
+    best[i] = new Float64Array(st.length); back[i] = new Int32Array(st.length);
+    if (i === 0) { st.forEach((s, j) => { best[0][j] = s.k + (startPos != null ? Math.abs(s.h - startPos) * 0.3 : 0); back[0][j] = -1; }); return; }
+    const gap = groups[i].t - groups[i - 1].t, w = 1 / (1 + 1.5 * Math.max(0, gap - 0.25));   // a pause gives time to move
+    const prev = layers[i - 1];
+    st.forEach((s, j) => {
       let bk = Infinity, bj = 0;
-      layers[i - 1].forEach((p, pj) => {
-        let k = best[i - 1][pj];
-        if (c.pos != null && p.hand != null) k += Math.abs(c.pos - p.hand) * w;
-        if (c.as.length === 1 && p.as.length === 1 && c.as[0].s === p.as[0].s && Math.abs(c.as[0].f - p.as[0].f) <= 4) k -= 0.25;   // stay on the string for runs
+      for (let pj = 0; pj < prev.length; pj++) {
+        const p = prev[pj], d = Math.abs(s.h - p.h);
+        let k = best[i - 1][pj] + (d ? (0.9 + d * 0.35) * w : 0);
+        if (s.c.as.length === 1 && p.c.as.length === 1 && s.c.as[0].s === p.c.as[0].s && s.c.as[0].f > 0 && Math.abs(s.c.as[0].f - p.c.as[0].f) <= 4) k -= 0.02;
         if (k < bk) { bk = k; bj = pj; }
-      });
-      best[i][j] = bk + c.k; back[i][j] = bj; c.hand = c.pos != null ? c.pos : layers[i - 1][bj].hand;
+      }
+      best[i][j] = bk + s.k; back[i][j] = bj;
     });
   });
-  let j = best[best.length - 1].indexOf(Math.min(...best[best.length - 1])); const pick = [];
-  for (let i = layers.length - 1; i >= 0; i--) { pick[i] = layers[i][j]; j = back[i][j]; }
+  const L = best.length - 1; let j = 0; for (let q = 1; q < best[L].length; q++) if (best[L][q] < best[L][j]) j = q;
+  const pick = [];
+  for (let i = L; i >= 0; i--) { pick[i] = layers[i][j]; j = back[i][j]; }
+  return pick;
+}
+function solveTab(groups, startPos) {
+  if (!groups.length) return [];
+  // first find where the hand is from the melody alone (the strongest note of each pick; a chord only when 3+ of its notes are about equally loud),
+  // so a faint ringing or resonating note heard with a pick cannot drag the whole phrase into another position
+  const mel = groups.map(g => { const top = Math.max(...g.ns.map(n => n.a)), strong = g.ns.filter(n => n.a >= top * 0.75);
+    return Object.assign({}, g, { ns: strong.length >= 3 ? strong : [g.ns.slice().sort((a, b) => b.a - a.a)[0]] }); });
+  const hand = solveCore(mel, startPos, null).map(s => s.h), pick = solveCore(groups, startPos, hand);
   return groups.map((g, i) => {
-    const c = pick[i];
-    return { t: g.t, hand: c.hand, notes: c.as.map(x => { const n = c.keep.find(m => m.p === x.m); return { s: x.s, f: x.f, p: x.m, a: n.a, d: n.d, pb: n.pb }; }) };
+    const c = pick[i].c;
+    return { t: g.t, hand: pick[i].h, notes: c.as.map(x => { const n = c.keep.find(m => m.p === x.m); return { s: x.s, f: x.f, p: x.m, a: n.a, d: n.d, pb: n.pb }; }) };
   }).filter(r => r.notes.length);
 }
 
@@ -2781,7 +2863,7 @@ function saveTake(source, x22, raw, kept, rows, o) {
       tuningOffsetCents: Math.round((o.off || 0) * 100), settings: { sensitivity: +$('lSens').value, position: $('lPos').value, timing: o.timing, names: $('lNames').value, tuning: song.tuningName, strings: song.tuning, capo: song.capo, bpm: o.bpm, cpm: song.cpm, step: +$('step').value, startCol: o.c0, t0: r3(o.t0) },
       raw: raw.map(n => ({ p: n.p, t: r3(n.t), d: r3(n.d), a: r3(n.a), pb: n.pb })), kept: kept.map(n => ({ p: n.p, p0: n.p0, t: r3(n.t), d: r3(n.d) })),
       written: rows.map(r => ({ t: r3(r.t), col: r.col, notes: r.notes.map(x => ({ s: x.s, f: x.f, p: x.p, a: r3(x.a) })) })),
-      chords: song.marks.filter(m => m.type === 'chord' && m.c >= o.c0).map(m => ({ c: m.c, text: m.text })), engine: { deep: DEEP_SHIFTS.length, judge: spectralJudge.last || null, backend: window.DXBP ? window.DXBP.tf.getBackend() : '' } });
+      chords: song.marks.filter(m => m.type === 'chord' && m.c >= o.c0).map(m => ({ c: m.c, text: m.text })), engine: { deep: DEEP_SHIFTS.length, judge: Object.assign({}, spectralJudge.last || {}, reattackJudge.last || {}), backend: window.DXBP ? window.DXBP.tf.getBackend() : '' } });
     const msg = { cmd: 'take', name, wav: wavB64(x22, 22050), json };
     if (host) host.postMessage(msg); else window.__lastTake = msg;
   } catch (e) { console.warn('take not saved', e); }
@@ -2794,7 +2876,7 @@ async function aiFromLoop() {
   const audio = await new Promise(res => { const h = e => { if (e.data.ev === 'dump') { LP.node.port.removeEventListener('message', h); res(e.data.d); } }; LP.node.port.addEventListener('message', h); LP.node.port.start(); LP.node.port.postMessage({ cmd: 'dump' }); });
   try {
     const bp = await aiModel(), x22 = await resample(audio, E.ctx.sampleRate);
-    const raw = await aiRun(x22, bp, p => status(`writing tab from the loop (deep pass)… ${Math.round(p * 100)}%`), true), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22), feat = audioFeat(x22), ns = spectralJudge(cleanNotes(fixed, feat), x22);
+    const raw = await aiRun(x22, bp, p => status(`writing tab from the loop (deep pass)… ${Math.round(p * 100)}%`), true), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22), feat = audioFeat(x22), ns = reattackJudge(spectralJudge(cleanNotes(fixed, feat), x22), x22);
     const rows = dropLateOv(solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null), ns, feat);
     const o = { c0: Math.floor(cursor.c / song.cpm) * song.cpm, timing: 'follow', t0: 0, bpm: LP.lock || bpmNow(), names: $('lNames').value === 'on', off };
     if (!rows.length) { saveTake('loop', x22, raw, ns, [], o); return status('no notes found in the loop: try raising Sensitivity'); }
@@ -2831,7 +2913,7 @@ async function aiTick() {
   try {
     const w0 = Math.max(0, end - 3), bp = await aiModel(), x22 = await resample(takeAudio(w0), AI.sr), ft = audioFeat(x22);
     AI.maxDb = Math.max(AI.maxDb == null ? -120 : AI.maxDb, ft.max);
-    const raw = await aiRun(x22, bp); AI.off = tuneFix(raw, x22, AI.off); const ns = spectralJudge(cleanNotes(raw, ft, AI.maxDb), x22).map(n => Object.assign(n, { t: n.t + w0 }));
+    const raw = await aiRun(x22, bp); AI.off = tuneFix(raw, x22, AI.off); const ns = reattackJudge(spectralJudge(cleanNotes(raw, ft, AI.maxDb), x22), x22).map(n => Object.assign(n, { t: n.t + w0 }));
     const lim = end - 0.5, from = Math.max(AI.lastT, w0 + 0.3);
     const fresh = ns.filter(n => n.t >= from && n.t < lim && !AI.acc.some(m => m.p === n.p && Math.abs(m.t - n.t) < 0.08));
     AI.lastT = Math.max(AI.lastT, lim);
@@ -2864,7 +2946,7 @@ async function aiStop() {                                                    // 
   if (secs > 1 && secs < 300) {
     try {
       const bp = await aiModel(), x22 = await resample(takeAudio(0), AI.sr);
-      const raw = await aiRun(x22, bp, p => status(`deep final pass on the graphics card… ${Math.round(p * 100)}%`), true), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22, AI.off), feat = audioFeat(x22), ns = spectralJudge(cleanNotes(fixed, feat), x22);
+      const raw = await aiRun(x22, bp, p => status(`deep final pass on the graphics card… ${Math.round(p * 100)}%`), true), fixed = raw.map(n => Object.assign({}, n)), off = tuneFix(fixed, x22, AI.off), feat = audioFeat(x22), ns = reattackJudge(spectralJudge(cleanNotes(fixed, feat), x22), x22);
       const rows = dropLateOv(solveTab(groupNotes(ns, feat), L.lastPos ? L.lastPos.f : null), ns, feat);
       if (AI.sense && rows.length) { const sb = senseBpm(rows.map(r => r.t), feat); if (sb) tempoSensed(sb, true); }      // the whole take gives the best tempo; then it stays
       const tOpt = { c0: AI.startCol, timing: $('lTime').value === 'follow' ? 'follow' : 'even', t0: rows.length ? rows[0].t : 0, bpm: +song.tempo || 100, off };
