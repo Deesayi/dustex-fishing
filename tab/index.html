@@ -2627,9 +2627,37 @@ function raRise(x, p, t, others) {                                           // 
   [[1, 1], [2, 1], [3, 0.5], [4, 0.5]].forEach(([h, w]) => { if (f0 * h > 5000 || (h > 3 && !others) || (others && h > 1 && shared(f0 * h))) return; s += w * Math.log10(raBand(x, t + 0.02, t + 0.105, f0 * h) / raBand(x, t - 0.10, t - 0.015, f0 * h)); ws += w; });
   return ws ? s / ws : 1;
 }
+function raFlux(x, t0, t1) {                                                 // strongest pick transient between two times
+  const SR = RA.SR, H = 128, n = 1024; if (!RA.win1) RA.win1 = raHann(n);
+  const g = 100 / (512 * raPeak(x)); let prev = null, best = 0;
+  for (let a = Math.round((t0 - H / SR) * SR); a <= t1 * SR; a += H) {
+    const S = raFrame(x, a - n / 2, n, RA.win1, n), L = new Float32Array(S.length);
+    for (let i = 0; i < S.length; i++) L[i] = Math.log1p(g * S[i]);
+    if (prev) { let f = 0; for (let i = 0; i < L.length; i++) { const d = L[i] - prev[i]; if (d > 0) f += d; } if (f > best) best = f; }
+    prev = L;
+  }
+  return best;
+}
+function raIOI(ns) {
+  const t = [...new Set(ns.map(n => Math.round(n.t * 20) / 20))].sort((a, b) => a - b), d = [];
+  for (let i = 1; i < t.length; i++) if (t[i] - t[i - 1] > 0.08 && t[i] - t[i - 1] < 2) d.push(t[i] - t[i - 1]);
+  if (d.length < 4) return 0.33; d.sort((a, b) => a - b); return d[d.length >> 1];
+}
+function raTempoWin(ns) {                                                   // how far back a ringing string can still be heard: about three notes at this tempo
+  const t = [...new Set(ns.map(n => Math.round(n.t * 20) / 20))].sort((a, b) => a - b), d = [];
+  for (let i = 1; i < t.length; i++) if (t[i] - t[i - 1] > 0.08 && t[i] - t[i - 1] < 2) d.push(t[i] - t[i - 1]);
+  if (d.length < 4) return 1.0; d.sort((a, b) => a - b); return Math.min(2.5, Math.max(1.0, d[d.length >> 1] * 3.2));
+}
 function reattackJudge(ns, x, o = {}) {
-  const thr = o.thr != null ? o.thr : 0.5, recWin = o.rec || 1.0, gap = o.gap != null ? o.gap : 0.2, thrLone = o.lone != null ? o.lone : 0.3, nearWin = o.near || 0.3, weakA = o.weakA || 0.7, thrWeak = o.thrWeak != null ? o.thrWeak : 0.4, out = [], why = { reattack: 0 };
-  const est = ns.slice().sort((a, b) => a.t - b.t);
+  const thr = o.thr != null ? o.thr : 0.5, recWin = o.rec || raTempoWin(ns), gap = o.gap != null ? o.gap : 0.2, thrLone = o.lone != null ? o.lone : 0.3, nearWin = o.near || Math.min(0.6, Math.max(0.3, 0.8 * raIOI(ns))), weakA = o.weakA || 0.7, thrWeak = o.thrWeak != null ? o.thrWeak : 0.4, out = [], why = { reattack: 0 };
+  const est0 = ns.slice().sort((a, b) => a.t - b.t), est = [];
+  for (const n of est0) {                                                    // the same pick heard twice a moment apart: one note
+    const m = est.filter(q => q.p === n.p && n.t - q.t < 0.2).pop();
+    if (m && o.dbl !== false && raFlux(x, m.t + 0.03, n.t + 0.03) < 0.5 * raFlux(x, m.t - 0.05, m.t + 0.03)) { m.d = Math.max(m.d, n.t + n.d - m.t); why.reattack++; continue; }
+    est.push(n);
+  }
+  let multi = 0, grp = 0; for (let i = 0; i < est.length;) { let k = i + 1; while (k < est.length && est[k].t - est[i].t < 0.06) k++; grp++; if (new Set(est.slice(i, k).map(m => m.p)).size >= 3) multi++; i = k; }
+  const melodic = grp >= 8 && multi / grp < (o.melFrac || 0.15);            // mostly single notes: a 3-note "chord" here is one note plus strings still ringing
   const isRec = n => est.some(m => m.p === n.p && n.t - m.t > 0.1 && n.t - m.t < recWin);
   const rise = n => (n.rise != null ? n.rise : (n.rise = raRise(x, n.p, raSnap(x, n.t))));
   for (const n of est) {
@@ -2643,7 +2671,7 @@ function reattackJudge(ns, x, o = {}) {
       const near = est.some(m => m.p !== n.p && Math.abs(m.t - n.t) < nearWin);
       if (near && rise(n) < thrLone) { why.reattack++; continue; } out.push(n); continue;
     }
-    if (co.length >= 2) { out.push(n); continue; }                           // a strum: chord tones are picked again together
+    if (co.length >= 2 && !(melodic && co.filter(m => !isRec(m)).length === 1)) { out.push(n); continue; }                           // a strum (unless it is one new note with old ones ringing)
     const r = rise(n), top = Math.max(...co.map(rise));
     if (r < thr && top - r > gap) { why.reattack++; continue; }   // the other note was picked; this one just rang on
     out.push(n);
@@ -2752,17 +2780,19 @@ function solveCore(groups, startPos, near) {
     layers.push(st);
   }
   if (!layers.length) return [];
+  const iv = []; for (let i = 1; i < groups.length; i++) iv.push(groups[i].t - groups[i - 1].t); iv.sort((a, b) => a - b);
+  const pause = Math.max(1.0, 2.5 * (iv.length ? iv[iv.length >> 1] : 0.4));
   const best = [], back = [];
   layers.forEach((st, i) => {
     best[i] = new Float64Array(st.length); back[i] = new Int32Array(st.length);
     if (i === 0) { st.forEach((s, j) => { best[0][j] = s.k + (startPos != null ? Math.abs(s.h - startPos) * 0.3 : 0); back[0][j] = -1; }); return; }
-    const gap = groups[i].t - groups[i - 1].t, w = 1 / (1 + 1.5 * Math.max(0, gap - 0.25));   // a pause gives time to move
+    const gap = groups[i].t - groups[i - 1].t, w = gap > pause ? 0.5 : 1;   // only a real pause (not just a slow tempo) makes moving cheaper
     const prev = layers[i - 1];
     st.forEach((s, j) => {
       let bk = Infinity, bj = 0;
       for (let pj = 0; pj < prev.length; pj++) {
         const p = prev[pj], d = Math.abs(s.h - p.h);
-        let k = best[i - 1][pj] + (d ? (0.9 + d * 0.35) * w : 0);
+        let k = best[i - 1][pj] + (d ? (1.2 + d * 0.35) * w : 0);
         if (s.c.as.length === 1 && p.c.as.length === 1 && s.c.as[0].s === p.c.as[0].s && s.c.as[0].f > 0 && Math.abs(s.c.as[0].f - p.c.as[0].f) <= 4) k -= 0.02;
         if (k < bk) { bk = k; bj = pj; }
       }
