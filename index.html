@@ -261,7 +261,12 @@
   <p>The DUSTEX crest and the app name sit at the top centre, with your spot's name on the left and the last update time on the right.</p>
   <p><b>NOW</b> shows the current weather, feels-like temperature and humidity, sunrise and sunset, plus water temperature and swell direction on the coast (water temperature and lake level in lake mode).</p>
   <p><b>TOMORROW</b> shows the high and low, sky, strongest wind and gusts, chance of rain, and the biggest seas offshore (or the latest water temperature in lake mode).</p>
-  <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Temperature</b>: the orange needle is the <b>air</b>. The two waters are colored bars on their own tracks just inside the numbers, each filling up from 30°F to its reading: the outer <b>teal</b> bar is the <b>intracoastal</b> water (or the lake), the inner <b>blue</b> bar the <b>ocean</b>. All three are read out underneath. The intracoastal reading comes from the nearest NOAA or USGS water-temperature sensor to your inshore station; when there isn't one within about 25 to 30 miles, the app estimates it from the ocean and the day's air temperature and shows it with a ~ in front. The colored band round the edge shows the water temperatures fish like: green (62 to 84°F) is best, gold is a little cold or warm, blue is cold and red is very hot. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). On the <b>compass</b>, the orange pointer on the rim marks where the wind is coming from, and the small gauge in the middle is the <b>wind speed</b>: its gold needle on a 0 to 40 mph scale (green light, gold breezy, red strong), with a small red mark for the gusts. Green on a dial is good fishing, orange is fair, red is tough.</p>
+  <p><b>The four gauges</b> sit in a row in the middle of the screen.</p>
+  <p><b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising).</p>
+  <p><b>Temperature</b>: the orange needle is the <b>air</b>. The two waters are colored bars on their own tracks just inside the numbers, each filling up from 30°F to its reading: the outer <b>teal</b> bar is the <b>intracoastal</b> water (or the lake), the inner <b>blue</b> bar the <b>ocean</b>. All three are read out underneath. The intracoastal reading comes from the nearest NOAA or USGS water-temperature sensor to your inshore station; when there isn't one within about 25 to 30 miles, the app estimates it from the ocean and the day's air temperature and shows it with a ~ in front. The colored band round the edge shows the water temperatures fish like: green (62 to 84°F) is best, gold is a little cold or warm, blue is cold and red is very hot.</p>
+  <p><b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>).</p>
+  <p>On the <b>compass</b>, the orange pointer on the rim marks where the wind is coming from, and the small gauge in the middle is the <b>wind speed</b>: its gold needle on a 0 to 40 mph scale (green light, gold breezy, red strong), with a small red mark for the gusts.</p>
+  <p>Green on a dial is good fishing, orange is fair, red is tough.</p>
   <p><b>Tide charts</b> cover the next 24 hours for your inshore station (river, bay or intracoastal) and your offshore station (beach, pier or inlet). The red dashed line is now, green dots are high tides and gold dots are low tides. Below each chart: whether the tide is rising or falling, the next high or low, and the next four tides with their heights.</p>
   <p><b>Moon &amp; Solunar</b> shows the moon's phase, how much of it is lit and days to the next full or new moon. <b>Feeding times</b> are the solunar periods: <b>Major</b> periods (2 hours, centered on the moon overhead or underfoot) and <b>Minor</b> periods (1 hour, centered on moonrise and moonset). The period you are in now is shown in green.</p>
 
@@ -1172,7 +1177,14 @@ function openReports() {
   $('reports').style.display = 'flex'; L.scrollTop = 0;
 }
 $('repBtn').addEventListener('click', openReports);
-$('helpBtn').addEventListener('click', () => { $('help').style.display = 'flex'; $('helpBody').scrollTop = 0; });
+let HELPNAV = null;
+function openHelp(target) { $('help').style.display = 'flex'; if (!HELPNAV) HELPNAV = dxHelp($('helpBody'), { prefix: 'fh', find: 'Find a feature: type a word (tide, gusts, lake mode, reports...)' });
+  $('helpBody').scrollTop = 0; if (target && HELPNAV) { const id = HELPNAV.find(target) ? target : null;
+    const hit = id || [...$('helpBody').querySelectorAll('h4,p')].find(e => e.textContent.toLowerCase().includes(String(target).replace(/-/g, ' ').toLowerCase()));
+    if (hit) setTimeout(() => HELPNAV.go(hit.id || (hit.id = 'fh-link-' + Date.now())), 60); } }
+$('helpBtn').addEventListener('click', () => openHelp());
+// a link like  .../dustex-fishing/#help  or  #help=tides  opens the help (at that feature)
+if (/^#help/.test(location.hash)) setTimeout(() => openHelp(decodeURIComponent(location.hash.split('=')[1] || '')), 400);
 $('helpClose').addEventListener('click', () => $('help').style.display = 'none');
 $('help').addEventListener('click', e => { if (e.target.id === 'help') $('help').style.display = 'none'; });
 $('repClose').addEventListener('click', () => $('reports').style.display = 'none');
@@ -1181,6 +1193,137 @@ $('repWeb').addEventListener('click', () => window.open('https://www.google.com/
 loadReports(); setInterval(loadReports, 30 * 60000);
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+<script>
+/* DUSTEX help navigator: turns a help body (h4 section titles + p paragraphs, optional h2 app titles) into a
+   searchable help with CONTENTS at the top, an A-Z INDEX at the bottom, and clickable links that jump straight to the
+   paragraph that explains a feature.  dxHelp(bodyElement, { title: 'App name' })  */
+function dxHelp(body, opt) {
+  opt = opt || {};
+  if (!body || body.dataset.dxh) return; body.dataset.dxh = '1';
+  const doc = body.ownerDocument;
+  if (!doc.getElementById('dxh-css')) {
+    const st = doc.createElement('style'); st.id = 'dxh-css';
+    st.textContent = `
+.dxh-top{margin:2px 0 4px}
+.dxh-find{display:flex;gap:8px;align-items:center;margin:0 0 12px}
+.dxh-find input{flex:1;height:30px;border-radius:15px;border:1px solid #5a5f68;background:#0c0d10;color:var(--val,#d3d6db);padding:0 14px;font:13px -apple-system,'Segoe UI',sans-serif;outline:none;-webkit-user-select:text;user-select:text}
+.dxh-find input:focus{border-color:var(--gold,#d8b46a)}
+.dxh-jump{font-size:10.5px;letter-spacing:.18em;color:var(--gold,#d8b46a);cursor:pointer;padding:6px 12px;border-radius:12px;border:1px solid #5a5f68;background:linear-gradient(#4c5058,#1e2125);white-space:nowrap;text-decoration:none}
+.dxh-hits{display:none;margin:-4px 0 12px;padding:8px 10px;border:1px solid #3a3d44;border-radius:10px;background:#101115;max-height:220px;overflow:auto}
+.dxh-hits a{display:block;padding:3px 2px;color:var(--val,#d3d6db);text-decoration:none;font-size:13px;cursor:pointer}
+.dxh-hits a:hover,.dxh-hits a.sel{color:var(--gold,#d8b46a)}
+.dxh-hits a i,.dxh-ix a i{color:var(--dim,#9a9da6);font-style:normal;font-size:11.5px}
+.dxh-apps{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.dxh-apps a{font-size:11.5px;letter-spacing:.06em;color:var(--val,#d3d6db);padding:5px 12px;border-radius:13px;border:1px solid #5a5f68;background:linear-gradient(#34373e,#17191d);text-decoration:none;cursor:pointer}
+.dxh-apps a:hover{color:var(--gold,#d8b46a);border-color:var(--gold,#d8b46a)}
+.dxh-cap{color:var(--gold,#d8b46a);font-size:11px;letter-spacing:.3em;margin:4px 0 8px;text-transform:uppercase}
+.dxh-app{color:#f0f1f3;font-size:13px;font-weight:600;letter-spacing:.06em;margin:10px 0 4px}
+.dxh-toc{display:grid;grid-template-columns:1fr 1fr;column-gap:22px;row-gap:7px;margin:0 0 6px}
+.dxh-toc .e{break-inside:avoid}
+.dxh-toc .e>a{color:var(--gold,#d8b46a);font-size:12.5px;font-weight:600;text-decoration:none;cursor:pointer}
+.dxh-toc .e>a b{color:var(--dim,#9a9da6);font-weight:500;margin-right:6px;font-variant-numeric:tabular-nums}
+.dxh-toc .s{margin:2px 0 0 0;line-height:1.5;display:flex;flex-wrap:wrap;column-gap:13px}
+.dxh-toc .s a{color:var(--lcd,#93d9b4);font-size:11.5px;text-decoration:none;cursor:pointer;white-space:nowrap}
+.dxh-toc .s a:hover,.dxh-toc .e>a:hover,.dxh-ix a:hover{text-decoration:underline}
+.dxh-toc .s i{color:#4a4f58;font-style:normal;margin:0 5px}
+.dxh-rule{height:1px;background:linear-gradient(90deg,transparent,rgba(216,180,106,.45),transparent);margin:14px 0 4px;border:0}
+.dxh-up{float:right;font-size:10px;letter-spacing:.16em;color:var(--dim,#9a9da6);cursor:pointer;text-decoration:none;margin-top:2px;font-weight:500}
+.dxh-up:hover{color:var(--gold,#d8b46a)}
+.dxh-az{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 10px}
+.dxh-az a{min-width:22px;text-align:center;padding:3px 0;border-radius:6px;border:1px solid #3a3d44;color:var(--gold,#d8b46a);font-size:11.5px;text-decoration:none;cursor:pointer}
+.dxh-az a:hover{background:#1e2125}
+.dxh-ix{columns:2;column-gap:26px}
+.dxh-ix .l{color:var(--gold,#d8b46a);font-weight:700;font-size:12px;margin:8px 0 2px;break-after:avoid}
+.dxh-ix a{display:block;color:var(--val,#d3d6db);font-size:12.5px;line-height:1.55;text-decoration:none;cursor:pointer;break-inside:avoid}
+.dxh-flash{animation:dxhf 1.8s ease-out}
+@keyframes dxhf{0%{background:rgba(216,180,106,.28);box-shadow:0 0 0 6px rgba(216,180,106,.28)}100%{background:transparent;box-shadow:0 0 0 6px transparent}}`;
+    doc.head.appendChild(st);
+  }
+  const slug = s => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48);
+  const used = new Set(), uid = b => { let id = b, n = 2; while (used.has(id) || doc.getElementById(id)) id = b + '-' + n++; used.add(id); return id; };
+  const pre = (opt.prefix || 'dxh') + '-';
+  // sections (and the app each belongs to, when the body holds several apps)
+  const secs = []; let app = null, appEl = null;
+  for (const n of Array.from(body.children)) {
+    if (n.tagName === 'H2') { app = n.textContent.trim(); appEl = n; n.id = n.id || uid(pre + slug(app)); continue; }
+    if (n.tagName === 'H4') { const t = n.textContent.trim(); n.id = n.id || uid(pre + slug((app ? app + ' ' : '') + t)); secs.push({ el: n, title: t, app, appEl, terms: [] }); continue; }
+    if (n.tagName === 'P' && secs.length) {
+      const s = secs[secs.length - 1];
+      for (const b of n.querySelectorAll('b')) {
+        let t = b.textContent.replace(/\s+/g, ' ').replace(/[:.,;]+$/, '').trim();
+        if (t.length < 2 || t.length > 42 || /^[\d\s.,°%~+-]+$/.test(t)) continue;
+        if (!n.id) n.id = uid(s.el.id + '-p');
+        if (!s.terms.find(x => x.t.toLowerCase() === t.toLowerCase())) s.terms.push({ t, id: n.id });
+      }
+    }
+  }
+  if (!secs.length) return;
+  const go = id => { const e = doc.getElementById(id); if (!e) return; e.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    e.classList.remove('dxh-flash'); void e.offsetWidth; e.classList.add('dxh-flash'); };
+  body.addEventListener('click', ev => { const a = ev.target.closest('a[data-go]'); if (!a || !body.contains(a)) return; ev.preventDefault(); go(a.dataset.go); });
+  const H = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // the index: every feature name (bold term) and every section, A to Z
+  const ix = [];
+  for (const s of secs) {
+    const where = (s.app ? s.app + ' › ' : '') + s.title;
+    ix.push({ t: s.title, id: s.el.id, w: s.app || '' });
+    for (const x of s.terms) ix.push({ t: x.t, id: x.id, w: where });
+  }
+  const key = t => t.replace(/^[^A-Za-z0-9]+/, '').toLowerCase();
+  ix.sort((a, b) => key(a.t).localeCompare(key(b.t)) || a.w.localeCompare(b.w));
+  // ---- top: find box, CONTENTS
+  const apps = [...new Map(secs.filter(x => x.appEl).map(x => [x.appEl.id, { id: x.appEl.id, t: x.app }])).values()];
+  const top = doc.createElement('div'); top.className = 'dxh-top'; top.id = uid(pre + 'contents');
+  let toc = '', num = 0, lastApp;
+  for (const s of secs) {
+    if (s.app && s.app !== lastApp) { if (lastApp !== undefined) toc += '</div>'; toc += `<div class="dxh-app"><a data-go="${s.appEl.id}" style="color:inherit;text-decoration:none;cursor:pointer">${H(s.app)}</a></div><div class="dxh-toc">`; lastApp = s.app; num = 0; }
+    else if (lastApp === undefined && num === 0) { toc += '<div class="dxh-toc">'; lastApp = null; }
+    num++;
+    const subs = s.terms.filter(x => /[A-Za-z]{2}/.test(x.t) && (x.t.length >= 4 || x.t === x.t.toUpperCase())).slice(0, opt.perSection || 7).map(x => `<a data-go="${x.id}">${H(x.t)}</a>`).join('');
+    toc += `<div class="e"><a data-go="${s.el.id}"><b>${num}</b>${H(s.title)}</a>${subs ? `<div class="s">${subs}</div>` : ''}</div>`;
+  }
+  toc += '</div>';
+  top.innerHTML = `<div class="dxh-find"><input type="search" placeholder="${H(opt.find || 'Find a feature: type a word')}" aria-label="Find a feature"><a class="dxh-jump" data-go="${pre}index">INDEX A–Z</a></div>
+    <div class="dxh-hits"></div>${apps.length > 1 ? `<div class="dxh-apps">${apps.map(x => `<a data-go="${x.id}">${H(x.t)}</a>`).join('')}</div>` : ''}<div class="dxh-cap">Contents</div>${toc}<hr class="dxh-rule">`;
+  body.insertBefore(top, body.firstChild);
+  // ---- section titles get a way back up
+  for (const s of secs) { const u = doc.createElement('a'); u.className = 'dxh-up'; u.dataset.go = top.id; u.textContent = 'CONTENTS ↑'; s.el.appendChild(u); }
+  // ---- bottom: INDEX
+  const ixEl = doc.createElement('div'); ixEl.id = pre + 'index';
+  const letters = []; let html = '', cur = '';
+  for (const e of ix) { const L = (key(e.t)[0] || '#').toUpperCase().replace(/[0-9]/, '#'); if (L !== cur) { cur = L; letters.push(L); html += `<div class="l" id="${pre}ix-${L === '#' ? 'num' : L}">${L}</div>`; }
+    html += `<a data-go="${e.id}">${H(e.t)}${e.w ? ` <i>${H(e.w)}</i>` : ''}</a>`; }
+  ixEl.innerHTML = `<hr class="dxh-rule"><div class="dxh-cap">Index <a class="dxh-up" data-go="${top.id}">CONTENTS ↑</a></div>
+    <div class="dxh-az">${letters.map(L => `<a data-go="${pre}ix-${L === '#' ? 'num' : L}">${L}</a>`).join('')}</div><div class="dxh-ix">${html}</div>`;
+  body.appendChild(ixEl);
+  // ---- find as you type
+  const inp = top.querySelector('input'), hits = top.querySelector('.dxh-hits');
+  function collect(h) { const out = []; let n = h.nextElementSibling; while (n && n.tagName !== 'H4' && n.tagName !== 'H2' && n !== ixEl) { if (n.tagName === 'P') out.push(n); n = n.nextElementSibling; } return out; }
+  let sel = 0;
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim().toLowerCase(); sel = 0;
+    if (!q) { hits.style.display = 'none'; hits.innerHTML = ''; return; }
+    const res = [], seen = new Set();
+    for (const e of ix) if (e.t.toLowerCase().includes(q) && !seen.has(e.id + e.t)) { seen.add(e.id + e.t); res.push(`<a data-go="${e.id}">${H(e.t)}${e.w ? ` <i>${H(e.w)}</i>` : ''}</a>`); }
+    const hitP = new Set(ix.filter(e => e.t.toLowerCase().includes(q)).map(e => e.id));
+    for (const s of secs) for (const p of collect(s.el)) {
+      if (res.length >= 40 || !p.textContent.toLowerCase().includes(q)) continue;
+      if (!p.id) p.id = uid(s.el.id + '-p'); if (hitP.has(p.id)) continue; hitP.add(p.id);
+      const tx = p.textContent, i = tx.toLowerCase().indexOf(q), a = Math.max(0, i - 30);
+      res.push(`<a data-go="${p.id}">${a ? '…' : ''}${H(tx.slice(a, i))}<b style="color:var(--gold,#d8b46a)">${H(tx.substr(i, q.length))}</b>${H(tx.slice(i + q.length, i + q.length + 50))}… <i>${H((s.app ? s.app + ' › ' : '') + s.title)}</i></a>`);
+    }
+    hits.innerHTML = res.length ? res.slice(0, 40).join('') : '<a style="cursor:default"><i>No match. Try another word, or the index below.</i></a>';
+    hits.style.display = 'block'; mark();
+  });
+  const mark = () => hits.querySelectorAll('a').forEach((a, i) => a.classList.toggle('sel', i === sel));
+  inp.addEventListener('keydown', ev => { const as = hits.querySelectorAll('a[data-go]');
+    if (ev.key === 'ArrowDown') { sel = Math.min(as.length - 1, sel + 1); mark(); ev.preventDefault(); }
+    else if (ev.key === 'ArrowUp') { sel = Math.max(0, sel - 1); mark(); ev.preventDefault(); }
+    else if (ev.key === 'Enter' && as[sel]) { go(as[sel].dataset.go); ev.preventDefault(); }
+    else if (ev.key === 'Escape' && inp.value) { inp.value = ''; inp.dispatchEvent(new Event('input')); ev.stopPropagation(); } });
+  return { go, top: () => go(top.id), find: id => doc.getElementById(id) };
+}
 </script>
 </body>
 </html>

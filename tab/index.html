@@ -78,8 +78,8 @@
   body.studio #stage #staffBox, body.studio #stage #meterBox, body.studio #stage #neckBox, body.studio #stage #mixBox { opacity:1; transform:none; pointer-events:auto; visibility:visible; box-shadow:none; }
   body.studio .seg { display:none; }
   body.studio #mixMenu { bottom:370px; }
-  body.studio #helpSheet .box { width:1340px; height:780px; }
-  body.studio #helpBody p { font-size:14px; } body.studio #helpBody h4 { font-size:12px; }
+  body.studio #helpSheet .box { width:900px; height:780px; }
+  body.studio #helpBody p { font-size:14.5px; } body.studio #helpBody h4 { font-size:12.5px; }
   #stage:not(.meters) #meterBox { opacity:0; transform:translateY(-8px); pointer-events:none; }
   #stage.meters #staffBox { opacity:0; pointer-events:none; }
   #eqBox { left:8px; top:80px; width:1555px; height:168px; background:linear-gradient(#0d0e11,#08090b); transition:opacity .18s ease, transform .18s ease; overflow:hidden; }
@@ -252,13 +252,13 @@
   #modal .row { display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
   #modal .pill { position:static; }
   #helpSheet { position:absolute; inset:0; z-index:25; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; border-radius:16px; }
-  #helpSheet .box { width:1100px; height:430px; display:flex; flex-direction:column; background:linear-gradient(#1c1e23,#0a0b0d); border:1px solid #3a3d44; border-radius:14px; padding:14px 20px; }
-  #helpSheet h3 { margin:0; color:var(--gold); font-size:11.5px; letter-spacing:.3em; }
-  #helpBody { flex:1; overflow:auto; margin:8px 0 10px; padding-right:8px; display:grid; grid-template-columns:1fr 1fr; column-gap:34px; align-items:start; -webkit-user-select:text; user-select:text; }
+  #helpSheet .box { width:760px; height:430px; display:flex; flex-direction:column; background:linear-gradient(#1c1e23,#0a0b0d); border:1px solid #3a3d44; border-radius:16px; padding:18px 24px; }
+  #helpSheet h3 { margin:0; color:var(--gold); font-size:12px; letter-spacing:.3em; }
+  #helpBody { flex:1; overflow:auto; -webkit-overflow-scrolling:touch; margin:10px 0 12px; padding-right:8px; -webkit-user-select:text; user-select:text; }
   #helpBody::-webkit-scrollbar { width:7px; } #helpBody::-webkit-scrollbar-thumb { background:#3a3d44; border-radius:4px; }
-  #helpBody h4 { color:var(--gold); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; margin:12px 0 5px; break-after:avoid; }
+  #helpBody h4 { color:var(--gold); font-size:12px; letter-spacing:.12em; text-transform:uppercase; margin:16px 0 6px; }
   #helpBody .hcol > h4:first-child { margin-top:2px; }
-  #helpBody p { color:var(--val); font-size:12.5px; line-height:1.5; margin:0 0 7px; break-inside:avoid; }
+  #helpBody p { color:var(--val); font-size:13.5px; line-height:1.55; margin:0 0 9px; }
   #helpBody b { color:#f0f1f3; font-weight:600; } #helpBody i { color:var(--dim); font-style:normal; }
   #helpSheet .foot { display:flex; align-items:center; gap:10px; } #helpSheet .foot .sub { flex:1; font-size:10.5px; color:var(--lab); }
   #helpSheet .pill { position:static; }
@@ -415,8 +415,8 @@
     <div class="sub full">Chords and notes mode hears several strings at once and tidies the whole take when you stop. Write tab from the loop does the same for the looper's recording. A clean or lightly driven tone works best; the readout doubles as a tuner.</div>
   </div>
 <div id="helpSheet"><div class="box">
-  <h3>H O W &nbsp; T O &nbsp; U S E &nbsp; T A B &nbsp; C R E A T O R &nbsp; S T U D I O</h3>
-  <div id="helpBody"><div class="hcol">
+  <h3>H O W &nbsp; T O &nbsp; U S E &nbsp; C R E A T O R &nbsp; S T U D I O</h3>
+  <div id="helpBody">
   <h4>The layout</h4>
   <p><b>Header:</b> song title and artist, a status line (file name, notes, bars and the bar the cursor is in, or the live readout while listening), the <b>STAFF</b> / <b>METERS</b> switch, and the file buttons: <b>NEW</b>, <b>OPEN</b>, <b>SAVE</b>, <b>SAVE PDF</b>, <b>PRINT</b>, <b>FOLDER</b> and <b>HELP</b>.</p>
   <p><b>Toolbar:</b> techniques, palm mute and let ring, chord names and text, editing tools, tuning, capo, tempo, grid, <b>Listen</b>, and the <b>full-screen</b> button at the right end.</p>
@@ -450,7 +450,7 @@
   <p><b>Chord</b> writes a chord name (for example G5 or Am7) above the cursor's column. <b>Text</b> writes a note such as "build up" or "x2".</p>
   <p>Click a mark above the staff to select it (it turns gold), then press Delete to remove it.</p>
 
-  </div><div class="hcol">
+  
   <h4>Song settings</h4>
   <p><b>Title</b> and <b>Artist</b>: type in the header. The title becomes the file name.</p>
   <p><b>Tuning:</b> Standard, Drop D, Half step down, Full step down, Drop C#, Drop C, DADGAD, Open G, Open D, Open E and Open C. The string names on the tab and fretboard follow it, and so does Listen.</p>
@@ -556,7 +556,7 @@
   <h4>On the desktop</h4>
   <p>The widget docks into its port under the Fishing panel on the right screen. It starts by itself when you sign in to Windows (through a <i>DUSTEX Creator Studio</i> shortcut in the Startup folder), and you can also start it from the <b>Creator Studio</b> shortcut in the Dashboard folder. Both shortcuts are made the first time the widget runs. Right-click an empty part of the widget for <b>Reload</b>, <b>Open the Tab Widget folder</b> or <b>Close</b>.</p>
   <p><b>If something's wrong:</b> "no audio input found" means the Spark isn't connected by USB or Windows doesn't see it. "Microphone access was blocked" means the Windows microphone setting above is off. If notes come out an octave off or jump strings, lock the Fret position. For anything else, the widget keeps a log, <i>tab-widget.log</i>, in the Tab Widget folder.</p>
-  </div></div>
+  </div>
   <div class="foot"><div class="sub">DUSTEX Creator Studio</div><div class="pill" id="helpClose">CLOSE</div></div>
 </div></div>
 
@@ -1185,7 +1185,13 @@ function doPrint() { buildPrint(); if (host) send({ cmd: 'print' }); else window
 $('bSave').onclick = save; $('bPdf').onclick = savePdf; $('bPrint').onclick = doPrint; $('bFolder').onclick = () => send({ cmd: 'folder' });
 $('bNew').onclick = () => { if (dirty && song.notes.length && !confirm('Start a new tab? Unsaved changes will be lost.')) return; snapshot(); song = blank(); fileName = ''; dirty = false; cursor = { c: 0, s: 0 }; sel.clear(); render(); autosave(); };
 $('bOpen').onclick = ev => { ev.stopPropagation(); const m = $('openMenu'); if (m.style.display === 'block') { m.style.display = 'none'; return; } m.innerHTML = '<div class="none">loading...</div>'; m.style.left = ($('hdr').offsetLeft + $('bOpen').offsetLeft) + 'px'; m.style.right = 'auto'; m.style.top = '40px'; m.style.display = 'block'; send({ cmd: 'list' }); };
-$('bHelp').onclick = ev => { ev.stopPropagation(); $('helpSheet').style.display = 'flex'; $('helpBody').scrollTop = 0; };
+let HELPNAV = null;
+function openHelp(target) { $('helpSheet').style.display = 'flex'; if (!HELPNAV) HELPNAV = dxHelp($('helpBody'), { prefix: 'ch', find: 'Find a feature: type a word (looper, capo, drums, EQ...)' });
+  $('helpBody').scrollTop = 0; if (target && HELPNAV) { const hit = HELPNAV.find(target) || [...$('helpBody').querySelectorAll('h4,p')].find(e => e.textContent.toLowerCase().includes(String(target).replace(/-/g, ' ').toLowerCase()));
+    if (hit) setTimeout(() => HELPNAV.go(hit.id || (hit.id = 'ch-link-' + Date.now())), 60); } }
+$('bHelp').onclick = ev => { ev.stopPropagation(); openHelp(); };
+// a link like  .../tab/#help  or  #help=looper  opens the help (at that feature)
+if (/^#help/.test(location.hash)) setTimeout(() => openHelp(decodeURIComponent(location.hash.split('=')[1] || '')), 600);
 $('helpClose').onclick = () => $('helpSheet').style.display = 'none';
 $('helpSheet').addEventListener('mousedown', ev => { if (ev.target.id === 'helpSheet') $('helpSheet').style.display = 'none'; });
 addEventListener('mousedown', ev => { if (!ev.target.closest('.menu') && ev.target.id !== 'bOpen' && ev.target.id !== 'bHelp' && ev.target.id !== 'tListenSet' && ev.target.id !== 'pMix') { $('openMenu').style.display = 'none'; $('listenMenu').style.display = 'none'; $('mixMenu').style.display = 'none'; } });
@@ -3065,6 +3071,137 @@ async function aiStop() {                                                    // 
 try { const ls = JSON.parse(localStorage.getItem('dxtab') || 'null'); if (ls && ls.song) { song = Object.assign(blank(), ls.song); fileName = ls.fileName || ''; uid = Math.max(1, ...song.notes.map(n => n.id + 1), ...song.marks.map(m => m.id + 1)); } } catch (e) {}
 render();
 send({ cmd: 'hello' });
+</script>
+<script>
+/* DUSTEX help navigator: turns a help body (h4 section titles + p paragraphs, optional h2 app titles) into a
+   searchable help with CONTENTS at the top, an A-Z INDEX at the bottom, and clickable links that jump straight to the
+   paragraph that explains a feature.  dxHelp(bodyElement, { title: 'App name' })  */
+function dxHelp(body, opt) {
+  opt = opt || {};
+  if (!body || body.dataset.dxh) return; body.dataset.dxh = '1';
+  const doc = body.ownerDocument;
+  if (!doc.getElementById('dxh-css')) {
+    const st = doc.createElement('style'); st.id = 'dxh-css';
+    st.textContent = `
+.dxh-top{margin:2px 0 4px}
+.dxh-find{display:flex;gap:8px;align-items:center;margin:0 0 12px}
+.dxh-find input{flex:1;height:30px;border-radius:15px;border:1px solid #5a5f68;background:#0c0d10;color:var(--val,#d3d6db);padding:0 14px;font:13px -apple-system,'Segoe UI',sans-serif;outline:none;-webkit-user-select:text;user-select:text}
+.dxh-find input:focus{border-color:var(--gold,#d8b46a)}
+.dxh-jump{font-size:10.5px;letter-spacing:.18em;color:var(--gold,#d8b46a);cursor:pointer;padding:6px 12px;border-radius:12px;border:1px solid #5a5f68;background:linear-gradient(#4c5058,#1e2125);white-space:nowrap;text-decoration:none}
+.dxh-hits{display:none;margin:-4px 0 12px;padding:8px 10px;border:1px solid #3a3d44;border-radius:10px;background:#101115;max-height:220px;overflow:auto}
+.dxh-hits a{display:block;padding:3px 2px;color:var(--val,#d3d6db);text-decoration:none;font-size:13px;cursor:pointer}
+.dxh-hits a:hover,.dxh-hits a.sel{color:var(--gold,#d8b46a)}
+.dxh-hits a i,.dxh-ix a i{color:var(--dim,#9a9da6);font-style:normal;font-size:11.5px}
+.dxh-apps{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.dxh-apps a{font-size:11.5px;letter-spacing:.06em;color:var(--val,#d3d6db);padding:5px 12px;border-radius:13px;border:1px solid #5a5f68;background:linear-gradient(#34373e,#17191d);text-decoration:none;cursor:pointer}
+.dxh-apps a:hover{color:var(--gold,#d8b46a);border-color:var(--gold,#d8b46a)}
+.dxh-cap{color:var(--gold,#d8b46a);font-size:11px;letter-spacing:.3em;margin:4px 0 8px;text-transform:uppercase}
+.dxh-app{color:#f0f1f3;font-size:13px;font-weight:600;letter-spacing:.06em;margin:10px 0 4px}
+.dxh-toc{display:grid;grid-template-columns:1fr 1fr;column-gap:22px;row-gap:7px;margin:0 0 6px}
+.dxh-toc .e{break-inside:avoid}
+.dxh-toc .e>a{color:var(--gold,#d8b46a);font-size:12.5px;font-weight:600;text-decoration:none;cursor:pointer}
+.dxh-toc .e>a b{color:var(--dim,#9a9da6);font-weight:500;margin-right:6px;font-variant-numeric:tabular-nums}
+.dxh-toc .s{margin:2px 0 0 0;line-height:1.5;display:flex;flex-wrap:wrap;column-gap:13px}
+.dxh-toc .s a{color:var(--lcd,#93d9b4);font-size:11.5px;text-decoration:none;cursor:pointer;white-space:nowrap}
+.dxh-toc .s a:hover,.dxh-toc .e>a:hover,.dxh-ix a:hover{text-decoration:underline}
+.dxh-toc .s i{color:#4a4f58;font-style:normal;margin:0 5px}
+.dxh-rule{height:1px;background:linear-gradient(90deg,transparent,rgba(216,180,106,.45),transparent);margin:14px 0 4px;border:0}
+.dxh-up{float:right;font-size:10px;letter-spacing:.16em;color:var(--dim,#9a9da6);cursor:pointer;text-decoration:none;margin-top:2px;font-weight:500}
+.dxh-up:hover{color:var(--gold,#d8b46a)}
+.dxh-az{display:flex;flex-wrap:wrap;gap:4px;margin:0 0 10px}
+.dxh-az a{min-width:22px;text-align:center;padding:3px 0;border-radius:6px;border:1px solid #3a3d44;color:var(--gold,#d8b46a);font-size:11.5px;text-decoration:none;cursor:pointer}
+.dxh-az a:hover{background:#1e2125}
+.dxh-ix{columns:2;column-gap:26px}
+.dxh-ix .l{color:var(--gold,#d8b46a);font-weight:700;font-size:12px;margin:8px 0 2px;break-after:avoid}
+.dxh-ix a{display:block;color:var(--val,#d3d6db);font-size:12.5px;line-height:1.55;text-decoration:none;cursor:pointer;break-inside:avoid}
+.dxh-flash{animation:dxhf 1.8s ease-out}
+@keyframes dxhf{0%{background:rgba(216,180,106,.28);box-shadow:0 0 0 6px rgba(216,180,106,.28)}100%{background:transparent;box-shadow:0 0 0 6px transparent}}`;
+    doc.head.appendChild(st);
+  }
+  const slug = s => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48);
+  const used = new Set(), uid = b => { let id = b, n = 2; while (used.has(id) || doc.getElementById(id)) id = b + '-' + n++; used.add(id); return id; };
+  const pre = (opt.prefix || 'dxh') + '-';
+  // sections (and the app each belongs to, when the body holds several apps)
+  const secs = []; let app = null, appEl = null;
+  for (const n of Array.from(body.children)) {
+    if (n.tagName === 'H2') { app = n.textContent.trim(); appEl = n; n.id = n.id || uid(pre + slug(app)); continue; }
+    if (n.tagName === 'H4') { const t = n.textContent.trim(); n.id = n.id || uid(pre + slug((app ? app + ' ' : '') + t)); secs.push({ el: n, title: t, app, appEl, terms: [] }); continue; }
+    if (n.tagName === 'P' && secs.length) {
+      const s = secs[secs.length - 1];
+      for (const b of n.querySelectorAll('b')) {
+        let t = b.textContent.replace(/\s+/g, ' ').replace(/[:.,;]+$/, '').trim();
+        if (t.length < 2 || t.length > 42 || /^[\d\s.,°%~+-]+$/.test(t)) continue;
+        if (!n.id) n.id = uid(s.el.id + '-p');
+        if (!s.terms.find(x => x.t.toLowerCase() === t.toLowerCase())) s.terms.push({ t, id: n.id });
+      }
+    }
+  }
+  if (!secs.length) return;
+  const go = id => { const e = doc.getElementById(id); if (!e) return; e.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    e.classList.remove('dxh-flash'); void e.offsetWidth; e.classList.add('dxh-flash'); };
+  body.addEventListener('click', ev => { const a = ev.target.closest('a[data-go]'); if (!a || !body.contains(a)) return; ev.preventDefault(); go(a.dataset.go); });
+  const H = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  // the index: every feature name (bold term) and every section, A to Z
+  const ix = [];
+  for (const s of secs) {
+    const where = (s.app ? s.app + ' › ' : '') + s.title;
+    ix.push({ t: s.title, id: s.el.id, w: s.app || '' });
+    for (const x of s.terms) ix.push({ t: x.t, id: x.id, w: where });
+  }
+  const key = t => t.replace(/^[^A-Za-z0-9]+/, '').toLowerCase();
+  ix.sort((a, b) => key(a.t).localeCompare(key(b.t)) || a.w.localeCompare(b.w));
+  // ---- top: find box, CONTENTS
+  const apps = [...new Map(secs.filter(x => x.appEl).map(x => [x.appEl.id, { id: x.appEl.id, t: x.app }])).values()];
+  const top = doc.createElement('div'); top.className = 'dxh-top'; top.id = uid(pre + 'contents');
+  let toc = '', num = 0, lastApp;
+  for (const s of secs) {
+    if (s.app && s.app !== lastApp) { if (lastApp !== undefined) toc += '</div>'; toc += `<div class="dxh-app"><a data-go="${s.appEl.id}" style="color:inherit;text-decoration:none;cursor:pointer">${H(s.app)}</a></div><div class="dxh-toc">`; lastApp = s.app; num = 0; }
+    else if (lastApp === undefined && num === 0) { toc += '<div class="dxh-toc">'; lastApp = null; }
+    num++;
+    const subs = s.terms.filter(x => /[A-Za-z]{2}/.test(x.t) && (x.t.length >= 4 || x.t === x.t.toUpperCase())).slice(0, opt.perSection || 7).map(x => `<a data-go="${x.id}">${H(x.t)}</a>`).join('');
+    toc += `<div class="e"><a data-go="${s.el.id}"><b>${num}</b>${H(s.title)}</a>${subs ? `<div class="s">${subs}</div>` : ''}</div>`;
+  }
+  toc += '</div>';
+  top.innerHTML = `<div class="dxh-find"><input type="search" placeholder="${H(opt.find || 'Find a feature: type a word')}" aria-label="Find a feature"><a class="dxh-jump" data-go="${pre}index">INDEX A–Z</a></div>
+    <div class="dxh-hits"></div>${apps.length > 1 ? `<div class="dxh-apps">${apps.map(x => `<a data-go="${x.id}">${H(x.t)}</a>`).join('')}</div>` : ''}<div class="dxh-cap">Contents</div>${toc}<hr class="dxh-rule">`;
+  body.insertBefore(top, body.firstChild);
+  // ---- section titles get a way back up
+  for (const s of secs) { const u = doc.createElement('a'); u.className = 'dxh-up'; u.dataset.go = top.id; u.textContent = 'CONTENTS ↑'; s.el.appendChild(u); }
+  // ---- bottom: INDEX
+  const ixEl = doc.createElement('div'); ixEl.id = pre + 'index';
+  const letters = []; let html = '', cur = '';
+  for (const e of ix) { const L = (key(e.t)[0] || '#').toUpperCase().replace(/[0-9]/, '#'); if (L !== cur) { cur = L; letters.push(L); html += `<div class="l" id="${pre}ix-${L === '#' ? 'num' : L}">${L}</div>`; }
+    html += `<a data-go="${e.id}">${H(e.t)}${e.w ? ` <i>${H(e.w)}</i>` : ''}</a>`; }
+  ixEl.innerHTML = `<hr class="dxh-rule"><div class="dxh-cap">Index <a class="dxh-up" data-go="${top.id}">CONTENTS ↑</a></div>
+    <div class="dxh-az">${letters.map(L => `<a data-go="${pre}ix-${L === '#' ? 'num' : L}">${L}</a>`).join('')}</div><div class="dxh-ix">${html}</div>`;
+  body.appendChild(ixEl);
+  // ---- find as you type
+  const inp = top.querySelector('input'), hits = top.querySelector('.dxh-hits');
+  function collect(h) { const out = []; let n = h.nextElementSibling; while (n && n.tagName !== 'H4' && n.tagName !== 'H2' && n !== ixEl) { if (n.tagName === 'P') out.push(n); n = n.nextElementSibling; } return out; }
+  let sel = 0;
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim().toLowerCase(); sel = 0;
+    if (!q) { hits.style.display = 'none'; hits.innerHTML = ''; return; }
+    const res = [], seen = new Set();
+    for (const e of ix) if (e.t.toLowerCase().includes(q) && !seen.has(e.id + e.t)) { seen.add(e.id + e.t); res.push(`<a data-go="${e.id}">${H(e.t)}${e.w ? ` <i>${H(e.w)}</i>` : ''}</a>`); }
+    const hitP = new Set(ix.filter(e => e.t.toLowerCase().includes(q)).map(e => e.id));
+    for (const s of secs) for (const p of collect(s.el)) {
+      if (res.length >= 40 || !p.textContent.toLowerCase().includes(q)) continue;
+      if (!p.id) p.id = uid(s.el.id + '-p'); if (hitP.has(p.id)) continue; hitP.add(p.id);
+      const tx = p.textContent, i = tx.toLowerCase().indexOf(q), a = Math.max(0, i - 30);
+      res.push(`<a data-go="${p.id}">${a ? '…' : ''}${H(tx.slice(a, i))}<b style="color:var(--gold,#d8b46a)">${H(tx.substr(i, q.length))}</b>${H(tx.slice(i + q.length, i + q.length + 50))}… <i>${H((s.app ? s.app + ' › ' : '') + s.title)}</i></a>`);
+    }
+    hits.innerHTML = res.length ? res.slice(0, 40).join('') : '<a style="cursor:default"><i>No match. Try another word, or the index below.</i></a>';
+    hits.style.display = 'block'; mark();
+  });
+  const mark = () => hits.querySelectorAll('a').forEach((a, i) => a.classList.toggle('sel', i === sel));
+  inp.addEventListener('keydown', ev => { const as = hits.querySelectorAll('a[data-go]');
+    if (ev.key === 'ArrowDown') { sel = Math.min(as.length - 1, sel + 1); mark(); ev.preventDefault(); }
+    else if (ev.key === 'ArrowUp') { sel = Math.max(0, sel - 1); mark(); ev.preventDefault(); }
+    else if (ev.key === 'Enter' && as[sel]) { go(as[sel].dataset.go); ev.preventDefault(); }
+    else if (ev.key === 'Escape' && inp.value) { inp.value = ''; inp.dispatchEvent(new Event('input')); ev.stopPropagation(); } });
+  return { go, top: () => go(top.id), find: id => doc.getElementById(id) };
+}
 </script>
 </body>
 </html>
