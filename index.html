@@ -261,7 +261,7 @@
   <p>The DUSTEX crest and the app name sit at the top centre, with your spot's name on the left and the last update time on the right.</p>
   <p><b>NOW</b> shows the current weather, feels-like temperature and humidity, sunrise and sunset, plus water temperature and swell direction on the coast (water temperature and lake level in lake mode).</p>
   <p><b>TOMORROW</b> shows the high and low, sky, strongest wind and gusts, chance of rain, and the biggest seas offshore (or the latest water temperature in lake mode).</p>
-  <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Temperature</b> has three needles: the long orange needle is the <b>air</b>, the medium teal needle the <b>intracoastal</b> water and the short blue needle the <b>ocean</b> water, with all three read out underneath. The intracoastal reading comes from the nearest NOAA or USGS water-temperature sensor to your inshore station; when there isn't one within about 25 to 30 miles, the app estimates it from the ocean and the day's air temperature and shows it with a ~ in front. The colored zones are the water temperatures fish like: green (62 to 84°F) is best, gold is a little cold or warm, blue is cold and red is very hot. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). The <b>compass</b> points to where the wind is coming from, and its medium gold needle shows the <b>wind speed</b> on the 0 to 40 mph arc (green light, gold breezy, red strong), with a small red mark for the gusts. Green on a dial is good fishing, orange is fair, red is tough.</p>
+  <p><b>The four gauges:</b> <b>Barometer</b> in inches of mercury, with its 3-hour trend (falling, steady or rising). <b>Temperature</b>: the orange needle is the <b>air</b>. The two waters are colored bars on their own tracks just inside the numbers, each filling up from 30°F to its reading: the outer <b>teal</b> bar is the <b>intracoastal</b> water (or the lake), the inner <b>blue</b> bar the <b>ocean</b>. All three are read out underneath. The intracoastal reading comes from the nearest NOAA or USGS water-temperature sensor to your inshore station; when there isn't one within about 25 to 30 miles, the app estimates it from the ocean and the day's air temperature and shows it with a ~ in front. The colored band round the edge shows the water temperatures fish like: green (62 to 84°F) is best, gold is a little cold or warm, blue is cold and red is very hot. <b>Seas</b> in feet with the wave period in seconds (on a lake this gauge becomes <b>Water °F</b>). On the <b>compass</b>, the orange pointer on the rim marks where the wind is coming from, and the small gauge in the middle is the <b>wind speed</b>: its gold needle on a 0 to 40 mph scale (green light, gold breezy, red strong), with a small red mark for the gusts. Green on a dial is good fishing, orange is fair, red is tough.</p>
   <p><b>Tide charts</b> cover the next 24 hours for your inshore station (river, bay or intracoastal) and your offshore station (beach, pier or inlet). The red dashed line is now, green dots are high tides and gold dots are low tides. Below each chart: whether the tide is rising or falling, the next high or low, and the next four tides with their heights.</p>
   <p><b>Moon &amp; Solunar</b> shows the moon's phase, how much of it is lit and days to the next full or new moon. <b>Feeding times</b> are the solunar periods: <b>Major</b> periods (2 hours, centered on the moon overhead or underfoot) and <b>Minor</b> periods (1 hour, centered on moonrise and moonset). The period you are in now is shown in green.</p>
 
@@ -396,26 +396,38 @@ function dial(host, o) {
   const vt = el('text', { x: c, y: size + 16, 'text-anchor': 'middle', 'font-size': Math.max(10.5, size * .08), fill: '#a3dcbf', 'font-weight': 500, 'letter-spacing': '.02em', 'font-family': '-apple-system, "Segoe UI", sans-serif', style: 'font-variant-numeric:tabular-nums' }, svg);
   return { set(v, peak, text) { nd.style.transform = `rotate(${ang(v)}deg)`; if (peak != null) { pk.style.display = ''; pk.style.transform = `rotate(${ang(peak)}deg)`; } vt.textContent = text; } };
 }
+// wind: the compass rose round the rim, an orange pointer riding the rim at the direction the wind comes FROM,
+// and in the middle its own small speed gauge (0-40 mph, green light, gold breezy, red strong, red tick = gusts): one needle per gauge
 function compass(host, size) {
-  const c = size / 2, R = c - 3;
+  const c = size / 2, R = c - 3, k = size / 150;
   const svg = el('svg', { width: size, height: size + 22, viewBox: `0 0 ${size} ${size + 22}`, style: 'overflow:visible' }, host);
   const defs = el('defs', {}, svg); const sh = el('filter', { id: 'shc', x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs);
   el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 4, 'flood-opacity': .7 }, sh);
+  const sub = el('radialGradient', { id: 'subc', cx: .45, cy: .38, r: .75 }, defs);
+  el('stop', { offset: 0, 'stop-color': '#f4f5f7' }, sub); el('stop', { offset: .85, 'stop-color': '#c9ccd2' }, sub); el('stop', { offset: 1, 'stop-color': '#9ea2aa' }, sub);
   el('image', { href: 'gauge_face.png', x: 0, y: 0, width: size, height: size, filter: 'url(#shc)' }, svg);
-  for (let i = 0; i < 32; i++) { const a = i * 11.25, major = i % 4 === 0; const p1 = PtA(c, R - 8, a), p2 = PtA(c, major ? R - 18 : R - 13, a);
+  for (let i = 0; i < 32; i++) { const a = i * 11.25, major = i % 4 === 0; const p1 = PtA(c, R - 7 * k, a), p2 = PtA(c, major ? R - 17 * k : R - 12 * k, a);
     el('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: major ? '#15171b' : 'rgba(58,62,70,.67)', 'stroke-width': major ? 1.8 : .8 }, svg); }
+  const lr = R - 27 * k, lf = size * .088;
   for (const [t, a, col] of [['N', 0, '#2a3b55'], ['E', 90, '#1a1c21'], ['S', 180, '#1a1c21'], ['W', 270, '#1a1c21']]) {
-    const tp = PtA(c, R - 30, a); const tx = el('text', { x: tp[0], y: tp[1] + size * .1 * .36, 'text-anchor': 'middle', 'font-size': size * .1, 'font-weight': 900, fill: col }, svg); tx.textContent = t; }
-  // wind speed: a 0-40 mph arc inside the ring (green light, gold breezy, red strong), read by the medium gold needle
-  const k = size / 150, sr = R - 21 * k, sAng = v => -135 + 270 * Math.max(0, Math.min(1.02, v / 40));
-  for (const z of [[0, 12, '#1f9d57'], [12, 20, '#e08a00'], [20, 40, '#c8202a']]) el('path', { d: arcPath(c, sr, sAng(z[0]), sAng(z[1])), stroke: z[2], 'stroke-width': 2.6 * k + .4, fill: 'none', opacity: .9 }, svg);
-  for (const [v, t] of [[0, '0'], [40, '40']]) { const tp = PtA(c, sr - 7 * k, sAng(v)); const tx = el('text', { x: tp[0], y: tp[1] + size * .02, 'text-anchor': 'middle', 'font-size': size * .055, 'font-weight': 700, fill: '#3a3e46' }, svg); tx.textContent = t; }
-  const gm = el('polygon', { points: `${c - 2 * k},${c - sr - 4 * k} ${c + 2 * k},${c - sr - 4 * k} ${c},${c - sr + 3 * k}`, fill: '#e5484d', class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);display:none` }, svg);
-  const g = el('g', { class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(0deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))` }, svg);
-  el('polygon', { points: `${c - 5},${c} ${c + 5},${c} ${c},${c + R * .42}`, fill: '#5e636b' }, g);
-  el('polygon', { points: `${c - 5},${c} ${c + 5},${c} ${c},${c - R + 14}`, fill: '#e04a00' }, g);
-  const sp = el('polygon', { points: `${c - 2.6 * k},${c + R * .12} ${c + 2.6 * k},${c + R * .12} ${c + .9 * k},${c - R * .62} ${c - .9 * k},${c - R * .62}`, fill: '#e9c478', stroke: '#6b5426', 'stroke-width': .5, class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))` }, svg);
-  el('circle', { cx: c, cy: c, r: size * .055, fill: 'url(#cap)', stroke: '#2a2c31' }, svg);
+    const tp = PtA(c, lr, a); const tx = el('text', { x: tp[0], y: tp[1] + lf * .36, 'text-anchor': 'middle', 'font-size': lf, 'font-weight': 900, fill: col }, svg); tx.textContent = t; }
+  // the speed gauge in the middle
+  const sr = lr - lf * .62 - 4 * k, sAng = v => -135 + 270 * Math.max(0, Math.min(1.02, v / 40));
+  el('circle', { cx: c, cy: c, r: sr, fill: 'url(#subc)', stroke: '#6d717a', 'stroke-width': .8 }, svg);
+  el('circle', { cx: c, cy: c, r: sr - 1.2, fill: 'none', stroke: 'rgba(255,255,255,.7)', 'stroke-width': .6 }, svg);
+  const zr = sr - 3.2 * k;
+  for (const z of [[0, 12, '#1f9d57'], [12, 20, '#e08a00'], [20, 40, '#c8202a']]) el('path', { d: arcPath(c, zr, sAng(z[0]), sAng(z[1])), stroke: z[2], 'stroke-width': 2.8 * k, fill: 'none' }, svg);
+  for (let v = 0; v <= 40; v += 5) { const a = sAng(v), mj = v % 10 === 0, p1 = PtA(c, zr + 1.4 * k, a), p2 = PtA(c, zr - (mj ? 4.6 : 2.6) * k, a);
+    el('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: '#15171b', 'stroke-width': mj ? 1 : .55 }, svg); }
+  const nf = size * .06;
+  for (const v of [0, 20, 40]) { const tp = PtA(c, zr - 9 * k, sAng(v)); const tx = el('text', { x: tp[0], y: tp[1] + nf * .36, 'text-anchor': 'middle', 'font-size': nf, 'font-weight': 700, fill: '#2b2e35' }, svg); tx.textContent = v; }
+  const mu = el('text', { x: c, y: c + sr * .86, 'text-anchor': 'middle', 'font-size': size * .044, 'font-weight': 800, 'letter-spacing': '.06em', fill: '#2a3b55' }, svg); mu.textContent = 'MPH';
+  const gm = el('polygon', { points: `${c - 1.8 * k},${c - zr - 2.6 * k} ${c + 1.8 * k},${c - zr - 2.6 * k} ${c},${c - zr + 3.4 * k}`, fill: '#e5484d', stroke: '#7a1d20', 'stroke-width': .4, class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);display:none` }, svg);
+  const sp = el('polygon', { points: `${c - 2.4 * k},${c + sr * .22} ${c + 2.4 * k},${c + sr * .22} ${c + .8 * k},${c - zr + 1 * k} ${c - .8 * k},${c - zr + 1 * k}`, fill: '#e9c478', stroke: '#6b5426', 'stroke-width': .5, class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.55))` }, svg);
+  el('circle', { cx: c, cy: c, r: size * .042, fill: 'url(#cap)', stroke: '#2a2c31' }, svg);
+  // the direction pointer on the rim (where the wind comes from)
+  const g = el('g', { class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(0deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))` }, svg);
+  el('polygon', { points: `${c - 5.6 * k},${c - R + 3 * k} ${c + 5.6 * k},${c - R + 3 * k} ${c},${c - R + 19 * k}`, fill: '#e04a00', stroke: '#7a2800', 'stroke-width': .6 }, g);
   el('image', { href: 'gauge_glass.png', x: 0, y: 0, width: size, height: size }, svg);
   const vt = el('text', { x: c, y: size + 16, 'text-anchor': 'middle', 'font-size': Math.max(10.5, size * .08), fill: '#a3dcbf', 'font-weight': 500, 'letter-spacing': '.02em', 'font-family': '-apple-system, "Segoe UI", sans-serif', style: 'font-variant-numeric:tabular-nums' }, svg);
   return { set(deg, text, mph, gust) { g.style.transform = `rotate(${deg}deg)`; vt.textContent = text;
@@ -428,19 +440,42 @@ function compass(host, size) {
 
 const GS = document.documentElement.classList.contains('phone') ? 140 : 112;
 const dBaro = dial($('gBaro'), { label: 'BAROMETER', min: 29.2, max: 30.8, majors: 4, dec: 1, size: GS, zones: [[29.2, 29.6, '#c8202a'], [29.6, 29.9, '#e08a00'], [29.9, 30.8, '#1f9d57']] });
-// temperature: long needle air, medium intracoastal water, short ocean water (zones: the water temperatures fish like)
+// temperature: the needle is the AIR; the two waters are level bars on their own tracks just inside the scale
+// (teal = intracoastal or lake, blue = ocean), each filling from 30°F up to its reading, so nothing sits on top of anything
 function tempDial(host, size) {
-  const d = dial(host, { label: 'TEMP °F', min: 30, max: 100, majors: 7, size, zones: [[30, 50, '#3a6fc4'], [50, 62, '#e08a00'], [62, 84, '#1f9d57'], [84, 92, '#e08a00'], [92, 100, '#c8202a']] });
-  const svg = host.querySelector('svg'), cap = svg.querySelector('circle[fill="url(#cap)"]'), vt = svg.lastElementChild, c = size / 2, R = c - 3, k = size / 150;
-  const ang = v => -135 + 270 * Math.max(0, Math.min(1.02, (v - 30) / 70));
-  const mk = (len, w, fill) => { const n = el('polygon', { points: `${c - w * k},${c + R * .12} ${c + w * k},${c + R * .12} ${c + .9 * k},${c - R * len} ${c - .9 * k},${c - R * len}`, fill, stroke: 'rgba(0,0,0,.35)', 'stroke-width': .5,
-    class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));display:none` }); svg.insertBefore(n, cap); return n; };
-  const nI = mk(.66, 2.8, '#2fc0ae'), nO = mk(.46, 3, '#4a90ff');
-  vt.setAttribute('font-size', Math.max(10, size * .085));
-  const put = (n, v) => { if (v == null || !isFinite(v)) { n.style.display = 'none'; return; } n.style.display = ''; n.style.transform = `rotate(${ang(v)}deg)`; };
+  const c = size / 2, R = c - 3, k = size / 150, min = 30, max = 100, span = max - min;
+  const ang = v => -135 + 270 * Math.max(0, Math.min(1.02, (v - min) / span));
+  const svg = el('svg', { width: size, height: size + 22, viewBox: `0 0 ${size} ${size + 22}`, style: 'overflow:visible' }, host);
+  const defs = el('defs', {}, svg); const sh = el('filter', { id: 'sh' + host.id, x: '-30%', y: '-30%', width: '160%', height: '160%' }, defs);
+  el('feDropShadow', { dx: 0, dy: 2, stdDeviation: 4, 'flood-opacity': .7 }, sh);
+  const ng = el('linearGradient', { id: 'ng' + host.id, x1: 0, y1: 0, x2: 1, y2: 0 }, defs);
+  el('stop', { offset: 0, 'stop-color': '#ff9a4d' }, ng); el('stop', { offset: 1, 'stop-color': '#e04a00' }, ng);
+  el('image', { href: 'gauge_face.png', x: 0, y: 0, width: size, height: size, filter: `url(#sh${host.id})` }, svg);
+  el('image', { href: 'gauge_logo.png', x: size * .1, y: size * .1, width: size * .8, height: size * .8 }, svg);
+  // fish-comfort zones (water): a fine band right at the edge of the scale
+  for (const z of [[30, 50, '#3a6fc4'], [50, 62, '#e08a00'], [62, 84, '#1f9d57'], [84, 92, '#e08a00'], [92, 100, '#c8202a']]) el('path', { d: arcPath(c, R - 6.5 * k, ang(z[0]), ang(z[1])), stroke: z[2], 'stroke-width': 2.6 * k, fill: 'none' }, svg);
+  const nt = 7 * 5;
+  for (let i = 0; i <= nt; i++) { const a = -135 + 270 * i / nt, major = i % 5 === 0;
+    const p1 = PtA(c, R - 8.5 * k, a), p2 = PtA(c, major ? R - 17 * k : R - 12.5 * k, a);
+    el('line', { x1: p1[0], y1: p1[1], x2: p2[0], y2: p2[1], stroke: major ? '#15171b' : 'rgba(58,62,70,.67)', 'stroke-width': major ? 1.6 : .7 }, svg); }
+  // the two water tracks: faint full-length grooves with the level bar on top
+  const trI = R - 21 * k, trO = R - 26.5 * k, tw = 3.6 * k;
+  for (const r of [trI, trO]) el('path', { d: arcPath(c, r, -135, 135), stroke: 'rgba(40,44,52,.16)', 'stroke-width': tw, fill: 'none', 'stroke-linecap': 'round' }, svg);
+  const bar = (r, col) => { const p = el('path', { d: '', stroke: col, 'stroke-width': tw, fill: 'none', 'stroke-linecap': 'round', style: 'filter:drop-shadow(0 .6px .6px rgba(0,0,0,.45))' }, svg);
+    const dot = el('circle', { r: tw * .85, fill: '#fff', stroke: col, 'stroke-width': 1.2 * k, style: 'display:none' }, svg); return { p, dot, r }; };
+  const bI = bar(trI, '#1fb3a0'), bO = bar(trO, '#3d7fe6');
+  const nf = size * .066, nr = R - 37 * k;
+  for (let v = min; v <= max; v += 10) { const tp = PtA(c, nr, ang(v)); const t = el('text', { x: tp[0], y: tp[1] + nf * .36, 'text-anchor': 'middle', 'font-size': nf, 'font-weight': 600, fill: '#1a1c21' }, svg); t.textContent = v; }
+  const lb = el('text', { x: c, y: c + R * .6, 'text-anchor': 'middle', 'font-size': size * .064, 'font-weight': 900, fill: '#2a3b55' }, svg); lb.textContent = 'TEMP °F';
+  const nd = el('polygon', { points: `${c - 3.2 * k},${c + R * .16} ${c + 3.2 * k},${c + R * .16} ${c + k},${c - R + 10 * k} ${c - k},${c - R + 10 * k}`, fill: `url(#ng${host.id})`, class: 'needle', style: `transform-origin:${c}px ${c}px;transform:rotate(-135deg);filter:drop-shadow(0 2px 2px rgba(0,0,0,.6))` }, svg);
+  el('circle', { cx: c, cy: c, r: size * .055, fill: 'url(#cap)', stroke: '#2a2c31' }, svg);
+  el('image', { href: 'gauge_glass.png', x: 0, y: 0, width: size, height: size }, svg);
+  const vt = el('text', { x: c, y: size + 16, 'text-anchor': 'middle', 'font-size': Math.max(10, size * .085), fill: '#a3dcbf', 'font-weight': 500, 'letter-spacing': '.02em', 'font-family': '-apple-system, "Segoe UI", sans-serif', style: 'font-variant-numeric:tabular-nums' }, svg);
+  const put = (b, v) => { if (v == null || !isFinite(v)) { b.p.setAttribute('d', ''); b.dot.style.display = 'none'; return; }
+    const a2 = Math.max(-133, ang(v)); b.p.setAttribute('d', arcPath(c, b.r, -135, a2)); const e = PtA(c, b.r, a2); b.dot.setAttribute('cx', e[0]); b.dot.setAttribute('cy', e[1]); b.dot.style.display = ''; };
   const f = (v, est) => v == null || !isFinite(v) ? '--' : (est ? '~' : '') + Math.round(v);
   return { set(air, icw, sea, icwEst, icwLab) {
-    d.set(air == null ? 30 : air, null, ''); put(nI, icw); put(nO, sea);
+    nd.style.transform = `rotate(${ang(air == null ? min : air)}deg)`; put(bI, icw); put(bO, sea);
     vt.innerHTML = `<tspan fill="#ffb37a">air ${f(air)}</tspan><tspan fill="#5d6470"> · </tspan><tspan fill="#5fd8c6">${icwLab || 'icw'} ${f(icw, icwEst)}</tspan>` + (sea == null ? '' : `<tspan fill="#5d6470"> · </tspan><tspan fill="#8fb8ff">sea ${f(sea)}</tspan>`);
   } };
 }
