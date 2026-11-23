@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T00:57:54+00:00",
+ "updated": "2026-11-23T14:53:40+00:00",
  "places": [
   {
    "name": "Daytona Beach area",
@@ -54,15 +54,7 @@
    "name": "Southwest Florida",
    "lat": 26.5,
    "lon": -82.0,
-   "items": [
-    {
-     "title": "Exclusive: From nets to tanks, redfish farming comes to Pine Island",
-     "source": "Miramar News",
-     "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBaZFNvcVpiVDBoaFBXZU8xSHl4cXlMb04xekpNZkhtMWZtb2l0YnFxX3NDbnRzTlFzYnV5RmdXOXNRNGluaktGcmVFbGd1aWdYUllIeUNXY0kzZm9qWVFrdHQzSVJuRkE?oc=5",
-     "snippet": "",
-     "date": "2026-11-21T10:38:50+00:00"
-    }
-   ],
+   "items": [],
    "errors": []
   },
   {
@@ -75,7 +67,7 @@
      "source": "Tampa Bay Times",
      "link": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNVnZqSU55YnhmN0RHSThycmVQRnRRUEgxT0dNUGtiVlBERm9OSlhxZ2VIeE1vZ283bEdnZ0Y2ZDNoak4zVVBqQlB0cGl1QXd3U2Zzd3NWY0tNSWNJY0pzOGhUVVpvMTMyMWZoR1ZBYWVSeHRVZW1PY0k0MkN5NWJ3NV9hQjJnbER5MER6eU1LVW12Ry1lcTBiQVR1bi01dGRjdkF0eQ?oc=5",
      "snippet": "",
-     "date": "2026-11-22T10:02:32+00:00"
+     "date": "2026-11-22T10:03:04+00:00"
     }
    ],
    "errors": []
@@ -99,9 +91,7 @@
    "lat": 30.3,
    "lon": -86.4,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "Alabama / Mississippi Coast",
@@ -125,7 +115,7 @@
     {
      "title": "Good catches from Galveston Bay",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b038fcdf70942a9a18ec60831bc73a5&url=https%3a%2f%2fwww.galvnews.com%2fsports%2ffishing_report%2fgood-catches-from-galveston-bay%2farticle_04005bab-52c7-4dcb-8362-7dc1877eb336.html&c=7231955672839873252&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0453af54fc401fb9471756aeafaa85&url=https%3a%2f%2fwww.galvnews.com%2fsports%2ffishing_report%2fgood-catches-from-galveston-bay%2farticle_04005bab-52c7-4dcb-8362-7dc1877eb336.html&c=7231955672839873252&mkt=en-us",
      "snippet": "Capt. Juan Cruz fished with Ed Washington out of Eagle Point Fishing Camp and found a good bite at first light. Ed caught his limit of trout, reds and black ...",
      "date": "2026-11-08T16:30:00+00:00"
     }
@@ -140,7 +130,7 @@
     {
      "title": "Exploring a fishing spot in Port Aransas",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b038fd10a0d41128ab4fe9963a93271&url=https%3a%2f%2fwww.msn.com%2fen-ph%2fsports%2fgeneral%2fexploring-a-fishing-spot-in-port-aransas%2fvi-AA2cIQso&c=8837367905397099473&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0453b38395454286af52c7c95fa0da&url=https%3a%2f%2fwww.msn.com%2fen-ph%2fsports%2fgeneral%2fexploring-a-fishing-spot-in-port-aransas%2fvi-AA2cIQso&c=8837367905397099473&mkt=en-us",
      "snippet": "Explore jetty fishing in Port Aransas, Texas, and see what makes this location an interesting spot for targeting saltwater fish. #JettyFishing #PortAransas #SaltwaterFishing ...",
      "date": "2026-11-11T05:25:07+00:00"
     }
@@ -162,7 +152,7 @@
     {
      "title": "5050 Fishing and Matt Jackson catch large bass in Savannah ponds",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b038fd95eab4d0d93157f079965eef7&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2f5050-fishing-and-matt-jackson-catch-large-bass-in-savannah-ponds%2fvi-AA2hEgWa&c=4589241834405275148&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0453ba58214fc3acc1bb434a042b24&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2f5050-fishing-and-matt-jackson-catch-large-bass-in-savannah-ponds%2fvi-AA2hEgWa&c=4589241834405275148&mkt=en-us",
      "snippet": "5050 Fishing joins Matt Jackson in Savannah, Georgia, for pond-hopping. They fish several ponds and land multiple large bass.",
      "date": "2026-11-17T12:19:28+00:00"
     }
@@ -259,7 +249,15 @@
    "name": "Long Island / New York",
    "lat": 40.8,
    "lon": -73.0,
-   "items": [],
+   "items": [
+    {
+     "title": "Generations of anglers have made the pilgrimage to Montauk to catch striped bass",
+     "source": "NewsBreak: Local News & Alerts",
+     "link": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxPdFpGMHBBNE9aLUt6UUlkbmtaal9UVG1wZ2FtX0JhUWNKa2UwLUx0Q204b2laX2VSSm91QlBCdGxCc0NWYzZqaFJCRF9CZHdoZGh1X0FIMTdsQXRUVVVzei1Zb191YmNGNG14TkdwR3owRXd3T1AwVDNfVnlwRzhRMFdxS1FqczNDMnBLSnZrWGt6OVhYMWprdFJjNFVRRXRFcFQ0YkQ0dk11S2p4UURUY2I2LWhndkNxQloxRVFHbFFDRkJJaUQxNGpLeTQxblAzQ203SGtJM0xWQQ?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T10:00:06+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -310,7 +308,9 @@
    "lat": 43.5,
    "lon": -70.4,
    "items": [],
-   "errors": []
+   "errors": [
+    "Bing News: not well-formed (invalid token): line 1, column 41"
+   ]
   },
   {
    "name": "San Diego",
@@ -337,7 +337,15 @@
    "name": "San Francisco Bay / Delta",
    "lat": 37.9,
    "lon": -122.2,
-   "items": [],
+   "items": [
+    {
+     "title": "Decades later, mercury and industrial toxins still contaminate San Francisco Bay fish",
+     "source": "Bing News",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0453fa343b4219a9714b8c5f4de014&url=https%3a%2f%2fwww.msn.com%2fen-us%2fmoney%2fgeneral%2fdecades-later-mercury-and-industrial-toxins-still-contaminate-san-francisco-bay-fish%2far-AA2hjIuw&c=5928342701229744834&mkt=en-us",
+     "snippet": "SHINER SURFPERCH caught beside the former Hunters Point Naval Shipyard in San Francisco carried more than 10 times the PCBs the state says make a fish unsafe for anyone to eat. That's from new testing ...",
+     "date": "2026-11-12T10:00:00+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -374,9 +382,7 @@
    "lat": 60.3,
    "lon": -151.2,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "Hawaii",
@@ -398,16 +404,16 @@
    "lat": 35.47,
    "lon": -97.52,
    "items": [],
-   "errors": []
+   "errors": [
+    "Google News: HTTP Error 429: Too Many Requests"
+   ]
   },
   {
    "name": "Northeast Oklahoma lakes",
    "lat": 36.1,
    "lon": -95.3,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "Lake Texoma",
@@ -436,9 +442,7 @@
    "lat": 30.4,
    "lon": -98.0,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "East Texas lakes",
@@ -468,11 +472,11 @@
    "lon": -93.0,
    "items": [
     {
-     "title": "Lake Norfork Fishing Report",
+     "title": "Weekly Lake Norfork Fishing Report",
      "source": "Ozark Radio News",
-     "link": "https://news.google.com/rss/articles/CBMicEFVX3lxTE1XeldIMXRyNGZoMjV5MC0zLU9neVlGMm0tU1VrbTZsemJBTVJFWDhBVUZrLVBSVkZmb2NaZVBaeDdBRE11aExXTmw3SUJaRGEzNkhBMGhpRlBkRWNoaVdtcExPOWhtdG5nTlhWN0tSd0o?oc=5",
+     "link": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9UN215NjdSdDZkbkFjbHdodUdiTk4zajdYSXItaTdyN3Vfb3ZBd2pMYlZpcjlNOUUteUw4UlZUZkRocEkxaFVnSU5PM2ZpeG1lSWJya2tWYjR2eHQxSjdISUtRZmJjX2JPblRpYXRFZWtrdzhfcC12OXBCSQ?oc=5",
      "snippet": "",
-     "date": "2026-11-19T13:28:10+00:00"
+     "date": "2026-11-12T08:00:00+00:00"
     }
    ],
    "errors": []
@@ -497,39 +501,37 @@
    "lon": -86.3,
    "items": [
     {
-     "title": "Crappie fishing on Lake Guntersville",
+     "title": "Frogging techniques for bass fishing on Lake Guntersville",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b039057b78c423abdb05ff3a0d4a208&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2foutdoor-activities%2fcrappie-fishing-on-lake-guntersville%2fvi-AA27MqZz&c=12664409287604437438&mkt=en-us",
-     "snippet": "Targeting big crappie on Lake Guntersville with effective strategies and bait techniques. Perfect for anglers looking for a rewarding freshwater fishing experience. #CrappieFishing #LakeGuntersville # ...",
-     "date": "2026-11-18T02:49:32+00:00"
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b04543ab5ef4a49a12e96b95efdf67c&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2ffrogging-techniques-for-bass-fishing-on-lake-guntersville%2fvi-AA2d5Poj&c=17437741728119646967&mkt=en-us",
+     "snippet": "Explore effective Frogging and punching techniques for targeting bass around heavy cover on Lake Guntersville. #BassFishing #FrogFishing #LakeGuntersville ...",
+     "date": "2026-11-22T23:11:24+00:00"
     },
     {
-     "title": "Adding fish structure to Lake Guntersville",
+     "title": "Crappie fishing on Lake Guntersville",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b039057b78c423abdb05ff3a0d4a208&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2foutdoor-activities%2fadding-fish-structure-to-lake-guntersville%2fvi-AA281hPs&c=5338319963204810708&mkt=en-us",
-     "snippet": "Explore how adding fish structure can improve fishing opportunities on Lake Guntersville. Follow an exciting crappie fishing adventure with new techniques and strategies. #Fishing #CrappieFishing #Lak ...",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b04543ab5ef4a49a12e96b95efdf67c&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2foutdoor-activities%2fcrappie-fishing-on-lake-guntersville%2fvi-AA27MqZz&c=12664409287604437438&mkt=en-us",
+     "snippet": "Targeting big crappie on Lake Guntersville with effective strategies and bait techniques. Perfect for anglers looking for a rewarding freshwater fishing experience. #CrappieFishing #LakeGuntersville # ...",
      "date": "2026-11-18T02:49:32+00:00"
     }
    ],
-   "errors": []
+   "errors": [
+    "Google News: HTTP Error 429: Too Many Requests"
+   ]
   },
   {
    "name": "Georgia / Carolina lakes",
    "lat": 34.0,
    "lon": -82.8,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "North Carolina lakes",
    "lat": 35.5,
    "lon": -80.9,
    "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "errors": []
   },
   {
    "name": "Lake Erie",
@@ -546,7 +548,7 @@
     {
      "title": "Pennsylvania cuts Lake Erie steelhead stocking",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b03906288dc447fbc1b7eed94cf2950&url=https%3a%2f%2fwww.msn.com%2fen-us%2fnews%2fother%2fpennsylvania-cuts-lake-erie-steelhead-stocking%2far-AA2hHkaU&c=2405843755380799190&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b04544631d248b997596d2a35d17273&url=https%3a%2f%2fwww.msn.com%2fen-us%2fscience%2fecology%2fpennsylvania-cuts-lake-erie-steelhead-stocking%2far-AA2hHkaU&c=3471105906489672600&mkt=en-us",
      "snippet": "Pennsylvania's Lake Erie steelhead fishery is running on fewer stocked fish than it used to. A September 2026 Outdoor News report by Deborah Weisberg says anglers \"may begin to see fewer steelhead in ...",
      "date": "2026-11-18T06:00:00+00:00"
     },
@@ -560,7 +562,7 @@
     {
      "title": "Fishing tournament season concludes on Lake Erie",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b03906288dc447fbc1b7eed94cf2950&url=https%3a%2f%2fwww.outdoornews.com%2f2026%2f11%2f08%2ffishing-tournament-season-concludes-on-lake-erie%2f&c=8984934837980731854&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b04544631d248b997596d2a35d17273&url=https%3a%2f%2fwww.outdoornews.com%2f2026%2f11%2f08%2ffishing-tournament-season-concludes-on-lake-erie%2f&c=8984934837980731854&mkt=en-us",
      "snippet": "After another solid year of Lake Erie walleye action, the fishing community enjoyed two final fishing events to help put an exclamation point on the season.",
      "date": "2026-11-08T05:32:00+00:00"
     },
@@ -570,27 +572,16 @@
      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQOGhBOFgzNEdJY0tQQnpzSlhtR0FCMzJfZ01uWElwWjYwOTdPSU1hYVZ3YmM2TkhVNkgxYm1ndGFsaXNQUm9WMS10ZHJ1dThUd0Niem9hdzdGVGNFYTdrLTJyWjdmYmRMbktWOEw0R2VTYlh6cDExbndPdFFkak92STl5UTdCX1R0OGV5Z2gzQVZvdUVnVE5fczRjQ1RJcmMyLVFxTXJTdGxsUE1PVm5IM0FGRW1lQlpiT1NEcEhNOA?oc=5",
      "snippet": "As the chilly nights have arrived, the emerald shiners and gizzard shad the Lake Erie game fish rely on have moved into more comfortable warmer water harbor areas. As a result, the numbers of ...",
      "date": "2026-11-06T08:00:00+00:00"
-    },
-    {
-     "title": "Pa. is stocking fewer steelhead in Lake Erie. Is it still world-class fishing?",
-     "source": "Pittsburgh Post-Gazette",
-     "link": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOMGlOWGp6elZUTnN1N1dIQ2pfTXBFV2NKbDJpYVR4eVVxalpEVlpXVmh2aG1Yc1ZtQWdYVU9UeVA1NHUzWWl5bElQT21OZjBFN0o5WWg5YjNaazB1eWp1YzA4YmVfSUZlYWMxVTR3WTlRbFZIb1E5WlF3NlAyNFR1Z1NNVE9UWTF4cDEybW0xVy1qcEllY29SZHh6SllWaGFlYW5IUUc3cXVwSDZpSGhtblp2b0U2VVh0WlV6Q292VFZlZVp3bjlXVWxrMzYzQQ?oc=5",
-     "snippet": "",
-     "date": "2026-11-02T08:00:00+00:00"
     }
    ],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Detroit / Lake St. Clair",
    "lat": 42.5,
    "lon": -82.8,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Southern Lake Michigan",
@@ -641,18 +632,36 @@
      "date": "2026-11-04T08:00:00+00:00"
     }
    ],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Wisconsin lakes",
    "lat": 44.1,
    "lon": -88.5,
-   "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "items": [
+    {
+     "title": "Wild Things: State Record Bass Hooked in Bay",
+     "source": "Door County Pulse",
+     "link": "https://news.google.com/rss/articles/CBMifEFVX3lxTFAySHhoa0FuU0t1SjR2NzdUblVLSTNCaHdsSDNjZVRVd18yd1M1eWx4VXU2UmVvbDlVWmhPZDdSeXYxeE5TaFM5VDRoaHJPeko3VldPZzk3UE13ZXQzcUNHVG52SFJLUW1ONTRtaE9wNEQ3cWx1UVZXN3NLcWY?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "Smallmouth bass caught on Green Bay verified as state hook-and-line record",
+     "source": "Milwaukee Journal Sentinel",
+     "link": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxQV0ZLUm5uRnRjRS0tWVVVN3g5OG1yVGhLcEdmWExKTldza1Q4MDRCLS1jNF9panhvTzZYdEJ6M2kwTmpmSENaX0RMT0pGTHZQQmNnTVNxUUQ3MURLbUdEQjlFVzJ0alBNOGg4V2o0SHNZbXB4N09aMU91b25ZQjN0S3pQR0NmOXJVUGJjcnNiTFphbVZnTkFyZ2x0RmpxODBxWEhCU3NjZlVyNmxiRzByWWpub2h0SG9WVXZVdXE4WVB0MUpodWJ0ck1mWmJnQktLLXBHWXBHenhRSTVMMGFpN2RrOE5Ba3gyenJXc3ZRWW53dXQw?oc=5",
+     "snippet": "",
+     "date": "2026-11-05T08:00:00+00:00"
+    },
+    {
+     "title": "State record smallmouth bass caught on the waters of Green Bay in Oconto County",
+     "source": "WLUK",
+     "link": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxQS2pIeS1nSWhpMW5zdTBEZi1hOEFMYUxwTmw5ZEs1OHhrczlwZklTdVVldjllZEQ0ajNyekVmeWtIMUphanJzVmVkRFBCbk83dUlmRUJIQUtqb0dndGdVWEVHRXNrVGNMZEJnUDgwX2RZdVg0bFFDYzZNN3JPREp0VHJ4OW80VnI1MDdxRHI1UFpwcjA5eGJHbXJpUkc2S1lRRXNaRHdJVlAwbE5wNTN0dWswdVpnZFhMYjJ0MmdWdnNET1VQREpQXzRhQlR1VUVGbkZYb1BDa3VYUjQ0a3oyYmJ1MHNYWndsc240?oc=5",
+     "snippet": "",
+     "date": "2026-11-03T00:08:48+00:00"
+    }
+   ],
+   "errors": []
   },
   {
    "name": "Minnesota lakes",
@@ -666,18 +675,29 @@
    "lat": 39.7,
    "lon": -105.0,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Lake Havasu / Lake Mead",
    "lat": 35.6,
    "lon": -114.4,
-   "items": [],
-   "errors": [
-    "Bing News: not well-formed (invalid token): line 1, column 41"
-   ]
+   "items": [
+    {
+     "title": "Fishing report for week of Nov. 21",
+     "source": "Bing News",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b045461ab6348a9890a063bf4ea6371&url=https%3a%2f%2fwww.havasunews.com%2flifestyle%2ffishing-report-for-week-of-nov-21%2farticle_30474b18-fb83-4a5f-9ca5-d3074f8e964c.html&c=10611527904342125417&mkt=en-us",
+     "snippet": "A trip to the Bill Williams Peninsula produced a pair of first-time flathead catches this week, while another Lake Havasu angler hauled in the biggest fish of his life. Here’s ...",
+     "date": "2026-11-19T07:45:00+00:00"
+    },
+    {
+     "title": "Forget Lake Havasu, Arizona's high-elevation lake is an unsung fishing and boating haven inside a national forest",
+     "source": "Bing News",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b045461ab6348a9890a063bf4ea6371&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2fparks%2fforget-lake-havasu-arizona-s-high-elevation-lake-is-an-unsung-fishing-and-boating-haven-inside-a-national-forest%2far-AA2hr4dZ&c=733118633740318481&mkt=en-us",
+     "snippet": "Arizona is home to a lot of beautiful spots, but if you want to get away from the crowds of Lake Havasu, you can check out this lesser-known lake.",
+     "date": "2026-11-14T06:00:00+00:00"
+    }
+   ],
+   "errors": []
   },
   {
    "name": "Phoenix area lakes",
