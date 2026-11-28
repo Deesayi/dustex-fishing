@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T13:59:22+00:00",
+ "updated": "2026-11-28T00:06:03+00:00",
  "places": [
   {
    "name": "Daytona Beach area",
@@ -57,10 +57,17 @@
    "items": [
     {
      "title": "Exclusive: From nets to tanks, redfish farming comes to Pine Island",
-     "source": "Miramar News",
-     "link": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBaZFNvcVpiVDBoaFBXZU8xSHl4cXlMb04xekpNZkhtMWZtb2l0YnFxX3NDbnRzTlFzYnV5RmdXOXNRNGluaktGcmVFbGd1aWdYUllIeUNXY0kzZm9qWVFrdHQzSVJuRkE?oc=5",
+     "source": "The News-Press",
+     "link": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQTjhqMWhiRjRIT2V4cW5PYzZ3MFdBd0paZFBLbnFIWlZjTnRaOEdiZzZTanhRZjItcnRzNWJpMDc2dGJCMVlRcTVYMU84RngyQkM5UkFNaG5Oa1Z0VjFoTzBSZk9kTkVXU2JLaF9Xcy1xVXFOVm5BODgxaHFodTk3R1JOUlRfWUxPSUFqSnJNZGpnTEJQQ2kxNnJOblcxYWFvek5KMzBwQThweG9MMWg0MWt5MVlyelVqaXVUbzl6bzBPUjc3OU5Ca0liRDVZV2pkOGhmd0VNTlJMSklm?oc=5",
      "snippet": "",
-     "date": "2026-11-21T10:38:50+00:00"
+     "date": "2026-11-20T15:45:00+00:00"
+    },
+    {
+     "title": "Shark fishing sparks heated debate among Marco Island beachgoers",
+     "source": "WINK News - Southwest Florida",
+     "link": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxPOTRUZHVlb0Z5bHZCV1VGT3JGUTU1V29XdFlMTlZpUGVnRHpjR1ZyRXFUSFVOTmVtaFVrWVktdXNEZTZhNlBUNldNcThnaFpYMWp0eGxOTThGdVFyVGR1NkR3eFI4UExKUjNqdW1JUFdBQUFIamJBNUhuUGx6U3dGNEgtNi1UeDFZYTFEUzhQUDlEZkRQd3U5R0UtUlVEQjA5enhSWFpReG5GaUZIUzBIWXZWUC1Ec3oyQTJCQU1MemkxLTFOSF9ybFNpdG9OeGRFS25PbzhORndNX3ZBalpGLXdaYnNneEU?oc=5",
+     "snippet": "",
+     "date": "2026-11-12T08:00:00+00:00"
     }
    ],
    "errors": []
@@ -123,7 +130,7 @@
     {
      "title": "Good catches from Galveston Bay",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098cf3495d43c784f4e0567698ab6d&url=https%3a%2f%2fwww.galvnews.com%2fsports%2ffishing_report%2fgood-catches-from-galveston-bay%2farticle_04005bab-52c7-4dcb-8362-7dc1877eb336.html&c=7231955672839873252&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1b27e7a44d2f8df0460ac547ec32&url=https%3a%2f%2fwww.galvnews.com%2fsports%2ffishing_report%2fgood-catches-from-galveston-bay%2farticle_04005bab-52c7-4dcb-8362-7dc1877eb336.html&c=7231955672839873252&mkt=en-us",
      "snippet": "Capt. Juan Cruz fished with Ed Washington out of Eagle Point Fishing Camp and found a good bite at first light. Ed caught his limit of trout, reds and black ...",
      "date": "2026-11-08T16:30:00+00:00"
     }
@@ -152,7 +159,7 @@
     {
      "title": "5050 Fishing and Matt Jackson catch large bass in Savannah ponds",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098cfeb97245e28c4f8b827df1181d&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2f5050-fishing-and-matt-jackson-catch-large-bass-in-savannah-ponds%2fvi-AA2hEgWa&c=4589241834405275148&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1b3308ff4bb89f32be07b58b0b97&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2f5050-fishing-and-matt-jackson-catch-large-bass-in-savannah-ponds%2fvi-AA2hEgWa&c=4589241834405275148&mkt=en-us",
      "snippet": "5050 Fishing joins Matt Jackson in Savannah, Georgia, for pond-hopping. They fish several ponds and land multiple large bass.",
      "date": "2026-11-17T12:19:28+00:00"
     }
@@ -241,32 +248,29 @@
    "name": "Long Island / New York",
    "lat": 40.8,
    "lon": -73.0,
-   "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "items": [
+    {
+     "title": "New York plans to reopen western Long Island Sound and Atlantic waters closed to commercial striped bass fishing since 1986 after PCB tests; anglers' eating advice stays the same",
+     "source": "ECOticias.com - El periódico verde",
+     "link": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOYjliRzFJc1ppSDdjZFJxc25renZuTS1UTFhUTjdpbm42TjNxQXNlRDV4eWkyOVpKZV81cTFVMl9EY3Z2YS0zX05XTF8wVEZGeFJyME9FSW5tMXc3SlZGc2Jmdk5FOV80R2FZb1dMUUl6WlJYUmtncm5kZERlNE9mem5lWEIyRHBsTmk2RmM0akw3bmFmSDJreHBBdkphalBpWmNXN1N0WkU?oc=5",
+     "snippet": "",
+     "date": "2026-11-27T11:10:00+00:00"
+    }
+   ],
+   "errors": []
   },
   {
    "name": "Rhode Island / Connecticut",
    "lat": 41.4,
    "lon": -71.8,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Cape Cod / Massachusetts",
    "lat": 41.75,
    "lon": -70.4,
    "items": [
-    {
-     "title": "Woman injured in potential shark bite off Martha's Vineyard",
-     "source": "ABC News - Breaking News, Latest News and Videos",
-     "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPcTBHM2JYTDdoWkJ6UktSd1E5Mk1lc05jYW5CeFFmdEtrcXJkS2hxa0VUdUtsOEVqR0pLQXQ3YXJ1anRqQVdLMjQ1NE92cnRMMDAyY2tsY3RCanhlS25fSWNGZHY1ZUtzMWZQMW5KUnI5YjlieG5GMC1NUFJtQVhEQUN2bkloUzRXakpseXU4OGFIa2VUVnF5VzV4aE5hM0oyQVh0ejh30gGrAUFVX3lxTE0xbFhyanNWMGUzZGZSMnVoLXZERkROUDctdEVBNE5Xc3BGemF6ZkZTOWkxaEZUcUhvMmtwTnpOQ3YzVjcyQTBIejNZaXpRQkEtd1NnaUVxV1FtU0V0MktJSlU5TDZ5WDFMdmFDX3RhblQ5TTdEN0FyWk9hVlFLNC1DZTR2UUZKbXdKU2ktMXgwN3pGdlNEWkJEV0YyakFVU21LSTI3N2ZpUG96QQ?oc=5",
-     "snippet": "",
-     "date": "2026-11-26T07:30:47+00:00"
-    },
     {
      "title": "Cape Cod Fishing Report- November 25, 2026",
      "source": "On The Water",
@@ -296,9 +300,7 @@
    "lat": 43.5,
    "lon": -70.4,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "San Diego",
@@ -312,18 +314,14 @@
    "lat": 33.7,
    "lon": -118.2,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Santa Barbara / Central Coast",
    "lat": 34.9,
    "lon": -120.6,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "San Francisco Bay / Delta",
@@ -333,14 +331,12 @@
     {
      "title": "Decades later, mercury and industrial toxins still contaminate San Francisco Bay fish",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d3c85304623b2a481025fa47ee2&url=https%3a%2f%2fwww.msn.com%2fen-us%2fmoney%2fgeneral%2fdecades-later-mercury-and-industrial-toxins-still-contaminate-san-francisco-bay-fish%2far-AA2hjIuw&c=5928342701229744834&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1b7306d64849881ac7bd03821891&url=https%3a%2f%2fwww.msn.com%2fen-us%2fmoney%2fgeneral%2fdecades-later-mercury-and-industrial-toxins-still-contaminate-san-francisco-bay-fish%2far-AA2hjIuw&c=5928342701229744834&mkt=en-us",
      "snippet": "SHINER SURFPERCH caught beside the former Hunters Point Naval Shipyard in San Francisco carried more than 10 times the PCBs the state says make a fish unsafe for anyone to eat. That's from new testing ...",
      "date": "2026-11-12T10:00:00+00:00"
     }
    ],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Oregon coast",
@@ -376,9 +372,7 @@
    "lat": 60.3,
    "lon": -151.2,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Hawaii",
@@ -429,18 +423,14 @@
    "lat": 32.8,
    "lon": -96.9,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Texas Hill Country lakes",
    "lat": 30.4,
    "lon": -98.0,
    "items": [],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "East Texas lakes",
@@ -455,9 +445,7 @@
      "date": "2026-11-13T16:22:00+00:00"
     }
    ],
-   "errors": [
-    "Google News: HTTP Error 429: Too Many Requests"
-   ]
+   "errors": []
   },
   {
    "name": "Arkansas lakes",
@@ -501,17 +489,17 @@
    "lon": -86.3,
    "items": [
     {
-     "title": "Crappie fishing on Lake Guntersville",
+     "title": "Frogging techniques for bass fishing on Lake Guntersville",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d7a545c46548ccad5942558532c&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2foutdoor-activities%2fcrappie-fishing-on-lake-guntersville%2fvi-AA27MqZz&c=12664409287604437438&mkt=en-us",
-     "snippet": "Targeting big crappie on Lake Guntersville with effective strategies and bait techniques. Perfect for anglers looking for a rewarding freshwater fishing experience. #CrappieFishing #LakeGuntersville # ...",
-     "date": "2026-11-18T02:49:32+00:00"
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bb2bd7f40f98b39a4f10ceffbaa&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2ffrogging-techniques-for-bass-fishing-on-lake-guntersville%2fvi-AA2d5Poj&c=17437741728119646967&mkt=en-us",
+     "snippet": "Explore effective Frogging and punching techniques for targeting bass around heavy cover on Lake Guntersville. #BassFishing #FrogFishing #LakeGuntersville ...",
+     "date": "2026-11-22T23:11:24+00:00"
     },
     {
-     "title": "Adding fish structure to Lake Guntersville",
+     "title": "Crappie fishing on Lake Guntersville",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d7a545c46548ccad5942558532c&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2foutdoor-activities%2fadding-fish-structure-to-lake-guntersville%2fvi-AA281hPs&c=5338319963204810708&mkt=en-us",
-     "snippet": "Explore how adding fish structure can improve fishing opportunities on Lake Guntersville. Follow an exciting crappie fishing adventure with new techniques and strategies. #Fishing #CrappieFishing #Lak ...",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bb2bd7f40f98b39a4f10ceffbaa&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2foutdoor-activities%2fcrappie-fishing-on-lake-guntersville%2fvi-AA27MqZz&c=12664409287604437438&mkt=en-us",
+     "snippet": "Targeting big crappie on Lake Guntersville with effective strategies and bait techniques. Perfect for anglers looking for a rewarding freshwater fishing experience. #CrappieFishing #LakeGuntersville # ...",
      "date": "2026-11-18T02:49:32+00:00"
     }
    ],
@@ -545,9 +533,16 @@
    "lon": -82.6,
    "items": [
     {
+     "title": "Holiday fishing trips not on an option this weekend: Fishing report for the weekend of Nov. 27-29, 2026",
+     "source": "Bing News",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bbd4de24bca9df5d9ebc38c2156&url=https%3a%2f%2fwww.cleveland.com%2foutdoors%2f2026%2f11%2fholiday-fishing-trips-not-on-an-option-this-weekend-fishing-report-for-the-weekend-of-nov-27-29-2026.html&c=11685935402606984924&mkt=en-us",
+     "snippet": "A few anglers will probably try to catch a walleye today and Saturday by casting from Lake Erie shoreline piers and break walls from Toledo to Erie, Pennsylvania, or trolling the rough near-shore ...",
+     "date": "2026-11-27T03:30:00+00:00"
+    },
+    {
      "title": "Fishing with a Lake Erie icon",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d85d3844761967ab87270d8063b&url=https%3a%2f%2fwww.morrowcountysentinel.com%2f2026%2f11%2f23%2ffishing-with-a-lake-erie-icon%2f&c=16406489540297903632&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bbd4de24bca9df5d9ebc38c2156&url=https%3a%2f%2fwww.morrowcountysentinel.com%2f2026%2f11%2f23%2ffishing-with-a-lake-erie-icon%2f&c=16406489540297903632&mkt=en-us",
      "snippet": "Some fishing trips are special because of the number of fish caught, while others are memorable because of the people you get to share the experience with. Occasionally, you are fortunate enough to ...",
      "date": "2026-11-23T12:05:00+00:00"
     },
@@ -561,7 +556,7 @@
     {
      "title": "Pennsylvania cuts Lake Erie steelhead stocking",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d85d3844761967ab87270d8063b&url=https%3a%2f%2fwww.msn.com%2fen-us%2fnews%2fother%2fpennsylvania-cuts-lake-erie-steelhead-stocking%2far-AA2hHkaU&c=2405843755380799190&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bbd4de24bca9df5d9ebc38c2156&url=https%3a%2f%2fwww.msn.com%2fen-us%2fnews%2fother%2fpennsylvania-cuts-lake-erie-steelhead-stocking%2far-AA2hHkaU&c=2405843755380799190&mkt=en-us",
      "snippet": "Pennsylvania's Lake Erie steelhead fishery is running on fewer stocked fish than it used to. A September 2026 Outdoor News report by Deborah Weisberg says anglers \"may begin to see fewer steelhead in ...",
      "date": "2026-11-18T06:00:00+00:00"
     },
@@ -579,7 +574,15 @@
    "name": "Detroit / Lake St. Clair",
    "lat": 42.5,
    "lon": -82.8,
-   "items": [],
+   "items": [
+    {
+     "title": "Lake St. Clair smallmouth bass slow bite after 25-degree cold front",
+     "source": "Bing News",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bc1935149fba7aeab59977b8f95&url=https%3a%2f%2fwww.msn.com%2fen-us%2fnews%2fother%2flake-st-clair-smallmouth-bass-slow-bite-after-25-degree-cold-front%2fvi-AA2iiAuE&c=10807981753946132996&mkt=en-us",
+     "snippet": "An angler fishes for smallmouth bass on Lake St. Clair after a cold front that dropped temperatures about 25 degrees. Fishing mud flats in 2 to 4 feet of water, they slow-roll small swimbaits and land ...",
+     "date": "2026-11-26T12:25:01+00:00"
+    }
+   ],
    "errors": []
   },
   {
@@ -594,13 +597,6 @@
    "lat": 43.4,
    "lon": -76.9,
    "items": [
-    {
-     "title": "Upper Salmon River Steelhead Fishing Report (Nov. 24, 2026)",
-     "source": "Idaho Fish and Game (.gov)",
-     "link": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPTXVWSHZJc3NuU1p4MlNOZHZLaG1kZWxMLXdGQU1OMURTWVpGSEdYWGgtU3BjRGZKNkIyMDM5VHlIYVk3ekM2dVVIRHhxR1lHem1ncXZlcHQ0YlZ2SURtMVhTTklrcklkaVBSNkdnRWVWQmo1NnVkUVdwZDk3Y04wMUFrNm5QczRuWURhemVIOA?oc=5",
-     "snippet": "",
-     "date": "2026-11-24T17:25:38+00:00"
-    },
     {
      "title": "These Salmon River anglers show up with comically small trout nets to help strangers land trophy fish",
      "source": "Syracuse.com",
@@ -638,30 +634,44 @@
    "lon": -94.2,
    "items": [
     {
+     "title": "Minnesota Department of Natural Resources Enacts Two Walleye Limit on Mille Lacs Lake This Winter Season",
+     "source": "Lakes Area Radio",
+     "link": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPeEFUYVMwMVE3SlFsSVFBMjRZVElvc0QwZk45alJEMFI3Vlp6NXMyZjlOdWlHek1YbDl3RUt1aF8yTVNNd3VyTGY3YlVSdy1Kajk5MHlCdXZVbFJEWUNNcllmTXoxX09WcVV4UVQzVjJfTzFzMFlYVGR1dFlCMUVCenI1cTlFQVdrd2J5TUpRQ0pyUk5lM2tMYXhMczVBZ1pGMktGeElSR3VocFdRdkx5N1ZvQWsyNDhaRlJuZFdJVGZwZ3NhdEJWWTB4NzJTZDBuNkVVY0JCR05tdkU?oc=5",
+     "snippet": "",
+     "date": "2026-11-27T16:10:42+00:00"
+    },
+    {
      "title": "Anglers can keep fewer walleyes on Mille Lacs Lake this winter",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d98726149e481e70c11f4a4779d&url=https%3a%2f%2fwww.msn.com%2fen-us%2fscience%2fecology%2fanglers-can-keep-fewer-walleyes-on-mille-lacs-lake-this-winter%2far-AA2i9tF3&c=13418966505680691687&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bd134f94def837e7475f5ed16de&url=https%3a%2f%2fwww.msn.com%2fen-us%2fscience%2fecology%2fanglers-can-keep-fewer-walleyes-on-mille-lacs-lake-this-winter%2far-AA2i9tF3&c=13418966505680691687&mkt=en-us",
      "snippet": "Winter fishing regulations for walleye are in effect from December through February.",
      "date": "2026-11-24T13:42:25+00:00"
     },
     {
      "title": "Minnesota DNR sets two-walleye limit for winter fishing on Mille Lacs Lake",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d98726149e481e70c11f4a4779d&url=https%3a%2f%2fkfgo.com%2f2026%2f11%2f24%2fminnesota-dnr-sets-two-walleye-limit-for-winter-fishing-on-mille-lacs-lake%2f&c=2607549331516102227&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bd134f94def837e7475f5ed16de&url=https%3a%2f%2fkfgo.com%2f2026%2f11%2f24%2fminnesota-dnr-sets-two-walleye-limit-for-winter-fishing-on-mille-lacs-lake%2f&c=2607549331516102227&mkt=en-us",
      "snippet": "Anglers fishing Mille Lacs Lake during the upcoming ice fishing season may keep two walleyes longer than 17 inches, with only one fish exceeding 20 inches.",
      "date": "2026-11-24T04:55:00+00:00"
     },
     {
+     "title": "Minnesota DNR sets 2-walleye limit for winter fishing on Mille Lacs Lake",
+     "source": "Brainerd Dispatch",
+     "link": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQQkZvTnU2bnNmSFFjNDVVZWNaa0VYTEZQVU4zTzVmRHJ3MFJ0Q0NKbVV5OUc3Wml5dzBuaXRhZXNudWlGTWh1N21uTm9ITk9fZndrc29lT0hJdXRIZUVPRW9kS21CNDhtSVBDWXlhTzhvWEdKeVJIYllIczFTeGV3a2VzR0wxQkVUSkNWR3R6UWtob1d5dEFtQUtodnduZ3dOZkZScWl3MDd3amZ0TzdDNEdua1otMk0?oc=5",
+     "snippet": "",
+     "date": "2026-11-23T22:15:00+00:00"
+    },
+    {
      "title": "DNR reduces Mille Lacs Lake walleye limit for winter fishing season",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d98726149e481e70c11f4a4779d&url=https%3a%2f%2fwww.msn.com%2fen-us%2fsports%2fgeneral%2fdnr-reduces-mille-lacs-lake-walleye-limit-for-winter-fishing-season%2far-AA2i4AUt&c=18427755164109978678&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bd134f94def837e7475f5ed16de&url=https%3a%2f%2fwww.yahoo.com%2fnews%2fscience%2farticles%2fdnr-reduces-mille-lacs-lake-213608399.html&c=1323944672181779600&mkt=en-us",
      "snippet": "The DNR Says that the limit of walleye that anglers can harvest from Mille Lacs Lake has been reduced for the upcoming winter season.",
-     "date": "2026-11-23T13:36:08+00:00"
+     "date": "2026-11-23T13:36:00+00:00"
     },
     {
      "title": "Mille Lacs Ice Anglers Get Two Walleye Per Day",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098d98726149e481e70c11f4a4779d&url=https%3a%2f%2fwjon.com%2fmille-lacs-ice-fishing-rules%2f&c=10328793458515309240&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bd134f94def837e7475f5ed16de&url=https%3a%2f%2fwjon.com%2fmille-lacs-ice-fishing-rules%2f&c=10328793458515309240&mkt=en-us",
      "snippet": "Mille Lacs winter walleye runs December 1st through February 28th, two fish a day. A strong class of two-year-olds is coming up behind.",
      "date": "2026-11-23T12:02:00+00:00"
     }
@@ -683,14 +693,14 @@
     {
      "title": "Fishing report for week of Nov. 21",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098da0c4ae4972af16ec3675a0837d&url=https%3a%2f%2fwww.havasunews.com%2flifestyle%2ffishing-report-for-week-of-nov-21%2farticle_30474b18-fb83-4a5f-9ca5-d3074f8e964c.html&c=10611527904342125417&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bd9349a4843addf7f326416da87&url=https%3a%2f%2fwww.havasunews.com%2flifestyle%2ffishing-report-for-week-of-nov-21%2farticle_30474b18-fb83-4a5f-9ca5-d3074f8e964c.html&c=10611527904342125417&mkt=en-us",
      "snippet": "A trip to the Bill Williams Peninsula produced a pair of first-time flathead catches this week, while another Lake Havasu angler hauled in the biggest fish of his life. Here’s ...",
      "date": "2026-11-19T07:45:00+00:00"
     },
     {
      "title": "Forget Lake Havasu, Arizona's high-elevation lake is an unsung fishing and boating haven inside a national forest",
      "source": "Bing News",
-     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b098da0c4ae4972af16ec3675a0837d&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2fparks%2fforget-lake-havasu-arizona-s-high-elevation-lake-is-an-unsung-fishing-and-boating-haven-inside-a-national-forest%2far-AA2hr4dZ&c=733118633740318481&mkt=en-us",
+     "link": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6b0a1bd9349a4843addf7f326416da87&url=https%3a%2f%2fwww.msn.com%2fen-us%2ftravel%2fparks%2fforget-lake-havasu-arizona-s-high-elevation-lake-is-an-unsung-fishing-and-boating-haven-inside-a-national-forest%2far-AA2hr4dZ&c=733118633740318481&mkt=en-us",
      "snippet": "Arizona is home to a lot of beautiful spots, but if you want to get away from the crowds of Lake Havasu, you can check out this lesser-known lake.",
      "date": "2026-11-14T06:00:00+00:00"
     }
